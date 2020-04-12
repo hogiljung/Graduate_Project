@@ -34,25 +34,25 @@ public class BallMove : MonoBehaviour
             */
             if (Input.GetKeyDown(KeyCode.A))
             {
-                velocity.x -= 3f;
+                velocity.x -= 2f;
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                velocity.z -= 3f;
+                velocity.z -= 2f;
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                velocity.x += 3f;
+                velocity.x += 2f;
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                velocity.z += 3f;
+                velocity.z += 2f;
             }
             rb.velocity = velocity;
         }
 
         CheckStop();
-        CheckCollision();
+        //CheckCollision();
     }
     
 
@@ -67,11 +67,13 @@ public class BallMove : MonoBehaviour
             Debug.Log("_BallMove\n");
             Ballmv();
         }
+        /*
         if (isRotate)
         {
             Debug.Log("_BallRotate\n");
             Ballrt();
         }
+        */
         
     }
 
@@ -95,17 +97,26 @@ public class BallMove : MonoBehaviour
 
     private void Ballmv()
     {
-        velocity.x *= 0.9844f;
-        velocity.z *= 0.9844f;
+        velocity.x *= 0.9944f;
+        velocity.z *= 0.9944f;
+        if(velocity.x > 0)
+        {
+            velocity.x -= 0.01f;
+        }
+        else if (velocity.x < 0)
+        {
+            velocity.x += 0.01f;
+        }
+        if(velocity.z > 0)
+        {
+            velocity.z -= 0.01f;
+        }
+        else if(velocity.z < 0)
+        {
+            velocity.z += 0.01f;
+        }
         rb.velocity = velocity;
         
-        /*
-        if (Input.GetKey(KeyCode.A))
-            rb.velocity = Vector3.back * 10;
-        if (Input.GetKey(KeyCode.D))
-            rb.velocity = Vector3.forward * 10;
-        */
-        velocity = rb.velocity;
     }
 
     private void Ballrt()
@@ -225,6 +236,9 @@ public class BallMove : MonoBehaviour
         
     }
     */
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        velocity = rb.velocity;
+    }
 }
 
