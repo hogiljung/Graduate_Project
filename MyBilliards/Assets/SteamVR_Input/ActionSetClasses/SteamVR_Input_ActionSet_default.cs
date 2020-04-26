@@ -17,43 +17,11 @@ namespace Valve.VR
     public class SteamVR_Input_ActionSet_default : Valve.VR.SteamVR_ActionSet
     {
         
-        public virtual SteamVR_Action_Boolean InteractUI
-        {
-            get
-            {
-                return SteamVR_Actions.default_InteractUI;
-            }
-        }
-        
         public virtual SteamVR_Action_Boolean Teleport
         {
             get
             {
                 return SteamVR_Actions.default_Teleport;
-            }
-        }
-        
-        public virtual SteamVR_Action_Boolean GrabPinch
-        {
-            get
-            {
-                return SteamVR_Actions.default_GrabPinch;
-            }
-        }
-        
-        public virtual SteamVR_Action_Boolean GrabGrip
-        {
-            get
-            {
-                return SteamVR_Actions.default_GrabGrip;
-            }
-        }
-        
-        public virtual SteamVR_Action_Pose Pose
-        {
-            get
-            {
-                return SteamVR_Actions.default_Pose;
             }
         }
         
@@ -73,35 +41,67 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Single Squeeze
+        public virtual SteamVR_Action_Boolean Grap
         {
             get
             {
-                return SteamVR_Actions.default_Squeeze;
+                return SteamVR_Actions.default_Grap;
             }
         }
         
-        public virtual SteamVR_Action_Boolean HeadsetOnHead
+        public virtual SteamVR_Action_Pose Pose
         {
             get
             {
-                return SteamVR_Actions.default_HeadsetOnHead;
+                return SteamVR_Actions.default_Pose;
             }
         }
         
-        public virtual SteamVR_Action_Boolean SnapTurnLeft
+        public virtual SteamVR_Action_Boolean Cue
         {
             get
             {
-                return SteamVR_Actions.default_SnapTurnLeft;
+                return SteamVR_Actions.default_Cue;
             }
         }
         
-        public virtual SteamVR_Action_Boolean SnapTurnRight
+        public virtual SteamVR_Action_Boolean Forword
         {
             get
             {
-                return SteamVR_Actions.default_SnapTurnRight;
+                return SteamVR_Actions.default_Forword;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean Backword
+        {
+            get
+            {
+                return SteamVR_Actions.default_Backword;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean Left
+        {
+            get
+            {
+                return SteamVR_Actions.default_Left;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean Right
+        {
+            get
+            {
+                return SteamVR_Actions.default_Right;
+            }
+        }
+        
+        public virtual SteamVR_Action_Vector2 moving
+        {
+            get
+            {
+                return SteamVR_Actions.default_moving;
             }
         }
         
@@ -113,11 +113,11 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Vector2 TouchPosition
+        public virtual SteamVR_Action_Vector2 TouchPos
         {
             get
             {
-                return SteamVR_Actions.default_TouchPosition;
+                return SteamVR_Actions.default_TouchPos;
             }
         }
         
