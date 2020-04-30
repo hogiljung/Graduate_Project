@@ -44,7 +44,7 @@
     },
     {
       "name": "/actions/default/in/moving",
-      "type": "vector2"
+      "type": "boolean"
     },
     {
       "name": "/actions/default/in/TouchPad",

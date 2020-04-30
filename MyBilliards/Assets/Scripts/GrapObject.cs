@@ -26,7 +26,6 @@ public class GrapObject : MonoBehaviour
         {
             if (!cue.activeSelf)
             {
-                cue.transform.position.Set(0, 0, 0.1f);
                 cue.SetActive(true);
             }
             else

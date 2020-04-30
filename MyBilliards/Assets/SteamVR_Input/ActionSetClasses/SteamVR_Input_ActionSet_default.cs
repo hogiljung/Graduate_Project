@@ -97,7 +97,7 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Vector2 moving
+        public virtual SteamVR_Action_Boolean moving
         {
             get
             {

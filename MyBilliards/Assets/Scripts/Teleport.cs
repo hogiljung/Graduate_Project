@@ -26,7 +26,7 @@ public class Teleport : MonoBehaviour
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             obj.layer = LayerMask.NameToLayer("Ignore Raycast");
             obj.transform.parent = transform;
-            obj.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            obj.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
             obj.GetComponent<MeshRenderer>().material.color = Color.blue;
             Destroy(obj.GetComponent<BoxCollider>());
 

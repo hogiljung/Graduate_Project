@@ -6,6 +6,7 @@ using Valve.VR;
 public class Controller_Left : MonoBehaviour
 {
     public SteamVR_Input_Sources handType;
+    public SteamVR_Action_Boolean graps;
     public SteamVR_Action_Boolean forword;
     public SteamVR_Action_Boolean backword;
     public SteamVR_Action_Boolean left;
@@ -13,7 +14,9 @@ public class Controller_Left : MonoBehaviour
     public SteamVR_Action_Boolean TouchPad;
     public SteamVR_Action_Vector2 TouchPos;
     public SteamVR_TrackedObject mTrackedObj;
+    public SteamVR_Action_Boolean PadClick;
     public GameObject player;
+
 
     public Teleport mTeleport;
     public Transform mPlayer;
@@ -28,7 +31,6 @@ public class Controller_Left : MonoBehaviour
         mTeleport = FindObjectOfType<Teleport>();
         mTrackedObj = GetComponent<SteamVR_TrackedObject>();
         speed = 0.3f;
-        move = false;
     }
 
     // Update is called once per frame
@@ -41,8 +43,23 @@ public class Controller_Left : MonoBehaviour
             Teleporting();
     }
 
+    private void CameraChange()
+    {
+        if (graps.GetState(handType))
+        {
+            Debug.Log("Left graps");
+
+
+        }
+    }
+
     private void Moving()
     {
+        if (PadClick.GetStateDown(handType))
+        {
+            Debug.Log("move button");
+
+        }
         if (GetForwordDown())
         {
             Debug.Log("forword");
@@ -70,13 +87,13 @@ public class Controller_Left : MonoBehaviour
 
     private void Teleporting()
     {
-        if (TouchPad.GetStateDown(handType))
+        if (PadClick.GetStateDown(handType))
         {
             if (mTeleport)
                 mTeleport.mIsActive = true;
 
         }
-        else
+        if (PadClick.GetStateUp(handType))
         {
             if (mTeleport)
             {
