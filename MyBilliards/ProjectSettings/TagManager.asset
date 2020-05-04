@@ -8,6 +8,9 @@ TagManager:
   - ball2
   - ball3
   - cue
+  - projectile
+  - FxTemporaire
+  - Button
   layers:
   - Default
   - TransparentFX

@@ -56,6 +56,14 @@
       "type": "vector2"
     },
     {
+      "name": "/actions/default/in/Menu_bt",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/System_bt",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     },
@@ -92,7 +100,7 @@
   "action_sets": [
     {
       "name": "/actions/default",
-      "usage": "single"
+      "usage": "leftright"
     },
     {
       "name": "/actions/platformer",
@@ -176,7 +184,9 @@
       "/actions/default/in/Forword": "Forword",
       "/actions/default/in/moving": "moving",
       "/actions/default/in/TouchPad": "TouchPad",
-      "/actions/default/in/TouchPos": "TouchPos"
+      "/actions/default/in/TouchPos": "TouchPos",
+      "/actions/default/in/System_bt": "System_bt",
+      "/actions/default/in/Menu_bt": "Menu_bt"
     }
   ]
 }

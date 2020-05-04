@@ -12,6 +12,7 @@ public class Teleport : MonoBehaviour
     public Vector3 mVelocity;
     public Vector3 mGroundPos;
     public List<Transform> mRenderList = new List<Transform>();
+    public GameObject TeleportArea;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +27,8 @@ public class Teleport : MonoBehaviour
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             obj.layer = LayerMask.NameToLayer("Ignore Raycast");
             obj.transform.parent = transform;
-            obj.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-            obj.GetComponent<MeshRenderer>().material.color = Color.blue;
+            obj.transform.localScale = new Vector3(0.01f, 0.05f, 0.01f);
+            obj.GetComponent<MeshRenderer>().material.color = Color.cyan;
             Destroy(obj.GetComponent<BoxCollider>());
 
             mRenderList.Add(obj.transform);
@@ -83,18 +84,20 @@ public class Teleport : MonoBehaviour
 
         for(int i = 0; i < mCount; i++)
         {
-            if (mRenderList[i].gameObject.activeSelf == false)
-                continue;
-            if(Physics.Raycast(mRenderList[i].position,Vector3.down, out hit, Mathf.Infinity))
-            {
-                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground") == false)
-                    continue;
-                float curDist = Vector3.Distance(mRenderList[i].position, hit.point);
-
-                if (dist < curDist)
-                    continue;
-                closeIdx = i;
-                mGroundPos = hit.point;
+            if (mRenderList[i].gameObject.activeSelf) {
+                if (Physics.Raycast(mRenderList[i].position, Vector3.down, out hit, Mathf.Infinity))
+                {
+                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                    {
+                        float curDist = Vector3.Distance(mRenderList[i].position, hit.point);
+                        if (dist > curDist)
+                        {
+                            closeIdx = i;
+                            mGroundPos = hit.point;
+                            TeleportArea.transform.position = mGroundPos;
+                        }
+                    }
+                }
             }
         }
 
