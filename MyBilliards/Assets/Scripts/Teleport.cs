@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public bool mIsActive {set; get;}
+    public bool mIsActive {set; get;}       //텔레포트 조준중인지
 
-    public int mCount;
-    public float mCurveValue;
-    public float mGravity;
-    public Vector3 mVelocity;
-    public Vector3 mGroundPos;
-    public List<Transform> mRenderList = new List<Transform>();
-    public GameObject TeleportArea;
+    public List<Transform> mRenderList = new List<Transform>();     //렌더 정보 담는 배열
+    public GameObject TeleportArea;     //텔레포트 영역표시
 
-    // Start is called before the first frame update
+    public Vector3 mGroundPos;      //땅에 닿은 지점 좌표
+    private Vector3 mVelocity;      //궤적 그리는 변수
+
+    public int mCount;              //궤적 길이(점선 갯수)
+    public float mCurveValue;       //점선 간격
+    public float mGravity;          //기우는 정도
+    private bool IsActive;
+
     void Start()
     {
-        CreateRender();
+        IsActive = false;
+        CreateRender();     //궤적 표시용 렌더 생성
     }
 
     void CreateRender()
@@ -39,10 +42,19 @@ public class Teleport : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mIsActive == true)
+        if (mIsActive)      //사용하는 동안 궤적 보여주기
+        {
             ShowPath();
-        else
-            HidePath();
+            IsActive = true;
+        }
+        else                //사용 안함으로 전환될때 숨기기
+        {
+            if (IsActive)
+            {
+                HidePath();
+                IsActive = false;
+            }
+        }
     }
 
     void HidePath()
@@ -75,6 +87,7 @@ public class Teleport : MonoBehaviour
         CheckGround();
     }
 
+    //땅에 닿은지 체크, 땅이면 그 좌표 저장
     void CheckGround()
     {
         int closeIdx = 0;

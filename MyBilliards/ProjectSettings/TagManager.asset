@@ -11,6 +11,7 @@ TagManager:
   - projectile
   - FxTemporaire
   - Button
+  - Canvas
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Object
   - 
   - 
   - 

@@ -57,14 +57,6 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Boolean Cue
-        {
-            get
-            {
-                return SteamVR_Actions.default_Cue;
-            }
-        }
-        
         public virtual SteamVR_Action_Boolean Forword
         {
             get

@@ -27,8 +27,6 @@ namespace Valve.VR
         
         private static SteamVR_Action_Pose p_default_Pose;
         
-        private static SteamVR_Action_Boolean p_default_Cue;
-        
         private static SteamVR_Action_Boolean p_default_Forword;
         
         private static SteamVR_Action_Boolean p_default_Backword;
@@ -100,14 +98,6 @@ namespace Valve.VR
             get
             {
                 return SteamVR_Actions.p_default_Pose.GetCopy<SteamVR_Action_Pose>();
-            }
-        }
-        
-        public static SteamVR_Action_Boolean default_Cue
-        {
-            get
-            {
-                return SteamVR_Actions.p_default_Cue.GetCopy<SteamVR_Action_Boolean>();
             }
         }
         
@@ -255,7 +245,6 @@ namespace Valve.VR
                     SteamVR_Actions.default_SkeletonRightHand,
                     SteamVR_Actions.default_Grap,
                     SteamVR_Actions.default_Pose,
-                    SteamVR_Actions.default_Cue,
                     SteamVR_Actions.default_Forword,
                     SteamVR_Actions.default_Backword,
                     SteamVR_Actions.default_Left,
@@ -279,7 +268,6 @@ namespace Valve.VR
                     SteamVR_Actions.default_SkeletonRightHand,
                     SteamVR_Actions.default_Grap,
                     SteamVR_Actions.default_Pose,
-                    SteamVR_Actions.default_Cue,
                     SteamVR_Actions.default_Forword,
                     SteamVR_Actions.default_Backword,
                     SteamVR_Actions.default_Left,
@@ -306,7 +294,6 @@ namespace Valve.VR
             Valve.VR.SteamVR_Input.actionsBoolean = new Valve.VR.SteamVR_Action_Boolean[] {
                     SteamVR_Actions.default_Teleport,
                     SteamVR_Actions.default_Grap,
-                    SteamVR_Actions.default_Cue,
                     SteamVR_Actions.default_Forword,
                     SteamVR_Actions.default_Backword,
                     SteamVR_Actions.default_Left,
@@ -331,7 +318,6 @@ namespace Valve.VR
             Valve.VR.SteamVR_Input.actionsNonPoseNonSkeletonIn = new Valve.VR.ISteamVR_Action_In[] {
                     SteamVR_Actions.default_Teleport,
                     SteamVR_Actions.default_Grap,
-                    SteamVR_Actions.default_Cue,
                     SteamVR_Actions.default_Forword,
                     SteamVR_Actions.default_Backword,
                     SteamVR_Actions.default_Left,
@@ -356,7 +342,6 @@ namespace Valve.VR
             SteamVR_Actions.p_default_SkeletonRightHand = ((SteamVR_Action_Skeleton)(SteamVR_Action.Create<SteamVR_Action_Skeleton>("/actions/default/in/SkeletonRightHand")));
             SteamVR_Actions.p_default_Grap = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/Grap")));
             SteamVR_Actions.p_default_Pose = ((SteamVR_Action_Pose)(SteamVR_Action.Create<SteamVR_Action_Pose>("/actions/default/in/Pose")));
-            SteamVR_Actions.p_default_Cue = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/Cue")));
             SteamVR_Actions.p_default_Forword = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/Forword")));
             SteamVR_Actions.p_default_Backword = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/Backword")));
             SteamVR_Actions.p_default_Left = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/Left")));

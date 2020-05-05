@@ -78,8 +78,8 @@
     <Compile Include="Assets\Scripts\Controller_Left.cs" />
     <Compile Include="Assets\Scripts\Controller_Right.cs" />
     <Compile Include="Assets\Scripts\ForceTest.cs" />
-    <Compile Include="Assets\Scripts\GrapObject.cs" />
-    <Compile Include="Assets\Scripts\LayzerPointer.cs" />
+    <Compile Include="Assets\Scripts\LazerPointer.cs" />
+    <Compile Include="Assets\Scripts\Mode.cs" />
     <Compile Include="Assets\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\NextScene.cs" />
     <Compile Include="Assets\Scripts\OnClickedMainMenu.cs" />

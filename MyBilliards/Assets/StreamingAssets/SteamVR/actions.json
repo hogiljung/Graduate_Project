@@ -23,10 +23,6 @@
       "type": "pose"
     },
     {
-      "name": "/actions/default/in/Cue",
-      "type": "boolean"
-    },
-    {
       "name": "/actions/default/in/Forword",
       "type": "boolean"
     },
@@ -176,8 +172,6 @@
       "/actions/default/in/grap": "grap",
       "/actions/default/in/Grap": "Grap",
       "/actions/default/in/Pose": "Pose",
-      "/actions/default/in/cue": "Cue",
-      "/actions/default/in/Cue": "Cue",
       "/actions/default/in/Left": "Left",
       "/actions/default/in/Right": "Right",
       "/actions/default/in/Backword": "Backword",
