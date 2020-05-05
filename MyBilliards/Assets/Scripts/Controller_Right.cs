@@ -17,22 +17,33 @@ public class Controller_Right : MonoBehaviour
 
     public GameObject isTeleport;
     public GameObject cue;
+    public GameObject handle;
     public GameObject menu_obj;
     public GameObject lazer;
 
+    public Transform holdPosition;              //큐 고정 위치
+    private Rigidbody mPlayer;                  //플레이어
+
     private GameObject collidingObject;
     private GameObject objectInHand;
+
     private Mode mmode;
+    private CueGrap isGrap;
+    private bool isJump;
 
     // Start is called before the first frame update
     void Start()
     {
+        mPlayer = transform.parent.GetComponent<Rigidbody>();
         mmode = FindObjectOfType<Mode>();
+        isGrap = FindObjectOfType<CueGrap>();
+        isJump = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        PadAction();
         switch (mmode.mode)
         {
             case 0:     // 기본 상태
@@ -42,7 +53,7 @@ public class Controller_Right : MonoBehaviour
                 break;
             case 1:     // 큐 든 상태
                 CueAction();
-
+                Follow();
                 break;
             case 2:     // 메뉴 상태
                 MenuAction();
@@ -54,6 +65,26 @@ public class Controller_Right : MonoBehaviour
         
     }
 
+    //컨트롤러 이벤트
+    private void PadAction()
+    {
+        if (forword.GetStateDown(handType))
+        {
+            if (!isJump)
+            {
+                isJump = true;
+                StartCoroutine("Jump");
+            }
+        }
+    }
+
+    IEnumerator Jump()
+    {
+        Debug.Log("jump");
+        mPlayer.AddForce(0, 500, 0);
+        yield return new WaitForSeconds(1f);
+        isJump = false;
+    }
     //큐 들기
     private void CueAction()
     {
@@ -71,6 +102,19 @@ public class Controller_Right : MonoBehaviour
                 cue.SetActive(false);
                 mmode.mode = 0;
             }
+        }
+    }
+
+    private void Follow()
+    {
+        handle.transform.position = transform.position;
+        if (isGrap.IsGrap)
+        {
+            handle.transform.LookAt(holdPosition.position);
+        }
+        else
+        {
+            handle.transform.rotation = transform.rotation;
         }
     }
 
@@ -187,4 +231,5 @@ public class Controller_Right : MonoBehaviour
             }
         }
     }
+
 }

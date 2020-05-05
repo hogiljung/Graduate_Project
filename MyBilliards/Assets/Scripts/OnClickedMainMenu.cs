@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class OnClickedMainMenu : MonoBehaviour
 {
+    public void MainMenu_btn_clicked()
+    {
+        Debug.Log("MainMenu click");
+        SceneManager.LoadScene(0);
+    }
 
     public void start_btn_clicked()
     {

@@ -12,24 +12,28 @@ public class Controller_Left : MonoBehaviour
     public SteamVR_Action_Boolean TouchPad;     //패드 터치
     public SteamVR_Action_Vector2 TouchPos;     //패드 터치좌표
 
+    public SteamVR_Behaviour_Pose controllerPose;
+
     public GameObject playerCamera;             //머리
-    public GameObject TeleportArea;             //텔레포트 영역 표시
     public GameObject isTeleport;               //텔레포트 모드 확인
     public GameObject handle;                   //큐대 핸들
     public GameObject menu_obj;                 //메뉴 캔버스
     public GameObject lazer;                    //메뉴 조작 레이저
 
+    private GameObject collidingObject;
+    private GameObject objectInHand;
+
     private SteamVR_TrackedObject mTrackedObj;  //트래킹하는 오브젝트
     private Teleport mTeleport;                 //텔레포트 스크립트
     private Transform mPlayer;                  //플레이어
     private Mode mmode;                         //현재 상태
+    private CueGrap isGrab;                     //고정버튼 눌렸는지
 
     private Vector3 front;                      //카메라 기준 정면 이동량
     private Vector3 side;                       //카메라 기준 측면 이동량
     private Vector3 lookAt;                     //큐가 바라볼 곳
 
     private bool isMove;                        //이동버튼 눌렸는지
-    private bool isGrab;                        //고정버튼 눌렸는지
 
     public float speed;                         //
     
@@ -41,6 +45,7 @@ public class Controller_Left : MonoBehaviour
         mTeleport = FindObjectOfType<Teleport>();
         mTrackedObj = GetComponent<SteamVR_TrackedObject>();
         mmode = FindObjectOfType<Mode>();
+        isGrab = FindObjectOfType<CueGrap>();
         speed = 0.2f;
     }
 
@@ -48,13 +53,10 @@ public class Controller_Left : MonoBehaviour
     void Update()
     {
         // 왼손 터치패드 동작
-        if (!isGrab)        // 큐 조준시에는 이동불가
-        {
-            if (isTeleport.activeSelf)       //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
-                Teleporting();
-            else
-                Moving();
-        }
+        if (isTeleport.activeSelf)       //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
+            Teleporting();
+        else
+            Moving();
 
         switch (mmode.mode)
         {
@@ -62,60 +64,31 @@ public class Controller_Left : MonoBehaviour
                 MenuAction();
                 break;
             case 1:     //큐 든 상태
-                //GrapCue();
                 GrapCue();
                 break;
             case 2:     //메뉴 상태
                 MenuAction();
                 break;
             case 3:     //물건 든 상태
-
+                GrapAction();
                 break;
         }
-        
-        
-    }
-    /*
-    //큐 고정
-    private void GrapCue()
-    {
-        if (isGrab)     //잡은 상태에선 잡기 누른 포지션을 큐가 바라보도록 설정
-        {
-            handle.transform.LookAt(lookAt);
-        }
-        else            //놓은 상태에서 
-        {
-            handle.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        }
-        
-    }*/
 
-    IEnumerator CGrapCue()
-    {
-        while (isGrab)
-        {
-            handle.transform.LookAt(lookAt);
-            yield return new WaitForSeconds(0.011f);
-        }
-        handle.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
     }
 
     private void GrapCue()
     {
         if (graps.GetStateDown(handType))
         {
-            if (!isGrab)
-            {
-                lookAt = transform.position;
-            }
             Debug.Log("Left graps down");
-            isGrab = true;
-            StartCoroutine("CGrapCue");
+            isGrab.IsGrap = true;
+            //StartCoroutine("CGrapCue");
         }
         if (graps.GetStateUp(handType))
         {
             Debug.Log("Left graps up");
-            isGrab = false;
+            isGrab.IsGrap = false;
         }
 
     }
@@ -150,7 +123,6 @@ public class Controller_Left : MonoBehaviour
             if (mTeleport)
             {
                 mTeleport.mIsActive = true;
-                TeleportArea.SetActive(true);
             }
 
         }
@@ -159,7 +131,6 @@ public class Controller_Left : MonoBehaviour
             if (mTeleport)
             {
                 mTeleport.mIsActive = false;
-                TeleportArea.SetActive(false);
                 Vector3 pos = mTeleport.mGroundPos;
                 if (pos != Vector3.zero)
                     mPlayer.transform.position = pos;
@@ -186,4 +157,99 @@ public class Controller_Left : MonoBehaviour
             }
         }
     }
+
+    //물건 들기
+    private void GrapAction()
+    {
+        if (graps.GetStateDown(handType))
+        {
+            if (collidingObject)
+            {
+                Grap();
+            }
+        }
+        else if (graps.GetStateUp(handType))
+        {
+            if (objectInHand)
+            {
+                ReleaseObject();
+            }
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        SetCollidingObject(other);
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        SetCollidingObject(other);
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (!collidingObject)
+        {
+            return;
+        }
+        collidingObject = null;
+    }
+
+    private void SetCollidingObject(Collider col)
+    {
+        if (collidingObject || !col.GetComponent<Rigidbody>())
+        {
+            return;
+        }
+
+        collidingObject = col.gameObject;
+    }
+
+    private FixedJoint AddFixedJoint()
+    {
+        FixedJoint fx = gameObject.AddComponent<FixedJoint>();
+        fx.breakForce = 20000;
+        fx.breakTorque = 20000;
+        return fx;
+    }
+
+    private void Grap()
+    {
+        if (!collidingObject)
+        {
+            return;
+        }
+        if (collidingObject.layer.CompareTo("Object") != 0)
+        {
+            return;
+        }
+        Debug.Log("Grap");
+        objectInHand = collidingObject;
+        collidingObject = null;
+
+        var joint = AddFixedJoint();
+        joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
+        mmode.mode = 3;
+    }
+
+    private void ReleaseObject()
+    {
+        if (!objectInHand)
+        {
+            return;
+        }
+        if (GetComponent<FixedJoint>())
+        {
+            Debug.Log("Release");
+            GetComponent<FixedJoint>().connectedBody = null;
+            Destroy(GetComponent<FixedJoint>());
+
+            objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
+            objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
+        }
+        objectInHand = null;
+        mmode.mode = 0;
+    }
+
 }

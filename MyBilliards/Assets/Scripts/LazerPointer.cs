@@ -31,8 +31,8 @@ public class LazerPointer : MonoBehaviour
         // 레이저의 꼭지점은 2개가 필요 더 많이 넣으면 곡선도 표현 할 수 있다.
         layser.positionCount = 2;
         // 레이저 굵기 표현
-        layser.startWidth = 0.01f;
-        layser.endWidth = 0.01f;
+        layser.startWidth = 0.002f;
+        layser.endWidth = 0.002f;
     }
 
     // Update is called once per frame
@@ -63,6 +63,13 @@ public class LazerPointer : MonoBehaviour
                 else
                 {
                     hit.collider.gameObject.GetComponent<Button>().OnPointerEnter(null);
+                    if (currentObject)
+                    {
+                        if (currentObject != hit.collider)
+                        {
+                            currentObject.GetComponent<Button>().OnPointerExit(null);
+                        }
+                    }
                     currentObject = hit.collider.gameObject;
                 }
             }

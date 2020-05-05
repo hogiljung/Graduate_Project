@@ -30,7 +30,7 @@ public class Teleport : MonoBehaviour
             GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             obj.layer = LayerMask.NameToLayer("Ignore Raycast");
             obj.transform.parent = transform;
-            obj.transform.localScale = new Vector3(0.01f, 0.05f, 0.01f);
+            obj.transform.localScale = new Vector3(0.01f, 0.01f, 0.05f);
             obj.GetComponent<MeshRenderer>().material.color = Color.cyan;
             Destroy(obj.GetComponent<BoxCollider>());
 
@@ -52,6 +52,7 @@ public class Teleport : MonoBehaviour
             if (IsActive)
             {
                 HidePath();
+                TeleportArea.SetActive(false);
                 IsActive = false;
             }
         }
@@ -108,6 +109,8 @@ public class Teleport : MonoBehaviour
                             closeIdx = i;
                             mGroundPos = hit.point;
                             TeleportArea.transform.position = mGroundPos;
+                            TeleportArea.transform.LookAt(new Vector3(transform.position.x, TeleportArea.transform.position.y, transform.position.z));
+                            TeleportArea.SetActive(true);
                         }
                     }
                 }
