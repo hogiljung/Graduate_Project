@@ -16,9 +16,12 @@ public class Controller_Left : MonoBehaviour
 
     public GameObject playerCamera;             //머리
     public GameObject isTeleport;               //텔레포트 모드 확인
-    public GameObject handle;                   //큐대 핸들
+    public GameObject handle;                   //큐 핸들
+    public GameObject cue;                      //큐
     public GameObject menu_obj;                 //메뉴 캔버스
     public GameObject lazer;                    //메뉴 조작 레이저
+    public GameObject main;
+    public GameObject option;
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -41,7 +44,7 @@ public class Controller_Left : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mPlayer = transform.parent;
+        mPlayer = transform.parent.parent;
         mTeleport = FindObjectOfType<Teleport>();
         mTrackedObj = GetComponent<SteamVR_TrackedObject>();
         mmode = FindObjectOfType<Mode>();
@@ -53,37 +56,40 @@ public class Controller_Left : MonoBehaviour
     void Update()
     {
         // 왼손 터치패드 동작
-        if (isTeleport.activeSelf)       //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
+
+        //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
+        if (isTeleport.activeSelf)
             Teleporting();
         else
             Moving();
 
+        MenuAction();       //메뉴
         switch (mmode.mode)
         {
             case 0:     //기본 상태
-                MenuAction();
+                GrapAction();       //물건 집기
                 break;
             case 1:     //큐 든 상태
-                GrapCue();
+                GrapCue();          //큐 고정
                 break;
             case 2:     //메뉴 상태
-                MenuAction();
+
                 break;
             case 3:     //물건 든 상태
-                GrapAction();
+                GrapAction();       //물건 놓기/던지기
                 break;
         }
 
 
     }
 
+    // 큐 고정
     private void GrapCue()
     {
         if (graps.GetStateDown(handType))
         {
             Debug.Log("Left graps down");
             isGrab.IsGrap = true;
-            //StartCoroutine("CGrapCue");
         }
         if (graps.GetStateUp(handType))
         {
@@ -147,12 +153,14 @@ public class Controller_Left : MonoBehaviour
             {
                 lazer.SetActive(false);
                 menu_obj.SetActive(false);
-                mmode.mode = 0;
+                mmode.mode = 0;     //기본상태로
             }
-            else
+            else    // 메뉴 캔버스 추가하면 킬 때 초기화 해주어야함!
             {
-                mmode.mode = 2;
                 menu_obj.SetActive(true);
+                main.SetActive(true);
+                option.SetActive(false);
+                mmode.mode = 2;     //메뉴상태로
                 lazer.SetActive(true);
             }
         }

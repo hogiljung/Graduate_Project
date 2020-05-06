@@ -12,6 +12,7 @@ TagManager:
   - FxTemporaire
   - Button
   - Canvas
+  - ball
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - 
   - 
   - Ground
+  - Player
   - Object
-  - 
   - 
   - 
   - 

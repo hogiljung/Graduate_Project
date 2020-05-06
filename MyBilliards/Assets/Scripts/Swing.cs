@@ -5,26 +5,88 @@ using UnityEngine;
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
+    private Transform ptrf;
+    private Rigidbody colrb;
+    private RaycastHit hit;
 
-    // 수구와 큐의 충돌 체크
-    bool trigger = false;
-    float touchTime = 0f;
+    private Vector3 prePos;
+    private Vector3 velocity;
+    private bool trigger = false;
+    private float touchTime = 0f;
 
-
-
-    // Start is called before the first frame update
+    private int count;
+    
+    /*
+    Unity 내부 함수 실행 순서
+    Strat - FixedUpdate - 내부 물리 처리 - OnTrigger - OnCollision
+    - Update - yield들 - 내부 애니메이션 업데이트 - LateUpdate
+    - 화면 렌더 - gizmo 렌더 - UI 렌더 - 마무리
+    */
     void Start()
     {
-
+        ptrf = GetComponentInParent<Transform>();
+        StartCoroutine("GetPrePos");
+        count = 0;
     }
 
-    // Update is called once per frame
-
+    //물리연산      (프로젝트 설정으로)0.02초마다 연산
+    //*업데이트는 물리업데이트 사이사이에 존재해야 자연스러움
     private void FixedUpdate()
     {
 
     }
+    //업데이트
+    private void Update()
+    {
 
+    }
+    //업데이트 이후 업데이트
+    private void LateUpdate()
+    {
+    }
+    //그후 화면출력
+
+    IEnumerator GetPrePos()
+    {
+        while (true)
+        {
+            prePos = transform.parent.position;
+            yield return new WaitForSeconds(0.05f);
+            velocity = (transform.parent.position - prePos);
+        }
+    }
+
+    //감지
+    private void OnTriggerEnter(Collider other)
+    {
+        //공일때
+        if (other.CompareTag("ball"))
+        {
+            Debug.Log("trp" + transform.position + "prep" + prePos + "V" + velocity);
+            colrb = other.gameObject.GetComponent<Rigidbody>();
+            Debug.DrawRay(transform.position, transform.forward, Color.yellow, 1.5f);
+            Physics.Raycast(transform.position, transform.forward, out hit, 1.5f);
+            colrb.AddForceAtPosition(velocity * 500, hit.point);
+        }
+    }
+
+    //접촉중
+    private void OnTriggerStay(Collider other)
+    {
+        //공일때
+        if (other.CompareTag("ball"))
+        {
+            Debug.Log("ball stay " + count);
+            count++;
+            colrb.AddForceAtPosition(velocity, hit.point);
+        }
+    }
+
+    //탈출
+    private void OnTriggerExit(Collider other)
+    {
+        count = 0;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -5,10 +5,50 @@ using UnityEngine.SceneManagement;
 
 public class OnClickedMainMenu : MonoBehaviour
 {
-    public void MainMenu_btn_clicked()
+    public GameObject main;
+    public GameObject option;
+    public GameObject tpcheck;
+
+    private void Start()
     {
-        Debug.Log("MainMenu click");
-        SceneManager.LoadScene(0);
+        if (PlayerPrefs.GetInt("tpmode", 0) == 0)
+        {
+            tpcheck.SetActive(false);
+        }
+        else
+        {
+            tpcheck.SetActive(true);
+        }
+    }
+
+    public void Option_btn_clicked()
+    {
+        Debug.Log("option");
+        main.SetActive(false);
+        option.SetActive(true);
+    }
+
+    public void Back_btn_clicked()
+    {
+        Debug.Log("back");
+        main.SetActive(true);
+        option.SetActive(false);
+    }
+
+    public void Teleport_btn_clicked()
+    {
+        Debug.Log("Teleport button");
+        if (tpcheck.activeSelf)
+        {
+            tpcheck.SetActive(false);
+            PlayerPrefs.SetInt("tpmode", 0);
+        }
+        else
+        {
+            tpcheck.SetActive(true);
+            PlayerPrefs.SetInt("tpmode", 1);
+        }
+
     }
 
     public void start_btn_clicked()

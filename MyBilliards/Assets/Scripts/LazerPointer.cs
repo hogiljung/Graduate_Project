@@ -85,6 +85,11 @@ public class LazerPointer : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                layser.SetPosition(1, transform.position + (transform.forward * raycastDistance));
+                particle.SetActive(false);
+            }
         }
 
         else
@@ -101,7 +106,6 @@ public class LazerPointer : MonoBehaviour
         // 버튼을 누를 경우        
         if (trigger.GetStateDown(handType))
         {
-            Debug.Log("click1");
             layser.material.color = new Color(255, 255, 255, 0.5f);
         }
 

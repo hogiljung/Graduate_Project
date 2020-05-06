@@ -72,6 +72,7 @@
     <Compile Include="Assets\Replay.cs" />
     <Compile Include="Assets\ReplayforDynamoDB.cs" />
     <Compile Include="Assets\Scripts\BallMove.cs" />
+    <Compile Include="Assets\Scripts\Bounce.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
     <Compile Include="Assets\Scripts\ChangeMode.cs" />
     <Compile Include="Assets\Scripts\Collisions.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\Scripts\Mode.cs" />
     <Compile Include="Assets\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\NextScene.cs" />
+    <Compile Include="Assets\Scripts\OnClickedInGameMenu.cs" />
     <Compile Include="Assets\Scripts\OnClickedMainMenu.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
@@ -91,6 +93,8 @@
     <Compile Include="Assets\Scripts\SurfaceResist.cs" />
     <Compile Include="Assets\Scripts\Swing.cs" />
     <Compile Include="Assets\Scripts\Teleport.cs" />
+    <Compile Include="Assets\Scripts\wallX.cs" />
+    <Compile Include="Assets\Scripts\wallZ.cs" />
     <Compile Include="Assets\Scripts\Web\http.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

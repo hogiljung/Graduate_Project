@@ -20,46 +20,50 @@ public class Controller_Right : MonoBehaviour
     public GameObject handle;
     public GameObject menu_obj;
     public GameObject lazer;
+    public GameObject main;
+    public GameObject option;
+    public Transform camdir;
 
     public Transform holdPosition;              //큐 고정 위치
     private Rigidbody mPlayer;                  //플레이어
 
     private GameObject collidingObject;
     private GameObject objectInHand;
+    private Vector3 vHoldPos;
 
     private Mode mmode;
     private CueGrap isGrap;
+    private bool cuegrap;
     private bool isJump;
 
     // Start is called before the first frame update
     void Start()
     {
-        mPlayer = transform.parent.GetComponent<Rigidbody>();
+        mPlayer = transform.parent.parent.GetComponent<Rigidbody>();
         mmode = FindObjectOfType<Mode>();
         isGrap = FindObjectOfType<CueGrap>();
+        cuegrap = false;
         isJump = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        PadAction();
+        //PadAction();      //버튼회전 수정 필요
+        MenuAction();
         switch (mmode.mode)
         {
             case 0:     // 기본 상태
-                CueAction();
-                GrapAction();
-                MenuAction();
+                CueAction();        //큐 꺼내기
+                GrapAction();       //물건 집기
                 break;
             case 1:     // 큐 든 상태
-                CueAction();
-                Follow();
-                break;
             case 2:     // 메뉴 상태
-                MenuAction();
+                CueAction();        //큐 넣기
+                Follow();           //큐 위치 지정
                 break;
             case 3:     // 물건 든 상태
-                GrapAction();
+                GrapAction();       //물건 놓기/던지기
                 break;
         }
         
@@ -76,18 +80,30 @@ public class Controller_Right : MonoBehaviour
                 StartCoroutine("Jump");
             }
         }
+        if (left.GetStateDown(handType))
+        {
+            camdir.Rotate(0, 15, 0);
+        }
+        if (right.GetStateDown(handType))
+        {
+            camdir.Rotate(0, -15, 0);
+        }
     }
 
     IEnumerator Jump()
     {
         Debug.Log("jump");
-        mPlayer.AddForce(0, 500, 0);
-        yield return new WaitForSeconds(1f);
+        mPlayer.AddForce(0, 350, 0);
+        yield return new WaitForSeconds(0.8f);
         isJump = false;
     }
     //큐 들기
     private void CueAction()
     {
+        if (cue.activeSelf)     //다른 상태에서 돌아올때 큐를 든 상태였으면 큐를 든 상태로
+        {
+            mmode.mode = 1;
+        }
         if (backword.GetStateDown(handType))
         {
             if (!cue.activeSelf)
@@ -110,11 +126,20 @@ public class Controller_Right : MonoBehaviour
         handle.transform.position = transform.position;
         if (isGrap.IsGrap)
         {
+            /*
+            if (!cuegrap)
+            {
+                vHoldPos = holdPosition.position;
+                cuegrap = true;
+            }
+            handle.transform.LookAt(vHoldPos);
+            */
             handle.transform.LookAt(holdPosition.position);
         }
         else
         {
             handle.transform.rotation = transform.rotation;
+            cuegrap = false;
         }
     }
 
@@ -220,13 +245,15 @@ public class Controller_Right : MonoBehaviour
             if (menu_obj.activeSelf)
             {
                 lazer.SetActive(false);
-                menu_obj.SetActive(false);
                 mmode.mode = 0;
+                menu_obj.SetActive(false);
             }
-            else
+            else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
-                mmode.mode = 2;
                 menu_obj.SetActive(true);
+                main.SetActive(true);
+                option.SetActive(false);
+                mmode.mode = 2;
                 lazer.SetActive(true);
             }
         }
