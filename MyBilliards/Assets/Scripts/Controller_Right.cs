@@ -49,7 +49,7 @@ public class Controller_Right : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //PadAction();      //버튼회전 수정 필요
+        PadAction();      //버튼회전 수정 필요
         MenuAction();
         switch (mmode.mode)
         {

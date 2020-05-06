@@ -1,9 +1,9 @@
-# 졸업작품 프로그램(Unity)
+# Graduate_Project(Unity)
 * Documents - Documents to be Submitted
 
 * MyBilliards - Unity Project file
 
-* Guide(DeepLearning) ? Python
+* Guide(DeepLearning) - Python
 
 * Replay(Server) - AWS
 
@@ -13,9 +13,9 @@
 
 * Python - 3.6.10 :: Anaconda
 
-* Tensorflow ? 1.7.1
+* Tensorflow - 1.7.1
 
-* Server ? AWS (Ubuntu Server 18.04 LTS)
+* Server - AWS (Ubuntu Server 18.04 LTS)
 
-* DB ? Dynamo DB, AWS Cognito
+* DB - Dynamo DB, AWS Cognito
 

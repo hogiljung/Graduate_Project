@@ -6,17 +6,15 @@ public class wallX : MonoBehaviour
 {
     private float speed;
 
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("ball"))
+        {
+            Reflect(collision);
+        }
+    }
+
+    private void Reflect(Collision collision)
     {
         Vector3 incomingVector = collision.collider.GetComponent<Rigidbody>().velocity;
         speed = incomingVector.magnitude;
@@ -31,8 +29,8 @@ public class wallX : MonoBehaviour
 
         collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed * 0.68f;
     }
-    private void OnTriggerEnter(Collider other)
-    {
+    
 
-    }
+    
+    
 }

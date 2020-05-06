@@ -5,7 +5,7 @@ using UnityEngine;
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
-    private Transform ptrf;
+    public Transform ptrf;
     private Rigidbody colrb;
     private RaycastHit hit;
 
@@ -24,7 +24,6 @@ public class Swing : MonoBehaviour
     */
     void Start()
     {
-        ptrf = GetComponentInParent<Transform>();
         StartCoroutine("GetPrePos");
         count = 0;
     }
@@ -50,9 +49,9 @@ public class Swing : MonoBehaviour
     {
         while (true)
         {
-            prePos = transform.parent.position;
+            prePos = ptrf.localPosition;
             yield return new WaitForSeconds(0.05f);
-            velocity = (transform.parent.position - prePos);
+            velocity = (ptrf.localPosition - prePos);
         }
     }
 
@@ -62,11 +61,11 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.CompareTag("ball"))
         {
-            Debug.Log("trp" + transform.position + "prep" + prePos + "V" + velocity);
+            Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
             colrb = other.gameObject.GetComponent<Rigidbody>();
-            Debug.DrawRay(transform.position, transform.forward, Color.yellow, 1.5f);
-            Physics.Raycast(transform.position, transform.forward, out hit, 1.5f);
-            colrb.AddForceAtPosition(velocity * 500, hit.point);
+            Debug.DrawRay(ptrf.position, ptrf.forward * 10f, Color.yellow, 0.5f);
+            Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
+            colrb.AddForceAtPosition(velocity * 450, hit.point);
         }
     }
 
@@ -88,6 +87,7 @@ public class Swing : MonoBehaviour
         count = 0;
     }
 
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "ball2")
@@ -115,4 +115,5 @@ public class Swing : MonoBehaviour
             touchTime = 0f;
         }
     }
+    */
 }

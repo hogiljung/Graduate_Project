@@ -14,12 +14,10 @@ public class OnClickedInGameMenu : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("tpmode", 0) == 0)
         {
-            mTpMode.SetActive(false);
             tpcheck.SetActive(false);
         }
         else
         {
-            mTpMode.SetActive(true);
             tpcheck.SetActive(true);
         }
     }

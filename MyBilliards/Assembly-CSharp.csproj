@@ -94,7 +94,6 @@
     <Compile Include="Assets\Scripts\Swing.cs" />
     <Compile Include="Assets\Scripts\Teleport.cs" />
     <Compile Include="Assets\Scripts\wallX.cs" />
-    <Compile Include="Assets\Scripts\wallZ.cs" />
     <Compile Include="Assets\Scripts\Web\http.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
@@ -151,31 +150,31 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -355,22 +354,22 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.CognitoSync">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.Core">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.DynamoDBv2">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.DynamoDBv2.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.DynamoDBv2.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
