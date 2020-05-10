@@ -12,10 +12,11 @@ using System.Collections.Generic;
 
 public class ReplayforDynamoDB : MonoBehaviour
 {
+    public SaveData sd;
     DynamoDBContext context;
     AmazonDynamoDBClient DBclient;
     CognitoAWSCredentials credentials;
-    private void Awake()
+    private void Start()
     {
         UnityInitializer.AttachToGameObject(this.gameObject);
         this.gameObject.AddComponent<CustomUnityMainThreadDispatcher>();
@@ -23,42 +24,46 @@ public class ReplayforDynamoDB : MonoBehaviour
         credentials = new CognitoAWSCredentials("ap-northeast-2:c9be57d7-f34a-458a-b54c-0cbf5de1df78", RegionEndpoint.APNortheast2);
         DBclient = new AmazonDynamoDBClient(credentials, RegionEndpoint.APNortheast2);
         context = new DynamoDBContext(DBclient);
-
-      //  Requestreplayinfo();
+        
     }
 
     [DynamoDBTable("Ballinfo")]
-    public class Swing
+    public class Swings
     {
         [DynamoDBHashKey] // Hash key.
         public string user_id { get; set; }
         [DynamoDBProperty]
-        public string ball_id { get; set; }
+        public string ball1pos { get; set; }
         [DynamoDBProperty]
-        public string position { get; set; }
+        public string ball1rot { get; set; }
         [DynamoDBProperty]
-        public string rotation { get; set; }
+        public string ball2pos { get; set; }
         [DynamoDBProperty]
-        public int force { get; set; }
+        public string ball2rot { get; set; }
         [DynamoDBProperty]
-        public string hitdot { get; set; }
+        public string ball3pos { get; set; }
+        [DynamoDBProperty]
+        public string ball3rot { get; set; }
         [DynamoDBProperty]
         public string time { get; set; }
 
     }
 
 
-    public void Saveswinginfo() //볼 정보를 DB에 올리기
+    public void Saveswinginfo(SaveData.Info ts) //볼 정보를 DB에 올리기
     {
-        Swing c1 = new Swing
+        Debug.Log("ts" + ts);
+        Swings c1 = new Swings
         {
-            user_id = "aass",
-            ball_id = "Whiteball",
-            position = "0.1,0.3,0.1",
-            rotation = "1,2,3",
-            force = 5,
-            hitdot = "0.09,0.3,0.09",
-            time = "2020.01.15",
+            
+            user_id = ts.ID.ToString(),
+            ball1pos = ts.ball1pos.ToString(),
+            ball1rot = ts.ball1rot.ToString(),
+            ball2pos = ts.ball1pos.ToString(),
+            ball2rot = ts.ball1rot.ToString(),
+            ball3pos = ts.ball1pos.ToString(),
+            ball3rot = ts.ball1rot.ToString(),
+            time = ts.time
         };
         context.SaveAsync(c1, (result) =>
         {
@@ -83,6 +88,7 @@ public class ReplayforDynamoDB : MonoBehaviour
                 return;
             }
             c = result.Result;
+            /*
             Debug.Log("유저ID: " + c.user_id); //볼 정보 출력
             Debug.Log("볼 ID: " + c.ball_id);
             Debug.Log("좌표: " + c.position);
@@ -90,19 +96,12 @@ public class ReplayforDynamoDB : MonoBehaviour
             Debug.Log("힘: " + c.force);
             Debug.Log("타격 점: " + c.hitdot);
             Debug.Log("시각: " + c.time);
+            */
 
         }, null);
 
     }
-
-    public void RequestTable()
-    {
-      //  ScanCondition test = new ScanCondition("user_id",)
-
-
-    //    context.ScanAsync("Ballinfo",);
-   
-    }
+    
 
 
 

@@ -65,16 +65,16 @@
     <Compile Include="Assets\SteamVR\WindowsHelper\SteamVR_Windows_Editor_Helper.cs" />
     <None Include="Assets\SteamVR\WindowsHelper\SteamVR_Windows_EditorHelper.asmdef" />
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -266,25 +266,25 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.CognitoSync">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.Core">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.DynamoDBv2">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.DynamoDBv2.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.DynamoDBv2.dll</HintPath>
     </Reference>
     <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Users/JUN/Desktop/MyBilliards/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

@@ -12,6 +12,7 @@ public class Controller_Right : MonoBehaviour
     public SteamVR_Action_Boolean left;
     public SteamVR_Action_Boolean right;
     public SteamVR_Action_Boolean menu;
+    public SteamVR_Action_Vibration haptic;
 
     public SteamVR_Behaviour_Pose controllerPose;
 
@@ -49,13 +50,14 @@ public class Controller_Right : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PadAction();      //버튼회전 수정 필요
+        PadAction();      //회전 수정 필요 - 그랩문제?
         MenuAction();
+
         switch (mmode.mode)
         {
             case 0:     // 기본 상태
                 CueAction();        //큐 꺼내기
-                GrapAction();       //물건 집기
+                //GrapAction();       //물건 집기       //수정필요
                 break;
             case 1:     // 큐 든 상태
             case 2:     // 메뉴 상태
@@ -63,7 +65,7 @@ public class Controller_Right : MonoBehaviour
                 Follow();           //큐 위치 지정
                 break;
             case 3:     // 물건 든 상태
-                GrapAction();       //물건 놓기/던지기
+                //GrapAction();       //물건 놓기/던지기
                 break;
         }
         
@@ -183,6 +185,10 @@ public class Controller_Right : MonoBehaviour
 
     private void SetCollidingObject(Collider col)
     {
+        if (col.gameObject.layer  != 12)
+        {
+            return;
+        }
         if (collidingObject || !col.GetComponent<Rigidbody>())
         {
             return;

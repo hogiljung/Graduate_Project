@@ -8,6 +8,7 @@ public class OnClickedMainMenu : MonoBehaviour
     public GameObject main;
     public GameObject option;
     public GameObject tpcheck;
+    public GameObject replay;
 
     private void Start()
     {
@@ -19,6 +20,13 @@ public class OnClickedMainMenu : MonoBehaviour
         {
             tpcheck.SetActive(true);
         }
+    }
+
+    public void Replay_btn_clicked()
+    {
+        Debug.Log("option");
+        main.SetActive(false);
+        replay.SetActive(true);
     }
 
     public void Option_btn_clicked()
@@ -33,6 +41,7 @@ public class OnClickedMainMenu : MonoBehaviour
         Debug.Log("back");
         main.SetActive(true);
         option.SetActive(false);
+        replay.SetActive(false);
     }
 
     public void Teleport_btn_clicked()
@@ -60,6 +69,7 @@ public class OnClickedMainMenu : MonoBehaviour
     public void Exit_btn_clicked()
     {
         Debug.Log("exit click");
+        PlayerPrefs.Save();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

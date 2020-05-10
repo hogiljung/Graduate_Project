@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
     public Transform ptrf;
+    public SaveData savedata;
     private Rigidbody colrb;
     private RaycastHit hit;
 
@@ -16,6 +18,9 @@ public class Swing : MonoBehaviour
 
     private int count;
     
+    public Transform ball1;
+    public Transform ball2;
+    public Transform ball3;
     /*
     Unity 내부 함수 실행 순서
     Strat - FixedUpdate - 내부 물리 처리 - OnTrigger - OnCollision
@@ -61,6 +66,19 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.CompareTag("ball"))
         {
+            /*
+            SaveData.Info info = new SaveData.Info();
+            info.ball1pos = ball1.position;
+            info.ball1rot = ball1.rotation.eulerAngles;
+            info.ball2pos = ball2.position;
+            info.ball2rot = ball2.rotation.eulerAngles;
+            info.ball3pos = ball3.position;
+            info.ball3rot = ball3.rotation.eulerAngles;
+            info.time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            savedata.SetData(info);
+            Debug.Log("info" + info);
+            */
+
             Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
             colrb = other.gameObject.GetComponent<Rigidbody>();
             Debug.DrawRay(ptrf.position, ptrf.forward * 10f, Color.yellow, 0.5f);
