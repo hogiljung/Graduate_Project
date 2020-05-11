@@ -9,6 +9,7 @@ public class OnClickedMainMenu : MonoBehaviour
     public GameObject option;
     public GameObject tpcheck;
     public GameObject replay;
+    public GameObject assist;
 
     private void Start()
     {
@@ -57,7 +58,21 @@ public class OnClickedMainMenu : MonoBehaviour
             tpcheck.SetActive(true);
             PlayerPrefs.SetInt("tpmode", 1);
         }
+    }
 
+    public void Assist_btn_clicked()
+    {
+        Debug.Log("Assist button");
+        if (assist.activeSelf)
+        {
+            assist.SetActive(false);
+            PlayerPrefs.SetInt("assist", 0);
+        }
+        else
+        {
+            assist.SetActive(true);
+            PlayerPrefs.SetInt("assist", 1);
+        }
     }
 
     public void start_btn_clicked()

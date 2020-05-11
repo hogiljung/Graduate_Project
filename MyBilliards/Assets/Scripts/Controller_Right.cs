@@ -23,17 +23,25 @@ public class Controller_Right : MonoBehaviour
     public GameObject lazer;
     public GameObject main;
     public GameObject option;
+    public GameObject replay;
     public Transform camdir;
 
     public Transform holdPosition;              //큐 고정 위치
+
     private Rigidbody mPlayer;                  //플레이어
+    private RaycastHit hit;
 
     private GameObject collidingObject;
     private GameObject objectInHand;
     private Vector3 vHoldPos;
+    private Vector3 controllerMovePos;
+    private float cuepos;
+    private float theta;
+    private float degree;
 
     private Mode mmode;
     private CueGrap isGrap;
+
     private bool cuegrap;
     private bool isJump;
 
@@ -57,15 +65,17 @@ public class Controller_Right : MonoBehaviour
         {
             case 0:     // 기본 상태
                 CueAction();        //큐 꺼내기
-                //GrapAction();       //물건 집기       //수정필요
+                GrapAction();       //물건 집기       //수정필요
                 break;
             case 1:     // 큐 든 상태
-            case 2:     // 메뉴 상태
                 CueAction();        //큐 넣기
                 Follow();           //큐 위치 지정
                 break;
+            case 2:     // 메뉴 상태
+
+                break;
             case 3:     // 물건 든 상태
-                //GrapAction();       //물건 놓기/던지기
+                GrapAction();       //물건 놓기/던지기
                 break;
         }
         
@@ -102,10 +112,12 @@ public class Controller_Right : MonoBehaviour
     //큐 들기
     private void CueAction()
     {
+        /*
         if (cue.activeSelf)     //다른 상태에서 돌아올때 큐를 든 상태였으면 큐를 든 상태로
         {
             mmode.mode = 1;
         }
+        */
         if (backword.GetStateDown(handType))
         {
             if (!cue.activeSelf)
@@ -125,23 +137,43 @@ public class Controller_Right : MonoBehaviour
 
     private void Follow()
     {
-        handle.transform.position = transform.position;
-        if (isGrap.IsGrap)
+        switch (PlayerPrefs.GetInt("shotmode"))
         {
-            /*
-            if (!cuegrap)
-            {
-                vHoldPos = holdPosition.position;
-                cuegrap = true;
-            }
-            handle.transform.LookAt(vHoldPos);
-            */
-            handle.transform.LookAt(holdPosition.position);
-        }
-        else
-        {
-            handle.transform.rotation = transform.rotation;
-            cuegrap = false;
+            case 0:     //어시스트모드 off
+                if (isGrap.IsGrap)
+                {
+                    handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
+                    handle.transform.LookAt(holdPosition);
+                }
+                else
+                {
+                    handle.transform.position = transform.position;
+                    handle.transform.rotation = transform.rotation;
+                    cuegrap = false;
+                    vHoldPos = handle.transform.position;
+                }
+                break;
+
+            case 1:     //어시스트모드 on
+                if (isGrap.IsGrap)
+                {
+                    controllerMovePos = controllerPose.transform.position - vHoldPos;
+                    theta = Vector3.Dot(handle.transform.forward, controllerMovePos);
+                    degree = Mathf.Rad2Deg * theta;
+                    Debug.Log("각도: " + degree);
+                    cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree / 90;
+
+                    handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
+                }
+                else
+                {
+                    Physics.Raycast(cue.transform.position, cue.transform.forward, out hit, 10f);
+                    handle.transform.position = transform.position;
+                    handle.transform.rotation = transform.rotation;
+                    cuegrap = false;
+                    vHoldPos = handle.transform.position;
+                }
+                break;
         }
     }
 
@@ -185,16 +217,13 @@ public class Controller_Right : MonoBehaviour
 
     private void SetCollidingObject(Collider col)
     {
-        if (col.gameObject.layer  != 12)
+        if (col.gameObject.layer  == 12)        //오브젝트일때
         {
-            return;
+            if (col.GetComponent<Rigidbody>())
+            {
+                collidingObject = col.gameObject; //잡을 수 있는 오브젝트로 입력
+            }
         }
-        if (collidingObject || !col.GetComponent<Rigidbody>())
-        {
-            return;
-        }
-
-        collidingObject = col.gameObject;
     }
 
     private FixedJoint AddFixedJoint()
@@ -250,17 +279,26 @@ public class Controller_Right : MonoBehaviour
         {
             if (menu_obj.activeSelf)
             {
+                Debug.Log("Menu off");
                 lazer.SetActive(false);
                 mmode.mode = 0;
                 menu_obj.SetActive(false);
             }
             else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
+                if (cue.activeSelf)
+                {
+                    Debug.Log("cue off");
+                    cue.SetActive(false);
+                    isGrap.IsGrap = false;
+                }
+                Debug.Log("Menu on");
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);
-                mmode.mode = 2;
+                replay.SetActive(false);
                 lazer.SetActive(true);
+                mmode.mode = 2;
             }
         }
     }
