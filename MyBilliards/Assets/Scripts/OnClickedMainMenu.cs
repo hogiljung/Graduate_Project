@@ -21,6 +21,14 @@ public class OnClickedMainMenu : MonoBehaviour
         {
             tpcheck.SetActive(true);
         }
+        if (PlayerPrefs.GetInt("assist", 0) == 0)
+        {
+            assist.SetActive(false);
+        }
+        else
+        {
+            assist.SetActive(false);
+        }
     }
 
     public void Replay_btn_clicked()

@@ -52,10 +52,9 @@ public class ReplayforDynamoDB : MonoBehaviour
 
     public void Saveswinginfo(SaveData.Info ts) //볼 정보를 DB에 올리기
     {
-        Debug.Log("ts" + ts);
+        //Debug.Log("ts " + ts.ball1pos);
         Swings c1 = new Swings
         {
-            
             user_id = ts.ID.ToString(),
             ball1pos = ts.ball1pos.ToString(),
             ball1rot = ts.ball1rot.ToString(),
@@ -78,8 +77,8 @@ public class ReplayforDynamoDB : MonoBehaviour
 
     public void Requestreplayinfo() //DB에서 볼 정보 받기
     {
-        Swing c;
-        context.LoadAsync<Swing>("abcd", (AmazonDynamoDBResult<Swing> result) =>
+        Swings c;
+        context.LoadAsync<Swings>("abcd", (AmazonDynamoDBResult<Swings> result) =>
         {
             // id가 abcd인 볼 정보를 DB에서 받아옴
             if (result.Exception != null)

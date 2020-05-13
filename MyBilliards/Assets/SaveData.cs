@@ -26,7 +26,6 @@ public class SaveData : MonoBehaviour
         count = 0;
     }
     public void SetData(Info info) {
-        Debug.Log("SetData");
         //data = info;
         DB.Saveswinginfo(info);
     }

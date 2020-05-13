@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\OnClickedMainMenu.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
+    <Compile Include="Assets\Scripts\QueCollision.cs" />
     <Compile Include="Assets\Scripts\SoundManage.cs" />
     <Compile Include="Assets\Scripts\SoundSlider.cs" />
     <Compile Include="Assets\Scripts\StickController.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\Scripts\Swing.cs" />
     <Compile Include="Assets\Scripts\Teleport.cs" />
     <Compile Include="Assets\Scripts\wallX.cs" />
+    <Compile Include="Assets\Scripts\wallY.cs" />
     <Compile Include="Assets\Scripts\Web\http.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

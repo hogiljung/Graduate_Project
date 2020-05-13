@@ -22,6 +22,7 @@ public class Controller_Left : MonoBehaviour
     public GameObject lazer;                    //메뉴 조작 레이저
     public GameObject main;
     public GameObject option;
+    public GameObject replay;
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -151,17 +152,22 @@ public class Controller_Left : MonoBehaviour
         {
             if (menu_obj.activeSelf)
             {
+                Debug.Log("Menu off");
                 lazer.SetActive(false);
+                mmode.mode = 0;
                 menu_obj.SetActive(false);
-                mmode.mode = 0;     //기본상태로
             }
-            else    // 메뉴 캔버스 추가하면 킬 때 초기화 해주어야함!
+            else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
+                Debug.Log("Menu on");
+                cue.SetActive(false);
+                isGrab.IsGrap = false;
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);
-                mmode.mode = 2;     //메뉴상태로
+                replay.SetActive(false);
                 lazer.SetActive(true);
+                mmode.mode = 2;
             }
         }
     }
@@ -187,12 +193,15 @@ public class Controller_Left : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        SetCollidingObject(other);
+        if (other.gameObject.layer == 12)
+        {
+            collidingObject = other.gameObject;
+        }
     }
 
     public void OnTriggerStay(Collider other)
     {
-        SetCollidingObject(other);
+
     }
 
     public void OnTriggerExit(Collider other)
@@ -203,16 +212,7 @@ public class Controller_Left : MonoBehaviour
         }
         collidingObject = null;
     }
-
-    private void SetCollidingObject(Collider col)
-    {
-        if (collidingObject || !col.GetComponent<Rigidbody>())
-        {
-            return;
-        }
-
-        collidingObject = col.gameObject;
-    }
+    
 
     private FixedJoint AddFixedJoint()
     {
@@ -224,14 +224,6 @@ public class Controller_Left : MonoBehaviour
 
     private void Grap()
     {
-        if (!collidingObject)
-        {
-            return;
-        }
-        if (collidingObject.layer.CompareTo("Object") != 0)
-        {
-            return;
-        }
         Debug.Log("Grap");
         objectInHand = collidingObject;
         collidingObject = null;
@@ -243,19 +235,12 @@ public class Controller_Left : MonoBehaviour
 
     private void ReleaseObject()
     {
-        if (!objectInHand)
-        {
-            return;
-        }
-        if (GetComponent<FixedJoint>())
-        {
-            Debug.Log("Release");
-            GetComponent<FixedJoint>().connectedBody = null;
-            Destroy(GetComponent<FixedJoint>());
+        Debug.Log("Release");
+        GetComponent<FixedJoint>().connectedBody = null;
+        Destroy(GetComponent<FixedJoint>());
 
-            objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
-        }
+        objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
+        objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
         objectInHand = null;
         mmode.mode = 0;
     }

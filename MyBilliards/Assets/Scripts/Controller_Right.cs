@@ -28,6 +28,7 @@ public class Controller_Right : MonoBehaviour
 
     public Transform holdPosition;              //큐 고정 위치
 
+    private Collider cueCol;
     private Rigidbody mPlayer;                  //플레이어
     private RaycastHit hit;
 
@@ -49,6 +50,7 @@ public class Controller_Right : MonoBehaviour
     void Start()
     {
         mPlayer = transform.parent.parent.GetComponent<Rigidbody>();
+        cueCol = cue.GetComponent<Collider>();
         mmode = FindObjectOfType<Mode>();
         isGrap = FindObjectOfType<CueGrap>();
         cuegrap = false;
@@ -58,27 +60,26 @@ public class Controller_Right : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PadAction();      //회전 수정 필요 - 그랩문제?
+        PadAction();
         MenuAction();
 
         switch (mmode.mode)
         {
             case 0:     // 기본 상태
                 CueAction();        //큐 꺼내기
-                GrapAction();       //물건 집기       //수정필요
+                GrapAction();       //물건 집기
                 break;
             case 1:     // 큐 든 상태
                 CueAction();        //큐 넣기
                 Follow();           //큐 위치 지정
                 break;
             case 2:     // 메뉴 상태
-
+                
                 break;
             case 3:     // 물건 든 상태
                 GrapAction();       //물건 놓기/던지기
                 break;
         }
-        
     }
 
     //컨트롤러 이벤트
@@ -104,11 +105,12 @@ public class Controller_Right : MonoBehaviour
 
     IEnumerator Jump()
     {
-        Debug.Log("jump");
+        //Debug.Log("jump");
         mPlayer.AddForce(0, 350, 0);
         yield return new WaitForSeconds(0.8f);
         isJump = false;
     }
+
     //큐 들기
     private void CueAction()
     {
@@ -118,38 +120,43 @@ public class Controller_Right : MonoBehaviour
             mmode.mode = 1;
         }
         */
-        if (backword.GetStateDown(handType))
+        if (backword.GetStateDown(handType))        //터치패드 아래버튼
         {
-            if (!cue.activeSelf)
+            if (!cue.activeSelf)        //큐가 꺼져있으면
             {
-                Debug.Log("cue on");
+                //Debug.Log("cue on");
                 cue.SetActive(true);
                 mmode.mode = 1;
             }
-            else
+            else                        //큐가 켜져있으면
             {
-                Debug.Log("cue off");
+                //Debug.Log("cue off");
                 cue.SetActive(false);
                 mmode.mode = 0;
             }
         }
     }
 
+    //큐 손에 든것처럼 따라다니기
     private void Follow()
     {
-        switch (PlayerPrefs.GetInt("shotmode"))
+        switch (PlayerPrefs.GetInt("assist", 0))
         {
             case 0:     //어시스트모드 off
+                handle.transform.position = transform.position;
                 if (isGrap.IsGrap)
                 {
-                    handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
+                    if(!cueCol.isTrigger)
+                        cueCol.isTrigger = true;
                     handle.transform.LookAt(holdPosition);
                 }
                 else
                 {
-                    handle.transform.position = transform.position;
+                    if (cueCol.isTrigger)
+                        cueCol.isTrigger = false;
+                    if (cuegrap)
+                        cuegrap = false;
                     handle.transform.rotation = transform.rotation;
-                    cuegrap = false;
                     vHoldPos = handle.transform.position;
                 }
                 break;
@@ -157,11 +164,13 @@ public class Controller_Right : MonoBehaviour
             case 1:     //어시스트모드 on
                 if (isGrap.IsGrap)
                 {
+                    if (!cueCol.isTrigger)
+                        cueCol.isTrigger = true;
                     controllerMovePos = controllerPose.transform.position - vHoldPos;
                     theta = Vector3.Dot(handle.transform.forward, controllerMovePos);
                     degree = Mathf.Rad2Deg * theta;
-                    Debug.Log("각도: " + degree);
-                    cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree / 90;
+                    //Debug.Log("각도: " + degree);
+                    cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree * 0.1f;
 
                     handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
                 }
@@ -170,8 +179,11 @@ public class Controller_Right : MonoBehaviour
                     Physics.Raycast(cue.transform.position, cue.transform.forward, out hit, 10f);
                     handle.transform.position = transform.position;
                     handle.transform.rotation = transform.rotation;
-                    cuegrap = false;
                     vHoldPos = handle.transform.position;
+                    if (cuegrap)
+                        cuegrap = false;
+                    if (cueCol.isTrigger)
+                        cueCol.isTrigger = false;
                 }
                 break;
         }
@@ -182,14 +194,14 @@ public class Controller_Right : MonoBehaviour
     {
         if (grapAction.GetStateDown(handType))
         {
-            if (collidingObject)
+            if (collidingObject != null)
             {
                 Grap();
             }
         }
         else if (grapAction.GetStateUp(handType))
         {
-            if (objectInHand)
+            if (objectInHand != null)
             {
                 ReleaseObject();
             }
@@ -236,15 +248,7 @@ public class Controller_Right : MonoBehaviour
 
     private void Grap()
     {
-        if (!collidingObject)
-        {
-            return;
-        }
-        if (collidingObject.layer.CompareTo("Object") != 0)
-        {
-            return;
-        }
-        Debug.Log("Grap");
+        //Debug.Log("Grap");
         objectInHand = collidingObject;
         collidingObject = null;
 
@@ -261,7 +265,7 @@ public class Controller_Right : MonoBehaviour
         }
         if (GetComponent<FixedJoint>())
         {
-            Debug.Log("Release");
+            //Debug.Log("Release");
             GetComponent<FixedJoint>().connectedBody = null;
             Destroy(GetComponent<FixedJoint>());
 
@@ -279,26 +283,22 @@ public class Controller_Right : MonoBehaviour
         {
             if (menu_obj.activeSelf)
             {
-                Debug.Log("Menu off");
+                //Debug.Log("Menu off");
                 lazer.SetActive(false);
                 mmode.mode = 0;
                 menu_obj.SetActive(false);
             }
             else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
-                if (cue.activeSelf)
-                {
-                    Debug.Log("cue off");
-                    cue.SetActive(false);
-                    isGrap.IsGrap = false;
-                }
-                Debug.Log("Menu on");
+                //Debug.Log("Menu on");
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);
                 replay.SetActive(false);
                 lazer.SetActive(true);
                 mmode.mode = 2;
+                isGrap.IsGrap = false;
+                cue.SetActive(false);
             }
         }
     }
