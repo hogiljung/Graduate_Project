@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\QueCollision.cs" />
+    <Compile Include="Assets\Scripts\ReplayLoader.cs" />
     <Compile Include="Assets\Scripts\SoundManage.cs" />
     <Compile Include="Assets\Scripts\SoundSlider.cs" />
     <Compile Include="Assets\Scripts\StickController.cs" />
