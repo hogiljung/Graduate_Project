@@ -6,15 +6,12 @@ public class wallX : MonoBehaviour
 {
     private float speed;
 
-    private void Start()
-    {
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag.Equals("ball"))
         {
-            Reflect(collision);
+            //Reflect(collision);
+            Rotate(collision);
         }
     }
 
@@ -33,9 +30,14 @@ public class wallX : MonoBehaviour
 
         collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed * 0.68f;
     }
-
-    private void Rotate(Collision col)
+    
+    private void Rotate(Collision collision)
     {
-        Quaternion rot = col.collider.GetComponent<Rigidbody>().rotation;
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        speed = rb.velocity.magnitude * 0.24f;
+        if (speed > 1)
+            speed = 1;
+        rb.AddForce(Mathf.Clamp(rb.angularVelocity.y, -10f, 10f) * speed, 0, 0);
+        rb.velocity *= 0.92f;
     }
 }

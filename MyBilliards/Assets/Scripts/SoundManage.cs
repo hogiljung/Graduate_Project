@@ -10,15 +10,16 @@ public class SoundManage : MonoBehaviour
     public AudioClip menuOff;
     public AudioClip button;
 
-    AudioSource audioSource;
+    public AudioSource BGM;
+    public AudioSource SFX;
+    public AudioSource UI;
     public static SoundManage instance;
-
+    
     //생성시 실행
     private void Awake()
     {
         if (SoundManage.instance == null)
             SoundManage.instance = this;
-        audioSource = GetComponent<AudioSource>();
     }
     
     public void PlaySoundShot(string name)
@@ -27,19 +28,22 @@ public class SoundManage : MonoBehaviour
         switch (name)
         {
             case "shot":
-                audioSource.PlayOneShot(shot);
+                SFX.PlayOneShot(shot);
                 break;
             case "ballCollide":
-                audioSource.PlayOneShot(ballCollide);
+                SFX.PlayOneShot(ballCollide);
+                break;
+            case "wallCollide":
+                SFX.PlayOneShot(ballCollide);
                 break;
             case "MenuOn":
-                audioSource.PlayOneShot(menuOn);
+                UI.PlayOneShot(menuOn);
                 break;
             case "MenuOff":
-                audioSource.PlayOneShot(menuOff);
+                UI.PlayOneShot(menuOff);
                 break;
             case "button":
-                audioSource.PlayOneShot(button);
+                UI.PlayOneShot(button);
                 break;
         }
     }

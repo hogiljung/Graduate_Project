@@ -7,7 +7,6 @@ public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
     private CueGrap cueGrap;
-    private Mode mode;
     public Transform ptrf;
     public SaveData savedata;
     public GameObject shadowBall;
@@ -23,10 +22,10 @@ public class Swing : MonoBehaviour
     private Vector3 prePos;
     private Vector3 velocity;
     private bool trigger;
-    private float touchTime = 0f;
 
     private int count;
-    
+
+    //리플레이 데이터
     public Transform ball1;
     public Transform ball2;
     public Transform ball3;
@@ -39,14 +38,12 @@ public class Swing : MonoBehaviour
     
     void Start()
     {
-        mode = FindObjectOfType<Mode>();
         cueGrap = FindObjectOfType<CueGrap>();
         //layser = this.gameObject.AddComponent<LineRenderer>();
         layser = gameObject.GetComponent<LineRenderer>();
         layser.enabled = false;
         trigger = false;
         count = 0;
-        
         // 레이저 굵기 표현
         layser.startWidth = 0.002f;
         layser.endWidth = 0.002f;
@@ -74,7 +71,7 @@ public class Swing : MonoBehaviour
                 layser.SetPosition(1, hit2.point);
                 rayDir.Set(transform.forward.x, 0f, transform.forward.z);
                 rayDir.Normalize();
-                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 2f))
+                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 1f))
                 {
                     predictPos = hit2.collider.transform.position + rayDir * hit3.distance;
                     if (!shadowBall.activeSelf)
@@ -144,6 +141,7 @@ public class Swing : MonoBehaviour
         {
             //SetData();
             Force(other);
+            SoundManage.instance.PlaySoundShot("shot");
         }
     }
 
@@ -168,7 +166,7 @@ public class Swing : MonoBehaviour
         colrb.velocity.Set(0, 0, 0);
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
-        colrb.AddForceAtPosition(velocity * 250, hit.point);
+        colrb.AddForceAtPosition(velocity * 270, hit.point);
     }
 
     //접촉중
@@ -177,7 +175,7 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(velocity * 10, hit.point);
+            colrb.AddForceAtPosition(velocity * 25, hit.point);
         }
     }
     

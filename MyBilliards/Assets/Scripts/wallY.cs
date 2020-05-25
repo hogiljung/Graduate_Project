@@ -6,21 +6,21 @@ public class wallY : MonoBehaviour
 {
     private float speed;
 
-    private void Start()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.collider.tag.Equals("ball"))
+        {
+            Rotate(collision);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Rotate(Collision collision)
     {
-        Reflects(other);
-    }
-
-    private void Reflects(Collider other)
-    {
-
-        Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-        speed = rb.velocity.magnitude;
-        rb.velocity = Vector3.Reflect(rb.velocity.normalized, -transform.forward) * speed * 0.7f;
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        speed = rb.velocity.magnitude * 0.24f;
+        if (speed > 1)
+            speed = 1;
+        rb.AddForce(0, 0, Mathf.Clamp(rb.angularVelocity.y, -10f, 10f) * speed);
+        rb.velocity *= 0.92f;
     }
 }

@@ -3,7 +3,62 @@ guid: cd9395308957fa34d8d033f2f33696a6
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Carpet
+    second: {fileID: 2100000, guid: b26dac9a03ed13f4d8ba55f244cf9a3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cue Tip
+    second: {fileID: 2100000, guid: 8e7b34372506b0e46a5a1d1b11b3af01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor
+    second: {fileID: 2100000, guid: 523d9f362a942d74cbac55af9081f740, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: ba9b23baca9ae9d4ba12aa9bd50ff173, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Piano Black
+    second: {fileID: 2100000, guid: ea44ad4ddee3ded429db7871ac633a6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Piano White
+    second: {fileID: 2100000, guid: d58c39e9dbc6eb44a9b1c8efce78843d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic Wood
+    second: {fileID: 2100000, guid: 68651e2e796b535408c2ccde2487e37e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red Ball
+    second: {fileID: 2100000, guid: aa0357b892bd00d44bda3cc8f076eb4a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tabel Logo
+    second: {fileID: 2100000, guid: f8c8f57b2ff0db9429a95b7032dbf08b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Ball
+    second: {fileID: 2100000, guid: e86df1e4b4e011f49afe1fdb53784cf0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Metal
+    second: {fileID: 2100000, guid: 9746969d771324c459b60cb7a0d2aad5, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

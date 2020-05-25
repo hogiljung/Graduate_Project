@@ -73,6 +73,13 @@ public class LazerPointer : MonoBehaviour
                     currentObject = hit.collider.gameObject;
                 }
             }
+            else if (hit.collider.gameObject.tag.Equals("Slider"))
+            {
+                if (trigger.GetStateDown(handType))
+                {
+                    hit.collider.gameObject.GetComponent<Slider>().OnPointerDown(null);
+                }
+            }
             // 캔버스일때
             // 최근 감지된 오브젝트가 Button인 경우
             // 버튼은 현재 눌려있는 상태이므로 풀어준다.

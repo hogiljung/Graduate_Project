@@ -13,6 +13,8 @@ TagManager:
   - Button
   - Canvas
   - ball
+  - plain
+  - Slider
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - Ground
   - Player
   - Object
-  - 
+  - Camera
   - 
   - 
   - 
