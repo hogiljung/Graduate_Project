@@ -10,7 +10,7 @@ public class wallX : MonoBehaviour
     {
         if (collision.collider.tag.Equals("ball"))
         {
-            //Reflect(collision);
+            Reflect(collision);
             Rotate(collision);
         }
     }
@@ -28,16 +28,15 @@ public class wallX : MonoBehaviour
         Vector3 reflectVector = Vector3.Reflect(incomingVector, normalVector); //반사각
         reflectVector = reflectVector.normalized;
 
-        collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed * 0.68f;
+        collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed;
     }
     
     private void Rotate(Collision collision)
     {
         Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
         speed = rb.velocity.magnitude * 0.24f;
-        if (speed > 1)
-            speed = 1;
-        rb.AddForce(Mathf.Clamp(rb.angularVelocity.y, -10f, 10f) * speed, 0, 0);
-        rb.velocity *= 0.92f;
+        Debug.Log("공 스피드 " + speed + " 회전 " + rb.angularVelocity);
+        rb.AddForce(Mathf.Clamp(rb.angularVelocity.y * 0.96f, -30, 30) * speed, 0, 0);
+        rb.velocity *= 1f - (Mathf.Clamp(speed * 0.5f, 0.12f, 0.32f));
     }
 }

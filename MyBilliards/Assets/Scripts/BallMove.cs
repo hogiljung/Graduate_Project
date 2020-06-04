@@ -6,23 +6,20 @@ using UnityEngine;
 public class BallMove : MonoBehaviour
 {
     Rigidbody rb;
-    bool isMoving, isRotate;
-    Vector3 velocity;
-    Vector3 rotation;
+    float test;
+    Vector3 ang;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        isMoving = false;
-        isRotate = false;
-        velocity = new Vector3();
-        rotation = new Vector3();
+        test = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("wx: " + test*1000000);
         /*
         //키보드로 공 움직이기 WASD
         if (Input.GetKeyDown(KeyCode.A))
@@ -51,11 +48,12 @@ public class BallMove : MonoBehaviour
     private void FixedUpdate()
     {
         Friction();     //저항
-        CheckStop();    //멈춤상태 보정
+        //CheckStop();    //멈춤상태 보정
     }
 
     private void Friction()
     {
+        //속도 저항
         if (rb.velocity.magnitude < 3)
         {
             rb.velocity *= 0.9984f;
@@ -67,6 +65,23 @@ public class BallMove : MonoBehaviour
         else if (rb.velocity.magnitude < 15)
         {
             rb.velocity *= 0.9994f;
+        }
+
+        //회전 저항
+        test = (-5 / 7 / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.x / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        ang.Set(-5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.x / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)),
+            -5.0f / 2.0f * 0.000384f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.z / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)), 
+            -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        //Debug.Log("wx: " + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.x / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        // Debug.Log("wy: " + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        // Debug.Log("wz: " + -5.0f / 2.0f * 0.000384f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.z / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        Debug.Log("vx:" + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        if (rb.velocity.magnitude > 0)
+        {
+            //rb.angularVelocity += ang;
+            //rb.transform.rotation.eulerAngles.Set(-5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.x / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)) * Time.fixedDeltaTime, 
+            //    -5.0f / 2.0f * 0.000384f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.z / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)), 
+            //    -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
         }
     }
 
@@ -114,6 +129,7 @@ public class BallMove : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         SoundManage.instance.PlaySoundShot("ballCOllide");
+
     }
 }
 

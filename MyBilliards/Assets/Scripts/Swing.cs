@@ -23,8 +23,6 @@ public class Swing : MonoBehaviour
     private Vector3 velocity;
     private bool trigger;
 
-    private int count;
-
     //리플레이 데이터
     public Transform ball1;
     public Transform ball2;
@@ -43,7 +41,6 @@ public class Swing : MonoBehaviour
         layser = gameObject.GetComponent<LineRenderer>();
         layser.enabled = false;
         trigger = false;
-        count = 0;
         // 레이저 굵기 표현
         layser.startWidth = 0.002f;
         layser.endWidth = 0.002f;
@@ -71,7 +68,7 @@ public class Swing : MonoBehaviour
                 layser.SetPosition(1, hit2.point);
                 rayDir.Set(transform.forward.x, 0f, transform.forward.z);
                 rayDir.Normalize();
-                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 1f))
+                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 2f))
                 {
                     predictPos = hit2.collider.transform.position + rayDir * hit3.distance;
                     if (!shadowBall.activeSelf)
@@ -167,6 +164,7 @@ public class Swing : MonoBehaviour
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
         colrb.AddForceAtPosition(velocity * 270, hit.point);
+        colrb.AddTorque(-velocity * 270f);
     }
 
     //접촉중
@@ -176,37 +174,8 @@ public class Swing : MonoBehaviour
         if (other.tag.Equals("ball"))
         {
             colrb.AddForceAtPosition(velocity * 25, hit.point);
+            colrb.AddTorque(-velocity);
         }
     }
     
-
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(collision.gameObject + "Enter");
-            trigger = true;
-        }
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(collision.gameObject + "Stay");
-            touchTime += 0.1f;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(touchTime);
-            Debug.Log(collision.gameObject + "Exit");
-            trigger = false;
-            touchTime = 0f;
-        }
-    }
-    */
 }
