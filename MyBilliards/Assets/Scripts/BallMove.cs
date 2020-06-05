@@ -75,7 +75,7 @@ public class BallMove : MonoBehaviour
         //Debug.Log("wx: " + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.x / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
         // Debug.Log("wy: " + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
         // Debug.Log("wz: " + -5.0f / 2.0f * 0.000384f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.z / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
-        Debug.Log("vx:" + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
+        //Debug.Log("vx:" + -5.0f / 7.0f * 0.00038f / (0.03075f * 0.03075f * rb.mass) * rb.angularVelocity.y / (Mathf.Sqrt(rb.angularVelocity.x * rb.angularVelocity.x + rb.angularVelocity.y * rb.angularVelocity.y)));
         if (rb.velocity.magnitude > 0)
         {
             //rb.angularVelocity += ang;

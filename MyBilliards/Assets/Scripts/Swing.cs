@@ -14,7 +14,7 @@ public class Swing : MonoBehaviour
     private RaycastHit hit;
     private RaycastHit hit2;
     private RaycastHit hit3;
-    
+
 
     private LineRenderer layser;        // 레이저
     private Vector3 rayDir;
@@ -33,7 +33,7 @@ public class Swing : MonoBehaviour
     - Update - yield들 - 내부 애니메이션 업데이트 - LateUpdate
     - 화면 렌더 - gizmo 렌더 - UI 렌더 - 마무리
     */
-    
+
     void Start()
     {
         cueGrap = FindObjectOfType<CueGrap>();
@@ -57,7 +57,7 @@ public class Swing : MonoBehaviour
     {
         SetForce();
 
-        if(layser.enabled)
+        if (layser.enabled)
             layser.SetPosition(0, transform.position);
         if (Physics.Raycast(transform.position, transform.forward, out hit2, 2f))
         {
@@ -75,12 +75,12 @@ public class Swing : MonoBehaviour
                         shadowBall.SetActive(true);
                     shadowBall.transform.position = predictPos;
                 }
-                
+
             }
             else
             {
                 //layser.SetPosition(1, transform.position);
-                if(layser.enabled)
+                if (layser.enabled)
                     layser.enabled = false;
                 if (shadowBall.activeSelf)
                     shadowBall.SetActive(false);
@@ -90,9 +90,9 @@ public class Swing : MonoBehaviour
         else
         {
             //layser.SetPosition(1, transform.position);
-            if(layser.enabled)
+            if (layser.enabled)
                 layser.enabled = false;
-            if(shadowBall.activeSelf)
+            if (shadowBall.activeSelf)
                 shadowBall.SetActive(false);
         }
     }
@@ -163,8 +163,8 @@ public class Swing : MonoBehaviour
         colrb.velocity.Set(0, 0, 0);
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
-        colrb.AddForceAtPosition(velocity * 270, hit.point);
-        colrb.AddTorque(-velocity * 270f);
+        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 250f, hit.point);
+        colrb.AddTorque(transform.forward * velocity.magnitude);
     }
 
     //접촉중
@@ -173,9 +173,9 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(velocity * 25, hit.point);
-            colrb.AddTorque(-velocity);
+            colrb.AddForceAtPosition(transform.forward * velocity.magnitude, hit.point);
+            //colrb.AddTorque(transform.forward * velocity.magnitude);
         }
     }
-    
+
 }

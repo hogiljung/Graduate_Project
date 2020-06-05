@@ -5,19 +5,22 @@ using UnityEngine;
 public class wallY_r : MonoBehaviour
 {
     private float speed;
+    private float e;       //쿠션 반발계수
+    private float mu;      //쿠션 마찰계수
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag.Equals("ball"))
         {
             Reflect(collision);
-            Rotate(collision);
+            //Rotate(collision);
         }
     }
     
     private void Reflect(Collision collision)
     {
-        Vector3 incomingVector = collision.collider.GetComponent<Rigidbody>().velocity;
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        Vector3 incomingVector = rb.velocity;
         speed = incomingVector.magnitude;
         incomingVector = incomingVector.normalized;
 
@@ -28,7 +31,12 @@ public class wallY_r : MonoBehaviour
         Vector3 reflectVector = Vector3.Reflect(incomingVector, normalVector); //반사각
         reflectVector = reflectVector.normalized;
 
-        collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed;
+        e = -Mathf.Pow(5f / 7f, speed + 3.12f) + 0.95f;
+        mu = 0.471f - 0.241f * Vector3.Dot(rb.velocity, new Vector3(0,0,rb.velocity.z));
+        Debug.Log("e" + e + " mu " + mu);
+
+        rb.velocity = reflectVector * speed * e + new Vector3(0, 0, -Mathf.Clamp(rb.angularVelocity.y * 0.018f, -10, 10));
+        rb.angularVelocity = rb.angularVelocity * (1f - mu);
     }
 
     private void Rotate(Collision collision)
