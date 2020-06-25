@@ -13,6 +13,8 @@ public class OnClickedInGameMenu : MonoBehaviour
     public GameObject tpcheck;
     public GameObject replay;
     public GameObject assist;
+    public GameObject guide;
+    public GameObject guideUI;
     public Text txt;
 
     private void Start()
@@ -35,6 +37,14 @@ public class OnClickedInGameMenu : MonoBehaviour
         {
             assist.SetActive(true);
         }
+        if(PlayerPrefs.GetInt("Guide", 0) == 0)
+        {
+            guide.SetActive(false);
+        }
+        else
+        {
+            guide.SetActive(true);
+        }
     }
 
     public void Replay_btn_clicked()
@@ -42,7 +52,7 @@ public class OnClickedInGameMenu : MonoBehaviour
         //Debug.Log("option");
         main.SetActive(false);
         replay.SetActive(true);
-        StartCoroutine(GetText());
+        //StartCoroutine(GetText());
     }
 
     public void getReplay_btn_clicked()
@@ -97,6 +107,22 @@ public class OnClickedInGameMenu : MonoBehaviour
         {
             assist.SetActive(true);
             PlayerPrefs.SetInt("assist", 1);
+        }
+    }
+
+    public void Guide_btn_clicked()
+    {
+        if (guide.activeSelf)
+        {
+            guide.SetActive(false);
+            guideUI.SetActive(false);
+            PlayerPrefs.SetInt("Guide", 0);
+        }
+        else
+        {
+            guide.SetActive(true);
+            guideUI.SetActive(true);
+            PlayerPrefs.SetInt("Guide", 1);
         }
     }
 

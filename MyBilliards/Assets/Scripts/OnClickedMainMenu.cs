@@ -10,6 +10,7 @@ public class OnClickedMainMenu : MonoBehaviour
     public GameObject tpcheck;
     public GameObject replay;
     public GameObject assist;
+    public GameObject guide;
 
     private void Start()
     {
@@ -28,6 +29,14 @@ public class OnClickedMainMenu : MonoBehaviour
         else
         {
             assist.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("Guide", 0) == 0)
+        {
+            guide.SetActive(false);
+        }
+        else
+        {
+            guide.SetActive(true);
         }
     }
 
@@ -80,6 +89,20 @@ public class OnClickedMainMenu : MonoBehaviour
         {
             assist.SetActive(true);
             PlayerPrefs.SetInt("assist", 1);
+        }
+    }
+
+    public void Guide_btn_clicked()
+    {
+        if (guide.activeSelf)
+        {
+            guide.SetActive(false);
+            PlayerPrefs.SetInt("Guide", 0);
+        }
+        else
+        {
+            guide.SetActive(true);
+            PlayerPrefs.SetInt("Guide", 1);
         }
     }
 

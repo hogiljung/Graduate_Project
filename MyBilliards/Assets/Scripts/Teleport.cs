@@ -125,8 +125,7 @@ public class Teleport : MonoBehaviour
                         if (dist > curDist)
                         {
                             closeIdx = i;
-                            mGroundPos = hit.point;
-                            denyArea.transform.position = mGroundPos;
+                            denyArea.transform.position = hit.point;
                             denyArea.transform.LookAt(new Vector3(transform.position.x, TeleportArea.transform.position.y, transform.position.z));
                             if (TeleportArea.activeSelf)
                                 TeleportArea.SetActive(false);

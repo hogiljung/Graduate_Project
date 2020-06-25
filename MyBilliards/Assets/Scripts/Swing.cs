@@ -138,7 +138,7 @@ public class Swing : MonoBehaviour
         {
             //SetData();
             Force(other);
-            SoundManage.instance.PlaySoundShot("shot");
+            SoundManage.instance.PlaySoundShot("shotStrong");
         }
     }
 

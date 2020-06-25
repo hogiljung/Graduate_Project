@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SoundManage : MonoBehaviour
 {
-    public AudioClip shot;
+    public AudioClip shotWeak;
+    public AudioClip shotStrong;
     public AudioClip ballCollide;
+    public AudioClip wallCollide;
     public AudioClip menuOn;
     public AudioClip menuOff;
     public AudioClip button;
@@ -20,15 +22,23 @@ public class SoundManage : MonoBehaviour
     {
         if (SoundManage.instance == null)
             SoundManage.instance = this;
+        //SFX.PlayOneShot(shotStrong);
+        //SFX.PlayOneShot(shotWeak);
+        SFX.PlayOneShot(ballCollide);
+        SFX.PlayOneShot(wallCollide);
+
     }
-    
+
     public void PlaySoundShot(string name)
     {
         
         switch (name)
         {
-            case "shot":
-                SFX.PlayOneShot(shot);
+            case "shotWeak":
+                SFX.PlayOneShot(shotWeak);
+                break;
+            case "shotStrong":
+                SFX.PlayOneShot(shotStrong);
                 break;
             case "ballCollide":
                 SFX.PlayOneShot(ballCollide);

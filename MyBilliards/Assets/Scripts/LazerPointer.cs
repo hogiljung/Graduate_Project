@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class LazerPointer : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class LazerPointer : MonoBehaviour
     private RaycastHit hit;             // 충돌된 객체
     private RaycastHit lastHit;
     private GameObject currentObject;   // 가장 최근에 충돌한 객체를 저장하기 위한 객체
+    private Vector3 prepose;
     
     private float raycastDistance = 3f; // 레이저 포인터 감지 거리
 
@@ -73,13 +75,17 @@ public class LazerPointer : MonoBehaviour
                     currentObject = hit.collider.gameObject;
                 }
             }
+            
             else if (hit.collider.gameObject.tag.Equals("Slider"))
             {
+                /*
                 if (trigger.GetStateDown(handType))
                 {
-                    hit.collider.gameObject.GetComponent<Slider>().OnPointerDown(null);
+                    Debug.Log("drag point : " + hit.point);
                 }
+                */
             }
+            
             // 캔버스일때
             // 최근 감지된 오브젝트가 Button인 경우
             // 버튼은 현재 눌려있는 상태이므로 풀어준다.

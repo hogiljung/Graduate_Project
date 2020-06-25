@@ -128,7 +128,16 @@ public class BallMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        SoundManage.instance.PlaySoundShot("ballCOllide");
+        if(collision.collider.tag.Equals("ball"))
+            SoundManage.instance.PlaySoundShot("ballCOllide");
+        else if(collision.collider.tag.Equals("wall"))
+            SoundManage.instance.PlaySoundShot("wallCollide");
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag.Equals("ball"))
+            SoundManage.instance.PlaySoundShot("ballCOllide");
 
     }
 }

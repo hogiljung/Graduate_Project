@@ -24,6 +24,8 @@ public class Controller_Right : MonoBehaviour
     public GameObject main;
     public GameObject option;
     public GameObject replay;
+    public GameObject hand_normal;
+    public GameObject hand_fist;
     public Transform camdir;
 
     public Transform holdPosition;              //큐 고정 위치
@@ -114,25 +116,21 @@ public class Controller_Right : MonoBehaviour
     //큐 들기
     private void CueAction()
     {
-        /*
-        if (cue.activeSelf)     //다른 상태에서 돌아올때 큐를 든 상태였으면 큐를 든 상태로
-        {
-            mmode.mode = 1;
-        }
-        */
         if (backword.GetStateDown(handType))        //터치패드 아래버튼
         {
             if (!cue.activeSelf)        //큐가 꺼져있으면
             {
                 //Debug.Log("cue on");
-                cue.SetActive(true);
                 mmode.mode = 1;
+                cue.SetActive(true);
+                hand_normal.SetActive(false);
             }
             else                        //큐가 켜져있으면
             {
                 //Debug.Log("cue off");
-                cue.SetActive(false);
                 mmode.mode = 0;
+                cue.SetActive(false);
+                hand_normal.SetActive(true);
             }
         }
     }
@@ -149,6 +147,7 @@ public class Controller_Right : MonoBehaviour
                     if(!cueCol.isTrigger)
                         cueCol.isTrigger = true;
                     handle.transform.LookAt(holdPosition);
+                    
                 }
                 else
                 {
@@ -170,7 +169,7 @@ public class Controller_Right : MonoBehaviour
                     theta = Vector3.Dot(handle.transform.forward, controllerMovePos);
                     degree = Mathf.Rad2Deg * theta;
                     //Debug.Log("각도: " + degree);
-                    cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree * 0.1f;
+                    cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree * 0.08f;
 
                     handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
                 }
@@ -194,6 +193,11 @@ public class Controller_Right : MonoBehaviour
     {
         if (grapAction.GetStateDown(handType))
         {
+            if (hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(false);
+                hand_fist.SetActive(true);
+            }
             if (collidingObject != null)
             {
                 Grap();
@@ -201,6 +205,11 @@ public class Controller_Right : MonoBehaviour
         }
         else if (grapAction.GetStateUp(handType))
         {
+            if (!hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(true);
+                hand_fist.SetActive(false);
+            }
             if (objectInHand != null)
             {
                 ReleaseObject();
@@ -291,6 +300,8 @@ public class Controller_Right : MonoBehaviour
             else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
                 //Debug.Log("Menu on");
+                hand_fist.SetActive(false);
+                hand_normal.SetActive(true);
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);

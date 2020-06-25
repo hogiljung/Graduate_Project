@@ -18,11 +18,15 @@ public class Controller_Left : MonoBehaviour
     public GameObject isTeleport;               //텔레포트 모드 확인
     public GameObject handle;                   //큐 핸들
     public GameObject cue;                      //큐
+    public GameObject hand_normal;              //기본 모델
+    public GameObject hand_grip;                //큐 잡은 모델
+    public GameObject hand_fist;                //물건 잡은 모델
     public GameObject menu_obj;                 //메뉴 캔버스
     public GameObject lazer;                    //메뉴 조작 레이저
     public GameObject main;
     public GameObject option;
     public GameObject replay;
+    
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -91,11 +95,15 @@ public class Controller_Left : MonoBehaviour
         {
             Debug.Log("Left graps down");
             isGrab.IsGrap = true;
+            hand_grip.SetActive(true);
+            hand_normal.SetActive(false);
         }
         if (graps.GetStateUp(handType))
         {
             Debug.Log("Left graps up");
             isGrab.IsGrap = false;
+            hand_grip.SetActive(false);
+            hand_normal.SetActive(true);
         }
 
     }
@@ -140,7 +148,7 @@ public class Controller_Left : MonoBehaviour
                 mTeleport.mIsActive = false;
                 Vector3 pos = mTeleport.mGroundPos;
                 if (pos != Vector3.zero)
-                    mPlayer.transform.position = pos;
+                    mPlayer.transform.position = pos + (transform.parent.position - new Vector3(playerCamera.transform.position.x,0,playerCamera.transform.position.z));
             }
         }
         
@@ -161,6 +169,9 @@ public class Controller_Left : MonoBehaviour
             {
                 Debug.Log("Menu on");
                 cue.SetActive(false);
+                hand_grip.SetActive(false);
+                hand_fist.SetActive(false);
+                hand_normal.SetActive(true);
                 isGrab.IsGrap = false;
                 menu_obj.SetActive(true);
                 main.SetActive(true);
@@ -177,6 +188,11 @@ public class Controller_Left : MonoBehaviour
     {
         if (graps.GetStateDown(handType))
         {
+            if (hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(false);
+                hand_fist.SetActive(true);
+            }
             if (collidingObject)
             {
                 Grap();
@@ -184,6 +200,11 @@ public class Controller_Left : MonoBehaviour
         }
         else if (graps.GetStateUp(handType))
         {
+            if (!hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(true);
+                hand_fist.SetActive(false);
+            }
             if (objectInHand)
             {
                 ReleaseObject();

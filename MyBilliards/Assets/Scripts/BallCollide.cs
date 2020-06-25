@@ -19,7 +19,7 @@ public class BallCollide : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        SoundManage.instance.PlaySoundShot("shot");
+        SoundManage.instance.PlaySoundShot("shotStrong");
     }
 
     private void OnCollisionEnter(Collision collision)
