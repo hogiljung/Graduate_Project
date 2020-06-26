@@ -68,7 +68,7 @@ public class Swing : MonoBehaviour
                 layser.SetPosition(1, hit2.point);
                 rayDir.Set(transform.forward.x, 0f, transform.forward.z);
                 rayDir.Normalize();
-                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 2f))
+                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 3f))
                 {
                     predictPos = hit2.collider.transform.position + rayDir * hit3.distance;
                     if (!shadowBall.activeSelf)
@@ -79,7 +79,6 @@ public class Swing : MonoBehaviour
             }
             else
             {
-                //layser.SetPosition(1, transform.position);
                 if (layser.enabled)
                     layser.enabled = false;
                 if (shadowBall.activeSelf)
@@ -89,7 +88,6 @@ public class Swing : MonoBehaviour
         }
         else
         {
-            //layser.SetPosition(1, transform.position);
             if (layser.enabled)
                 layser.enabled = false;
             if (shadowBall.activeSelf)
@@ -119,7 +117,7 @@ public class Swing : MonoBehaviour
 
     IEnumerator GetPrePos()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.03f);
+        WaitForSeconds wait = new WaitForSeconds(0.011f);
 
         while (true)
         {
@@ -162,8 +160,8 @@ public class Swing : MonoBehaviour
         colrb = other.gameObject.GetComponent<Rigidbody>();
         colrb.velocity.Set(0, 0, 0);
         colrb.angularVelocity.Set(0, 0, 0);
-        Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
-        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 250f, hit.point);
+        Physics.Raycast(ptrf.position, ptrf.forward, out hit, 1f);
+        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 300f, hit.point);
         colrb.AddTorque(transform.forward * velocity.magnitude);
     }
 
@@ -173,7 +171,7 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(transform.forward * velocity.magnitude, hit.point);
+            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 3f, hit.point);
             //colrb.AddTorque(transform.forward * velocity.magnitude);
         }
     }

@@ -73,7 +73,6 @@
     <Compile Include="Assets\Replay.cs" />
     <Compile Include="Assets\ReplayforDynamoDB.cs" />
     <Compile Include="Assets\SaveData.cs" />
-    <Compile Include="Assets\Scripts\BallCollide.cs" />
     <Compile Include="Assets\Scripts\BallMove.cs" />
     <Compile Include="Assets\Scripts\Bounce.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
@@ -82,15 +81,15 @@
     <Compile Include="Assets\Scripts\Controller_Left.cs" />
     <Compile Include="Assets\Scripts\Controller_Right.cs" />
     <Compile Include="Assets\Scripts\CueGrap.cs" />
-    <Compile Include="Assets\Scripts\ForceTest.cs" />
     <Compile Include="Assets\Scripts\grounds.cs" />
+    <Compile Include="Assets\Scripts\GuideUIPos.cs" />
     <Compile Include="Assets\Scripts\LazerPointer.cs" />
     <Compile Include="Assets\Scripts\Mode.cs" />
     <Compile Include="Assets\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\NextScene.cs" />
     <Compile Include="Assets\Scripts\OnClickedInGameMenu.cs" />
     <Compile Include="Assets\Scripts\OnClickedMainMenu.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PlayerCollider.cs" />
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\QueCollision.cs" />
     <Compile Include="Assets\Scripts\ReplayLoader.cs" />

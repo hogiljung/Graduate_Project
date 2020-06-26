@@ -13,12 +13,24 @@ public class OnClickedInGameMenu : MonoBehaviour
     public GameObject tpcheck;
     public GameObject replay;
     public GameObject assist;
-    public GameObject guide;
-    public GameObject guideUI;
+    public GameObject guideUI1;
+    public GameObject guideUI2;
+    public GameObject whiteCheck;
+    public GameObject yellowCheck;
+    public Text GuideText1;
+    public Text GuideText2;
     public Text txt;
+
+    public Transform whiteBall;
+    public Transform yellowBall;
+    public Transform redBall;
 
     private void Start()
     {
+        guideUI1.SetActive(false);
+        guideUI2.SetActive(false);
+        whiteCheck.SetActive(false);
+        yellowCheck.SetActive(false);
         if (PlayerPrefs.GetInt("tpmode", 0) == 0)
         {
             mTpMode.SetActive(false);
@@ -36,14 +48,6 @@ public class OnClickedInGameMenu : MonoBehaviour
         else
         {
             assist.SetActive(true);
-        }
-        if(PlayerPrefs.GetInt("Guide", 0) == 0)
-        {
-            guide.SetActive(false);
-        }
-        else
-        {
-            guide.SetActive(true);
         }
     }
 
@@ -112,18 +116,45 @@ public class OnClickedInGameMenu : MonoBehaviour
 
     public void Guide_btn_clicked()
     {
-        if (guide.activeSelf)
+        if (guideUI1.activeSelf)
         {
-            guide.SetActive(false);
-            guideUI.SetActive(false);
-            PlayerPrefs.SetInt("Guide", 0);
+            guideUI1.transform.position.Set(0,-10f,0);
+            whiteCheck.SetActive(false);
+            guideUI1.SetActive(false);
+            yellowCheck.SetActive(true);
+            guideUI2.SetActive(true);
+            string[] ballPoints = new string[3];
+            ballPoints[0] = (yellowBall.position.x + 1.387) * 64 / 2.774 + "," + (yellowBall.position.z + 0.676) * 32 / 1.352;
+            ballPoints[1] = (whiteBall.position.x + 1.387) * 64 / 2.774 + "," + (whiteBall.position.z + 0.676) * 32 / 1.352;
+            ballPoints[2] = (redBall.position.x + 1.387) * 64 / 2.774 + "," + (redBall.position.z + 0.676) * 32 / 1.352;
+            guideUI2.transform.position = yellowBall.transform.position + new Vector3(0,0.15f,0);
+            SetGuideText(GuideText2);
+        }
+        else if (guideUI2.activeSelf)
+        {
+            guideUI2.transform.position.Set(0, -10f, 0);
+            yellowCheck.SetActive(false);
+            guideUI2.SetActive(false);
         }
         else
         {
-            guide.SetActive(true);
-            guideUI.SetActive(true);
-            PlayerPrefs.SetInt("Guide", 1);
+            whiteCheck.SetActive(true);
+            guideUI1.SetActive(true);
+            string[] ballPoints = new string[3];
+            ballPoints[0] = (whiteBall.position.x + 1.387) * 64 / 2.774 + "," + (whiteBall.position.z + 0.676) * 32 / 1.352;
+            ballPoints[1] = (yellowBall.position.x + 1.387) * 64 / 2.774 + "," + (yellowBall.position.z + 0.676) * 32 / 1.352;
+            ballPoints[2] = (redBall.position.x + 1.387) * 64 / 2.774 + "," + (redBall.position.z + 0.676) * 32 / 1.352;
+            guideUI1.transform.position = whiteBall.transform.position + new Vector3(0, 0.15f, 0);
+            SetGuideText(GuideText1);
         }
+    }
+
+    private void SetGuideText(Text txt)
+    {
+        Debug.Log("가이드 업데이트");
+        txt.text = "타법 계산중...";
+        
+        // txt.text = 가이드 결과 입력
     }
 
     public void MainMenu_btn_clicked()

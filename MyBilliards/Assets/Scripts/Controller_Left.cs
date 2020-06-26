@@ -61,7 +61,6 @@ public class Controller_Left : MonoBehaviour
     void Update()
     {
         // 왼손 터치패드 동작
-
         //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
         if (isTeleport.activeSelf)
             Teleporting();
@@ -84,8 +83,6 @@ public class Controller_Left : MonoBehaviour
                 GrapAction();       //물건 놓기/던지기
                 break;
         }
-
-
     }
 
     // 큐 고정
@@ -93,14 +90,14 @@ public class Controller_Left : MonoBehaviour
     {
         if (graps.GetStateDown(handType))
         {
-            Debug.Log("Left graps down");
+            //Debug.Log("Left graps down");
             isGrab.IsGrap = true;
             hand_grip.SetActive(true);
             hand_normal.SetActive(false);
         }
         if (graps.GetStateUp(handType))
         {
-            Debug.Log("Left graps up");
+            //Debug.Log("Left graps up");
             isGrab.IsGrap = false;
             hand_grip.SetActive(false);
             hand_normal.SetActive(true);
@@ -114,12 +111,12 @@ public class Controller_Left : MonoBehaviour
         
         if (PadClick.GetStateDown(handType))
         {
-            Debug.Log("move button down");
+            //Debug.Log("move button down");
             isMove = true;
         }
         if (TouchPad.GetStateUp(handType))
         {
-            Debug.Log("move button up");
+            //Debug.Log("move button up");
             isMove = false;
         }
         if (isMove)
@@ -160,14 +157,14 @@ public class Controller_Left : MonoBehaviour
         {
             if (menu_obj.activeSelf)
             {
-                Debug.Log("Menu off");
+                //Debug.Log("Menu off");
                 lazer.SetActive(false);
                 mmode.mode = 0;
                 menu_obj.SetActive(false);
             }
             else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
-                Debug.Log("Menu on");
+                //Debug.Log("Menu on");
                 cue.SetActive(false);
                 hand_grip.SetActive(false);
                 hand_fist.SetActive(false);
@@ -245,7 +242,7 @@ public class Controller_Left : MonoBehaviour
 
     private void Grap()
     {
-        Debug.Log("Grap");
+        //Debug.Log("Grap");
         objectInHand = collidingObject;
         collidingObject = null;
 
@@ -256,7 +253,7 @@ public class Controller_Left : MonoBehaviour
 
     private void ReleaseObject()
     {
-        Debug.Log("Release");
+        //Debug.Log("Release");
         GetComponent<FixedJoint>().connectedBody = null;
         Destroy(GetComponent<FixedJoint>());
 

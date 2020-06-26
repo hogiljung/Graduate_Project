@@ -33,9 +33,10 @@ public class wallX_r : MonoBehaviour
         
         e = -Mathf.Pow(5f / 7f, speed + 3.12f) + 0.95f;
         mu = 0.471f - 0.241f * Vector3.Dot(rb.velocity, new Vector3(0, 0, rb.velocity.x));
-        Debug.Log("e" + e + " mu " + mu);
+        //Debug.Log("e" + e + " mu " + mu);
+        Debug.Log("speed: " + speed);
 
-        rb.velocity = reflectVector * speed * e + new Vector3(-Mathf.Clamp(rb.angularVelocity.y * 0.018f, -10, 10), 0, 0);
+        rb.velocity = reflectVector * speed * e + new Vector3(-Mathf.Clamp(rb.angularVelocity.y * 0.023f, -12f, 12f), 0, 0) * Mathf.Clamp(speed, 0.5f, 2f);
         rb.angularVelocity = rb.angularVelocity * (1f - mu);
     }
 
