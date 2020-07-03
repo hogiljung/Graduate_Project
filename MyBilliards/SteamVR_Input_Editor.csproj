@@ -283,21 +283,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.CognitoSync">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.CognitoSync.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.Core">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.DynamoDBv2">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.DynamoDBv2.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
-    </Reference>
     <Reference Include="Valve.Newtonsoft.Json">
       <HintPath>C:/Users/JUN/Desktop/졸작/Unity/MyBilliards/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -9,7 +9,7 @@ public class grounds : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -17,6 +17,19 @@ public class grounds : MonoBehaviour
         if (collision.collider.tag.Equals("ball"))
         {
             Reflect(collision);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.collider.tag.Equals("ball"))
+        {
+            Rigidbody rb = collision.collider.gameObject.GetComponent<Rigidbody>();
+
+            if (rb.velocity.y < -0.1f)
+            {
+                rb.velocity.Set(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
+            }
         }
     }
 

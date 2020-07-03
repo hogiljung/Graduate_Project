@@ -24,6 +24,7 @@ public class OnClickedInGameMenu : MonoBehaviour
     public Transform whiteBall;
     public Transform yellowBall;
     public Transform redBall;
+    private SendData sd;
 
     private void Start()
     {
@@ -49,6 +50,8 @@ public class OnClickedInGameMenu : MonoBehaviour
         {
             assist.SetActive(true);
         }
+
+        sd = FindObjectOfType<SendData>();
     }
 
     public void Replay_btn_clicked()
@@ -114,9 +117,10 @@ public class OnClickedInGameMenu : MonoBehaviour
         }
     }
 
+    //가이드버튼 클릭시
     public void Guide_btn_clicked()
     {
-        if (guideUI1.activeSelf)
+        if (guideUI1.activeSelf)    //흰공 on이면 노란공 on으로 변경
         {
             guideUI1.transform.position.Set(0,-10f,0);
             whiteCheck.SetActive(false);
@@ -127,25 +131,36 @@ public class OnClickedInGameMenu : MonoBehaviour
             ballPoints[0] = (yellowBall.position.x + 1.387) * 64 / 2.774 + "," + (yellowBall.position.z + 0.676) * 32 / 1.352;
             ballPoints[1] = (whiteBall.position.x + 1.387) * 64 / 2.774 + "," + (whiteBall.position.z + 0.676) * 32 / 1.352;
             ballPoints[2] = (redBall.position.x + 1.387) * 64 / 2.774 + "," + (redBall.position.z + 0.676) * 32 / 1.352;
-            guideUI2.transform.position = yellowBall.transform.position + new Vector3(0,0.15f,0);
             SetGuideText(GuideText2);
+            Debug.Log(ballPoints);
+            sd.ballPoints = ballPoints;
+            sd.getRecommendedStroke();
+
+            guideUI2.transform.position = yellowBall.transform.position + new Vector3(0,0.15f,0);
         }
-        else if (guideUI2.activeSelf)
+        else if (guideUI2.activeSelf)   //노란공 on이면 off로 변경
         {
             guideUI2.transform.position.Set(0, -10f, 0);
             yellowCheck.SetActive(false);
             guideUI2.SetActive(false);
         }
-        else
+        else                            //off면 흰공 on
         {
             whiteCheck.SetActive(true);
             guideUI1.SetActive(true);
             string[] ballPoints = new string[3];
-            ballPoints[0] = (whiteBall.position.x + 1.387) * 64 / 2.774 + "," + (whiteBall.position.z + 0.676) * 32 / 1.352;
-            ballPoints[1] = (yellowBall.position.x + 1.387) * 64 / 2.774 + "," + (yellowBall.position.z + 0.676) * 32 / 1.352;
-            ballPoints[2] = (redBall.position.x + 1.387) * 64 / 2.774 + "," + (redBall.position.z + 0.676) * 32 / 1.352;
-            guideUI1.transform.position = whiteBall.transform.position + new Vector3(0, 0.15f, 0);
+            ballPoints[0] = (whiteBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (whiteBall.localPosition.x + 1.387) * 64 / 2.774;
+            ballPoints[1] = (yellowBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (yellowBall.localPosition.x + 1.387) * 64 / 2.774;
+            ballPoints[2] = (redBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (redBall.localPosition.x + 1.387) * 64 / 2.774;
             SetGuideText(GuideText1);
+
+            Debug.Log("guide" + ballPoints[0]);
+            Debug.Log(ballPoints[1]);
+            Debug.Log(ballPoints[2]);
+
+            sd.ballPoints = ballPoints;
+            sd.getRecommendedStroke();
+            guideUI1.transform.position = whiteBall.transform.position + new Vector3(0, 0.15f, 0);
         }
     }
 

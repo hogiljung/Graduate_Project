@@ -12,7 +12,6 @@ public class Controller_Right : MonoBehaviour
     public SteamVR_Action_Boolean left;
     public SteamVR_Action_Boolean right;
     public SteamVR_Action_Boolean menu;
-    public SteamVR_Action_Vibration haptic;
 
     public SteamVR_Behaviour_Pose controllerPose;
 
@@ -41,6 +40,7 @@ public class Controller_Right : MonoBehaviour
     private float cuepos;
     private float theta;
     private float degree;
+    private SendData sd;
 
     private Mode mmode;
     private CueGrap isGrap;
@@ -55,6 +55,7 @@ public class Controller_Right : MonoBehaviour
         cueCol = cue.GetComponent<Collider>();
         mmode = FindObjectOfType<Mode>();
         isGrap = FindObjectOfType<CueGrap>();
+        sd = FindObjectOfType<SendData>();
         cuegrap = false;
         isJump = false;
     }
@@ -74,6 +75,7 @@ public class Controller_Right : MonoBehaviour
             case 1:     // 큐 든 상태
                 CueAction();        //큐 넣기
                 Follow();           //큐 위치 지정
+                StartREC();
                 break;
             case 2:     // 메뉴 상태
                 
@@ -82,6 +84,17 @@ public class Controller_Right : MonoBehaviour
                 GrapAction();       //물건 놓기/던지기
                 break;
         }
+    }
+
+    private void StartREC()
+    {
+
+        if (grapAction.GetStateDown(handType))
+        {
+            if(!sd.startREC)
+                sd.startREC = true;
+        }
+
     }
 
     //컨트롤러 이벤트
@@ -147,7 +160,6 @@ public class Controller_Right : MonoBehaviour
                     if(!cueCol.isTrigger)
                         cueCol.isTrigger = true;
                     handle.transform.LookAt(holdPosition);
-                    
                 }
                 else
                 {
@@ -170,7 +182,6 @@ public class Controller_Right : MonoBehaviour
                     degree = Mathf.Rad2Deg * theta;
                     //Debug.Log("각도: " + degree);
                     cuepos = (controllerPose.transform.position - vHoldPos).magnitude * degree * 0.08f;
-
                     handle.transform.position = vHoldPos + cuepos * (handle.transform.forward);
                 }
                 else

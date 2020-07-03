@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Valve.VR;
 
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
     private CueGrap cueGrap;
     public Transform ptrf;
-    public SaveData savedata;
     public GameObject shadowBall;
     private Rigidbody colrb;
     private RaycastHit hit;
     private RaycastHit hit2;
     private RaycastHit hit3;
-
-
+    
     private LineRenderer layser;        // 레이저
     private Vector3 rayDir;
     private Vector3 predictPos;
     private Vector3 prePos;
+    private Vector3 prePos2;
     private Vector3 velocity;
-    private bool trigger;
+    //private bool trigger;
+    public SteamVR_Action_Vibration haptic;
 
     //리플레이 데이터
     public Transform ball1;
@@ -40,22 +41,16 @@ public class Swing : MonoBehaviour
         //layser = this.gameObject.AddComponent<LineRenderer>();
         layser = gameObject.GetComponent<LineRenderer>();
         layser.enabled = false;
-        trigger = false;
+        //trigger = false;
         // 레이저 굵기 표현
-        layser.startWidth = 0.002f;
-        layser.endWidth = 0.002f;
+        layser.startWidth = 0.005f;
+        layser.endWidth = 0.005f;
     }
-
-    //물리연산      (프로젝트 설정으로)0.02초마다 연산
-    //*업데이트는 물리업데이트 사이사이에 존재해야 자연스러움
-    private void FixedUpdate()
-    {
-
-    }
+    
     //업데이트
     private void Update()
     {
-        SetForce();
+        //SetForce();
 
         if (layser.enabled)
             layser.SetPosition(0, transform.position);
@@ -95,14 +90,23 @@ public class Swing : MonoBehaviour
         }
     }
 
+    //프레임 갱신 전 마지막 업데이트때 큐의 이전위치를 저장한다.
+    private void LateUpdate()
+    {
+        prePos2 = prePos;
+        prePos = ptrf.localPosition;
+    }
+    /*
     private void SetForce()
     {
+        
+        
         if (cueGrap.IsGrap)
         {
             if (!trigger)
             {
                 trigger = true;
-                StartCoroutine("GetPrePos");
+                StartCoroutine(GetPrePos());
             }
         }
         else
@@ -110,14 +114,15 @@ public class Swing : MonoBehaviour
             if (trigger)
             {
                 trigger = false;
-                StopCoroutine("GetPrePos");
+                StopCoroutine(GetPrePos());
             }
         }
+        
     }
 
     IEnumerator GetPrePos()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.011f);
+        WaitForSeconds wait = new WaitForSeconds(0.01f);
 
         while (true)
         {
@@ -127,6 +132,7 @@ public class Swing : MonoBehaviour
             velocity = (ptrf.localPosition - prePos);
         }
     }
+    */
 
     //감지
     private void OnTriggerEnter(Collider other)
@@ -135,45 +141,33 @@ public class Swing : MonoBehaviour
         if (other.tag.Equals("ball"))
         {
             //SetData();
-            Force(other);
-            SoundManage.instance.PlaySoundShot("shotStrong");
+            Force(other);   //타격힘 계산, 적용
         }
-    }
-
-    private void SetData()
-    {
-        SaveData.Info info = new SaveData.Info();
-        info.ID = "user";
-        info.ball1pos = ball1.position;
-        info.ball1rot = ball1.rotation.eulerAngles;
-        info.ball2pos = ball2.position;
-        info.ball2rot = ball2.rotation.eulerAngles;
-        info.ball3pos = ball3.position;
-        info.ball3rot = ball3.rotation.eulerAngles;
-        info.time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        savedata.SetData(info);
     }
 
     private void Force(Collider other)
     {
+        velocity = (ptrf.localPosition - prePos2) * Time.deltaTime;     //힘이 프레임이 아닌 시간 의존적이도록 델타타임 적용 
         //Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
         colrb = other.gameObject.GetComponent<Rigidbody>();
         colrb.velocity.Set(0, 0, 0);
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 1f);
-        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 300f, hit.point);
+        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 27500f, hit.point);
         colrb.AddTorque(transform.forward * velocity.magnitude);
+        //타격 진동
+        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 120f, SteamVR_Input_Sources.RightHand);
+        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 50f, SteamVR_Input_Sources.LeftHand);
     }
 
-    //접촉중
+    //접촉중 (밀어치기에 따른 힘의 차이)
     private void OnTriggerStay(Collider other)
     {
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 3f, hit.point);
+            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 100f, hit.point);
             //colrb.AddTorque(transform.forward * velocity.magnitude);
         }
     }
-
 }

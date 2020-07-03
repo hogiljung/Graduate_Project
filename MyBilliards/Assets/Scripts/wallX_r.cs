@@ -31,19 +31,12 @@ public class wallX_r : MonoBehaviour
         Vector3 reflectVector = Vector3.Reflect(incomingVector, normalVector); //반사각
         reflectVector = reflectVector.normalized;
         
-        e = -Mathf.Pow(5f / 7f, speed + 3.12f) + 0.95f;
+        e = -Mathf.Pow(5f / 7f, speed + 3.12f) + 1f;
         mu = 0.471f - 0.241f * Vector3.Dot(rb.velocity, new Vector3(0, 0, rb.velocity.x));
         //Debug.Log("e" + e + " mu " + mu);
         Debug.Log("speed: " + speed);
 
-        rb.velocity = reflectVector * speed * e + new Vector3(-Mathf.Clamp(rb.angularVelocity.y * 0.023f, -12f, 12f), 0, 0) * Mathf.Clamp(speed, 0.5f, 2f);
+        rb.velocity = reflectVector * speed * e + new Vector3(-Mathf.Clamp(rb.angularVelocity.y * 0.017f, -10f, 10f), 0, 0) * Mathf.Clamp(speed, 0.5f, 2f);
         rb.angularVelocity = rb.angularVelocity * (1f - mu);
-    }
-
-    private void Rotate(Collision collision)
-    {
-        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
-        rb.AddForce(-Mathf.Clamp(rb.angularVelocity.y * 0.96f, -30, 30), 0, 0);
-        rb.velocity *= 1f - (Mathf.Clamp(speed * 0.5f, 0.12f, 0.32f));
     }
 }

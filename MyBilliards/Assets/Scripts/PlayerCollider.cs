@@ -8,10 +8,16 @@ public class PlayerCollider : MonoBehaviour
     // Update is called once per frame
     private void Start()
     {
-        
+        StartCoroutine(setpos());
     }
-    private void Update()
+
+    IEnumerator setpos()
     {
-        transform.position.Set(player.transform.localPosition.x, transform.localPosition.y, player.transform.localPosition.z);
+        while (true)
+        {
+            transform.localPosition.Set(player.transform.localPosition.x, this.transform.localPosition.y, player.transform.localPosition.z);
+            yield return new WaitForSeconds(0.05f);
+        }
     }
+
 }

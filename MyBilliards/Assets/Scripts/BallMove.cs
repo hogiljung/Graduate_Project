@@ -6,44 +6,22 @@ using UnityEngine;
 public class BallMove : MonoBehaviour
 {
     Rigidbody rb;
-    float test;
     Vector3 ang;
+    private AudioSource audios;
+    private bool shotsound;
+    private bool ballsound;
+    private bool wallsound;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        test = 0f;
+        audios = GetComponent<AudioSource>();
+        shotsound = true;
+        ballsound = true;
+        wallsound = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log("wx: " + test*1000000);
-        /*
-        //키보드로 공 움직이기 WASD
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            velocity.x = -2f;
-            rb.velocity = velocity;
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            velocity.z = -2f;
-            rb.velocity = velocity;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            velocity.x = +2f;
-            rb.velocity = velocity;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            velocity.z = +2f;
-            rb.velocity = velocity;
-        }
-        */
-    }
+    
 
     private void FixedUpdate()
     {
@@ -64,12 +42,12 @@ public class BallMove : MonoBehaviour
             rb.velocity *= 0.989f;
             rb.angularVelocity *= 0.9974f;
         }
-        else if (magnitude < 3)
+        else if (magnitude < 1)
         {
             rb.velocity *= 0.9979f;
             rb.angularVelocity *= 0.9979f;
         }
-        else if (magnitude < 10)
+        else if (magnitude < 8)
         {
             rb.velocity *= 0.9984f;
             rb.angularVelocity *= 0.9984f;
@@ -79,6 +57,7 @@ public class BallMove : MonoBehaviour
             rb.velocity *= 0.9989f;
             rb.angularVelocity *= 0.9989f;
         }
+        
     }
 
     private void CheckStop()
@@ -116,18 +95,66 @@ public class BallMove : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //사운드 쿨타임 & 사운드 판정
+    IEnumerator ShotSound()
     {
-        if(collision.collider.tag.Equals("ball"))
-            SoundManage.instance.PlaySoundShot("ballCOllide");
-        else if(collision.collider.tag.Equals("wall"))
-            SoundManage.instance.PlaySoundShot("wallCollide");
+        shotsound = false;
+        Debug.Log("ballspd: " + rb.velocity.magnitude);
+        
+        if (rb.velocity.magnitude > 1f)
+            audios.PlayOneShot(SoundManage.instance.shotStrong);
+        else
+            audios.PlayOneShot(SoundManage.instance.shotWeak);
+
+        yield return new WaitForSeconds(0.3f);
+        shotsound = true;
+       
+    }
+    
+    IEnumerator BallSound()
+    {
+        ballsound = false;
+        if(rb.velocity.magnitude > 1)
+            audios.PlayOneShot(SoundManage.instance.ballstrong);
+        else
+            audios.PlayOneShot(SoundManage.instance.balleweak);
+
+        yield return new WaitForSeconds(0.05f);
+        ballsound = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    IEnumerator WallSound()
     {
-        if(other.tag.Equals("ball"))
-            SoundManage.instance.PlaySoundShot("ballCOllide");
+        wallsound = false;
+        audios.PlayOneShot(SoundManage.instance.wallCollide);
+
+        yield return new WaitForSeconds(0.05f);
+        wallsound = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag.Equals("ball"))
+        {
+            if (ballsound)
+                StartCoroutine(BallSound());
+        }
+
+        else if (collision.gameObject.tag.Equals("wall"))
+        {
+            if (wallsound)
+                StartCoroutine(WallSound());
+
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Equals("cue"))
+        {
+            if(shotsound)
+                StartCoroutine(ShotSound());
+        }
 
     }
 }
