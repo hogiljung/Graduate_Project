@@ -5,10 +5,12 @@ using UnityEngine;
 public class wallX : MonoBehaviour
 {
     private float speed;
+    private float e;       //쿠션 반발계수
+    private float mu;      //쿠션 마찰계수
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("ball"))
+        if (collision.collider.tag.Equals("ball"))
         {
             Reflect(collision);
         }
@@ -16,7 +18,8 @@ public class wallX : MonoBehaviour
 
     private void Reflect(Collision collision)
     {
-        Vector3 incomingVector = collision.collider.GetComponent<Rigidbody>().velocity;
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        Vector3 incomingVector = rb.velocity;
         speed = incomingVector.magnitude;
         incomingVector = incomingVector.normalized;
 
@@ -26,11 +29,14 @@ public class wallX : MonoBehaviour
         // 법선 벡터와 입사벡터을 이용하여 반사벡터를 알아낸다.
         Vector3 reflectVector = Vector3.Reflect(incomingVector, normalVector); //반사각
         reflectVector = reflectVector.normalized;
+        
+        e = -Mathf.Pow(5f / 7f, speed + 3.12f) + 1f;
+        mu = 0.471f - 0.241f * Vector3.Dot(rb.velocity, new Vector3(0, 0, rb.velocity.x));
+        //Debug.Log("e" + e + " mu " + mu);
+        Debug.Log("speed: " + speed);
 
-        collision.collider.GetComponent<Rigidbody>().velocity = reflectVector * speed * 0.68f;
+        rb.velocity = reflectVector * speed * e + new Vector3(Mathf.Clamp(rb.angularVelocity.y * 0.017f, -10f, 10f), 0, 0) * Mathf.Clamp(speed, 0.5f, 2f);
+        rb.angularVelocity = rb.angularVelocity * (1f - mu);
     }
-    
-
-    
     
 }

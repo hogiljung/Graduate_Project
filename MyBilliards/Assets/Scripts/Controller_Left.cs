@@ -18,10 +18,15 @@ public class Controller_Left : MonoBehaviour
     public GameObject isTeleport;               //텔레포트 모드 확인
     public GameObject handle;                   //큐 핸들
     public GameObject cue;                      //큐
+    public GameObject hand_normal;              //기본 모델
+    public GameObject hand_grip;                //큐 잡은 모델
+    public GameObject hand_fist;                //물건 잡은 모델
     public GameObject menu_obj;                 //메뉴 캔버스
     public GameObject lazer;                    //메뉴 조작 레이저
     public GameObject main;
     public GameObject option;
+    public GameObject replay;
+    
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -56,7 +61,6 @@ public class Controller_Left : MonoBehaviour
     void Update()
     {
         // 왼손 터치패드 동작
-
         //옵션으로 모드 조정해서 텔레포트, 방향이동 선택
         if (isTeleport.activeSelf)
             Teleporting();
@@ -79,8 +83,6 @@ public class Controller_Left : MonoBehaviour
                 GrapAction();       //물건 놓기/던지기
                 break;
         }
-
-
     }
 
     // 큐 고정
@@ -88,13 +90,17 @@ public class Controller_Left : MonoBehaviour
     {
         if (graps.GetStateDown(handType))
         {
-            Debug.Log("Left graps down");
+            //Debug.Log("Left graps down");
             isGrab.IsGrap = true;
+            hand_grip.SetActive(true);
+            hand_normal.SetActive(false);
         }
         if (graps.GetStateUp(handType))
         {
-            Debug.Log("Left graps up");
+            //Debug.Log("Left graps up");
             isGrab.IsGrap = false;
+            hand_grip.SetActive(false);
+            hand_normal.SetActive(true);
         }
 
     }
@@ -105,12 +111,12 @@ public class Controller_Left : MonoBehaviour
         
         if (PadClick.GetStateDown(handType))
         {
-            Debug.Log("move button down");
+            //Debug.Log("move button down");
             isMove = true;
         }
         if (TouchPad.GetStateUp(handType))
         {
-            Debug.Log("move button up");
+            //Debug.Log("move button up");
             isMove = false;
         }
         if (isMove)
@@ -139,7 +145,7 @@ public class Controller_Left : MonoBehaviour
                 mTeleport.mIsActive = false;
                 Vector3 pos = mTeleport.mGroundPos;
                 if (pos != Vector3.zero)
-                    mPlayer.transform.position = pos;
+                    mPlayer.transform.position = pos + (transform.parent.position - new Vector3(playerCamera.transform.position.x,0,playerCamera.transform.position.z));
             }
         }
         
@@ -151,17 +157,25 @@ public class Controller_Left : MonoBehaviour
         {
             if (menu_obj.activeSelf)
             {
+                //Debug.Log("Menu off");
                 lazer.SetActive(false);
+                mmode.mode = 0;
                 menu_obj.SetActive(false);
-                mmode.mode = 0;     //기본상태로
             }
-            else    // 메뉴 캔버스 추가하면 킬 때 초기화 해주어야함!
+            else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
+                //Debug.Log("Menu on");
+                cue.SetActive(false);
+                hand_grip.SetActive(false);
+                hand_fist.SetActive(false);
+                hand_normal.SetActive(true);
+                isGrab.IsGrap = false;
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);
-                mmode.mode = 2;     //메뉴상태로
+                replay.SetActive(false);
                 lazer.SetActive(true);
+                mmode.mode = 2;
             }
         }
     }
@@ -171,6 +185,11 @@ public class Controller_Left : MonoBehaviour
     {
         if (graps.GetStateDown(handType))
         {
+            if (hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(false);
+                hand_fist.SetActive(true);
+            }
             if (collidingObject)
             {
                 Grap();
@@ -178,6 +197,11 @@ public class Controller_Left : MonoBehaviour
         }
         else if (graps.GetStateUp(handType))
         {
+            if (!hand_normal.activeSelf)
+            {
+                hand_normal.SetActive(true);
+                hand_fist.SetActive(false);
+            }
             if (objectInHand)
             {
                 ReleaseObject();
@@ -187,12 +211,15 @@ public class Controller_Left : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        SetCollidingObject(other);
+        if (other.gameObject.layer == 12)
+        {
+            collidingObject = other.gameObject;
+        }
     }
 
     public void OnTriggerStay(Collider other)
     {
-        SetCollidingObject(other);
+
     }
 
     public void OnTriggerExit(Collider other)
@@ -203,16 +230,7 @@ public class Controller_Left : MonoBehaviour
         }
         collidingObject = null;
     }
-
-    private void SetCollidingObject(Collider col)
-    {
-        if (collidingObject || !col.GetComponent<Rigidbody>())
-        {
-            return;
-        }
-
-        collidingObject = col.gameObject;
-    }
+    
 
     private FixedJoint AddFixedJoint()
     {
@@ -224,15 +242,7 @@ public class Controller_Left : MonoBehaviour
 
     private void Grap()
     {
-        if (!collidingObject)
-        {
-            return;
-        }
-        if (collidingObject.layer.CompareTo("Object") != 0)
-        {
-            return;
-        }
-        Debug.Log("Grap");
+        //Debug.Log("Grap");
         objectInHand = collidingObject;
         collidingObject = null;
 
@@ -243,19 +253,12 @@ public class Controller_Left : MonoBehaviour
 
     private void ReleaseObject()
     {
-        if (!objectInHand)
-        {
-            return;
-        }
-        if (GetComponent<FixedJoint>())
-        {
-            Debug.Log("Release");
-            GetComponent<FixedJoint>().connectedBody = null;
-            Destroy(GetComponent<FixedJoint>());
+        //Debug.Log("Release");
+        GetComponent<FixedJoint>().connectedBody = null;
+        Destroy(GetComponent<FixedJoint>());
 
-            objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
-        }
+        objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
+        objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
         objectInHand = null;
         mmode.mode = 0;
     }

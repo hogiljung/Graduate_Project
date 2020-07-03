@@ -1,119 +1,173 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Valve.VR;
 
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
+    private CueGrap cueGrap;
     public Transform ptrf;
+    public GameObject shadowBall;
     private Rigidbody colrb;
     private RaycastHit hit;
-
-    private Vector3 prePos;
-    private Vector3 velocity;
-    private bool trigger = false;
-    private float touchTime = 0f;
-
-    private int count;
+    private RaycastHit hit2;
+    private RaycastHit hit3;
     
+    private LineRenderer layser;        // 레이저
+    private Vector3 rayDir;
+    private Vector3 predictPos;
+    private Vector3 prePos;
+    private Vector3 prePos2;
+    private Vector3 velocity;
+    //private bool trigger;
+    public SteamVR_Action_Vibration haptic;
+
+    //리플레이 데이터
+    public Transform ball1;
+    public Transform ball2;
+    public Transform ball3;
     /*
     Unity 내부 함수 실행 순서
     Strat - FixedUpdate - 내부 물리 처리 - OnTrigger - OnCollision
     - Update - yield들 - 내부 애니메이션 업데이트 - LateUpdate
     - 화면 렌더 - gizmo 렌더 - UI 렌더 - 마무리
     */
+
     void Start()
     {
-        StartCoroutine("GetPrePos");
-        count = 0;
+        cueGrap = FindObjectOfType<CueGrap>();
+        //layser = this.gameObject.AddComponent<LineRenderer>();
+        layser = gameObject.GetComponent<LineRenderer>();
+        layser.enabled = false;
+        //trigger = false;
+        // 레이저 굵기 표현
+        layser.startWidth = 0.005f;
+        layser.endWidth = 0.005f;
     }
-
-    //물리연산      (프로젝트 설정으로)0.02초마다 연산
-    //*업데이트는 물리업데이트 사이사이에 존재해야 자연스러움
-    private void FixedUpdate()
-    {
-
-    }
+    
     //업데이트
     private void Update()
     {
+        //SetForce();
 
+        if (layser.enabled)
+            layser.SetPosition(0, transform.position);
+        if (Physics.Raycast(transform.position, transform.forward, out hit2, 2f))
+        {
+            if (hit2.collider.tag.Equals("ball"))
+            {
+                if (!layser.enabled)
+                    layser.enabled = true;
+                layser.SetPosition(1, hit2.point);
+                rayDir.Set(transform.forward.x, 0f, transform.forward.z);
+                rayDir.Normalize();
+                if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 3f))
+                {
+                    predictPos = hit2.collider.transform.position + rayDir * hit3.distance;
+                    if (!shadowBall.activeSelf)
+                        shadowBall.SetActive(true);
+                    shadowBall.transform.position = predictPos;
+                }
+
+            }
+            else
+            {
+                if (layser.enabled)
+                    layser.enabled = false;
+                if (shadowBall.activeSelf)
+                    shadowBall.SetActive(false);
+            }
+
+        }
+        else
+        {
+            if (layser.enabled)
+                layser.enabled = false;
+            if (shadowBall.activeSelf)
+                shadowBall.SetActive(false);
+        }
     }
-    //업데이트 이후 업데이트
+
+    //프레임 갱신 전 마지막 업데이트때 큐의 이전위치를 저장한다.
     private void LateUpdate()
     {
+        prePos2 = prePos;
+        prePos = ptrf.localPosition;
     }
-    //그후 화면출력
+    /*
+    private void SetForce()
+    {
+        
+        
+        if (cueGrap.IsGrap)
+        {
+            if (!trigger)
+            {
+                trigger = true;
+                StartCoroutine(GetPrePos());
+            }
+        }
+        else
+        {
+            if (trigger)
+            {
+                trigger = false;
+                StopCoroutine(GetPrePos());
+            }
+        }
+        
+    }
 
     IEnumerator GetPrePos()
     {
+        WaitForSeconds wait = new WaitForSeconds(0.01f);
+
         while (true)
         {
             prePos = ptrf.localPosition;
-            yield return new WaitForSeconds(0.05f);
+            //Debug.Log("prePos update");
+            yield return wait;
             velocity = (ptrf.localPosition - prePos);
         }
     }
+    */
 
     //감지
     private void OnTriggerEnter(Collider other)
     {
         //공일때
-        if (other.CompareTag("ball"))
+        if (other.tag.Equals("ball"))
         {
-            Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
-            colrb = other.gameObject.GetComponent<Rigidbody>();
-            Debug.DrawRay(ptrf.position, ptrf.forward * 10f, Color.yellow, 0.5f);
-            Physics.Raycast(ptrf.position, ptrf.forward, out hit, 2f);
-            colrb.AddForceAtPosition(velocity * 450, hit.point);
+            //SetData();
+            Force(other);   //타격힘 계산, 적용
         }
     }
 
-    //접촉중
+    private void Force(Collider other)
+    {
+        velocity = (ptrf.localPosition - prePos2) * Time.deltaTime;     //힘이 프레임이 아닌 시간 의존적이도록 델타타임 적용 
+        //Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
+        colrb = other.gameObject.GetComponent<Rigidbody>();
+        colrb.velocity.Set(0, 0, 0);
+        colrb.angularVelocity.Set(0, 0, 0);
+        Physics.Raycast(ptrf.position, ptrf.forward, out hit, 1f);
+        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 27500f, hit.point);
+        colrb.AddTorque(transform.forward * velocity.magnitude);
+        //타격 진동
+        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 120f, SteamVR_Input_Sources.RightHand);
+        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 50f, SteamVR_Input_Sources.LeftHand);
+    }
+
+    //접촉중 (밀어치기에 따른 힘의 차이)
     private void OnTriggerStay(Collider other)
     {
         //공일때
-        if (other.CompareTag("ball"))
+        if (other.tag.Equals("ball"))
         {
-            Debug.Log("ball stay " + count);
-            count++;
-            colrb.AddForceAtPosition(velocity, hit.point);
+            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 100f, hit.point);
+            //colrb.AddTorque(transform.forward * velocity.magnitude);
         }
     }
-
-    //탈출
-    private void OnTriggerExit(Collider other)
-    {
-        count = 0;
-    }
-
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(collision.gameObject + "Enter");
-            trigger = true;
-        }
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(collision.gameObject + "Stay");
-            touchTime += 0.1f;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "ball2")
-        {
-            Debug.Log(touchTime);
-            Debug.Log(collision.gameObject + "Exit");
-            trigger = false;
-            touchTime = 0f;
-        }
-    }
-    */
 }

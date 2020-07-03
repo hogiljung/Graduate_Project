@@ -1,244 +1,161 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BallMove : MonoBehaviour
 {
-    Transform tr;
     Rigidbody rb;
-    bool isMoving, isRotate;
-    Vector3 velocity;
-    Vector3 rotation;
+    Vector3 ang;
+    private AudioSource audios;
+    private bool shotsound;
+    private bool ballsound;
+    private bool wallsound;
 
     // Start is called before the first frame update
     void Start()
     {
-        tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
-        isMoving = false;
-        isRotate = false;
-        velocity = new Vector3();
-        rotation = new Vector3();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (rb.tag == "ball1")
-        {
-            /*
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                velocity.y -= (float)9.8;
-            }
-            */
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                velocity.x -= 2f;
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                velocity.z -= 2f;
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                velocity.x += 2f;
-            }
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                velocity.z += 2f;
-            }
-            rb.velocity = velocity;
-        }
-
-        CheckStop();
-        //CheckCollision();
+        audios = GetComponent<AudioSource>();
+        shotsound = true;
+        ballsound = true;
+        wallsound = true;
     }
     
 
     private void FixedUpdate()
     {
-        /*
-        if(velocity.y > -9.8)
-            velocity.y -= 0.16333f;   //중력
-        */
-        if (isMoving)
+        Friction();     //저항
+        CheckStop();    //멈춤상태 보정
+    }
+
+    private void Friction()
+    {
+        float magnitude = rb.velocity.magnitude;
+        //속도 저항
+        if (magnitude == 0)
         {
-            Debug.Log("_BallMove\n");
-            Ballmv();
+            rb.angularVelocity *= 0.9974f;
         }
-        /*
-        if (isRotate)
+        else if (magnitude < 0.05)
         {
-            Debug.Log("_BallRotate\n");
-            Ballrt();
+            rb.velocity *= 0.989f;
+            rb.angularVelocity *= 0.9974f;
         }
-        */
+        else if (magnitude < 1)
+        {
+            rb.velocity *= 0.9979f;
+            rb.angularVelocity *= 0.9979f;
+        }
+        else if (magnitude < 8)
+        {
+            rb.velocity *= 0.9984f;
+            rb.angularVelocity *= 0.9984f;
+        }
+        else if (magnitude < 15)
+        {
+            rb.velocity *= 0.9989f;
+            rb.angularVelocity *= 0.9989f;
+        }
         
-    }
-
-    private void CheckCollision()
-    {
-        if (!isMoving)
-        {
-            if (Mathf.Abs(rb.velocity.magnitude) >= 0.1)
-            {
-                isMoving = true;
-            }
-        }
-        if (!isRotate)
-        {
-            if (Mathf.Abs(rb.rotation.x) >= 0.1 || Mathf.Abs(rb.rotation.y) >= 0.1 || Mathf.Abs(rb.rotation.z) >= 0.1)
-            {
-                isRotate = true;
-            }
-        }
-    }
-
-    private void Ballmv()
-    {
-        velocity.x *= 0.9944f;
-        velocity.z *= 0.9944f;
-        if(velocity.x > 0)
-        {
-            velocity.x -= 0.01f;
-        }
-        else if (velocity.x < 0)
-        {
-            velocity.x += 0.01f;
-        }
-        if(velocity.z > 0)
-        {
-            velocity.z -= 0.01f;
-        }
-        else if(velocity.z < 0)
-        {
-            velocity.z += 0.01f;
-        }
-        rb.velocity = velocity;
-        
-    }
-
-    private void Ballrt()
-    {
-        rotation.x *= 0.931f;
-        rotation.y *= 0.931f;
-        rotation.z *= 0.931f;
-        rb.angularVelocity = rotation;
     }
 
     private void CheckStop()
     {
-        if (Mathf.Abs(rb.velocity.magnitude) < 0.1)
+        //속도 체크
+        if (rb.velocity.magnitude < 0.001)
+            rb.velocity.Set(0, 0, 0);
+
+        //회전 체크
+        if (Mathf.Abs(rb.angularVelocity.x) < 0.1)
         {
-            BallStopmv();
+            rb.angularVelocity.Set(0, rb.angularVelocity.y, rb.angularVelocity.z);
         }
-        if (Mathf.Abs(rb.rotation.x) < 0.1 || Mathf.Abs(rb.rotation.y) < 0.1 || Mathf.Abs(rb.rotation.z) < 0.1)
+        else if (Mathf.Abs(rb.angularVelocity.x) < 3)
         {
-            BallStoprt();
+            rb.angularVelocity.Set(rb.angularVelocity.x * 0.8f, rb.angularVelocity.y, rb.angularVelocity.z);
+        }
+
+        if (Mathf.Abs(rb.angularVelocity.y) < 0.1)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, 0, rb.angularVelocity.z);
+        }
+        else if (Mathf.Abs(rb.angularVelocity.y) < 3)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y * 0.8f, rb.angularVelocity.z);
+        }
+
+        if (Mathf.Abs(rb.angularVelocity.z) < 0.1)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, 0);
+        }
+        else if (Mathf.Abs(rb.angularVelocity.z) < 3)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, rb.angularVelocity.z * 0.8f);
         }
     }
 
-    private void BallStopmv()
+    //사운드 쿨타임 & 사운드 판정
+    IEnumerator ShotSound()
     {
-        velocity.x = 0;
-        velocity.y = 0;
-        velocity.z = 0;
-        isMoving = false;
-    }
-
-    private void BallStoprt()
-    {
-        rotation.x = 0;
-        rotation.y = 0;
-        rotation.z = 0;
-        isRotate = false;
-    }
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        ContactPoint cp = collision.GetContact(0);
-        Vector3 dir = tr.position - cp.point;
-        rb.AddForce((dir).normalized * velocity.magnitude);
-
-    }
-    */
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        isMoving = true;
-        isRotate = true;
-        Vector3 temp;
-        switch (rb.tag)
-        {
-            case "ball1":
-                switch (other.tag)
-                {
-                    case "ball2":
-                    case "ball3":
-                        Rigidbody target = other.GetComponent<Rigidbody>();
-                        temp = rb.velocity;
-                        rb.velocity = target.velocity;
-                        target.velocity = temp;
-                        break;
-                    case "wall":
-                        temp = rb.velocity;
-                        temp.x *= 0.65f * (-temp.x);
-                        temp.z *= 0.65f * (-temp.z);
-                        rb.velocity = temp;
-                        break;
-                    case "plain":
-                        temp = rb.velocity;
-                        temp.y *= 0.36f * (-temp.y);
-                        rb.velocity = temp;
-                        break;
-                }
-                break;
-            case "ball2":
-                switch (other.tag)
-                {
-                    case "ball3":
-                        Rigidbody target = other.GetComponent<Rigidbody>();
-                        temp = rb.velocity;
-                        rb.velocity = target.velocity;
-                        target.velocity = temp;
-                        break;
-                    case "wall":
-                        temp = rb.velocity;
-                        temp.x *= 0.65f * (-temp.x);
-                        temp.z *= 0.65f * (-temp.z);
-                        rb.velocity = temp;
-                        break;
-                    case "plain":
-                        temp = rb.velocity;
-                        temp.y *= 0.36f * (-temp.y);
-                        rb.velocity = temp;
-                        break;
-                }
-                break;
-            case "ball3":
-                switch (other.tag)
-                {
-                    case "wall":
-                        temp = rb.velocity;
-                        temp.x *= 0.65f * (-temp.x);
-                        temp.z *= 0.65f * (-temp.z);
-                        rb.velocity = temp;
-                        break;
-                    case "plain":
-                        temp = rb.velocity;
-                        temp.y *= 0.36f * (-temp.y);
-                        rb.velocity = temp;
-                        break;
-                }
-                break;
-        }
+        shotsound = false;
+        Debug.Log("ballspd: " + rb.velocity.magnitude);
         
+        if (rb.velocity.magnitude > 1f)
+            audios.PlayOneShot(SoundManage.instance.shotStrong);
+        else
+            audios.PlayOneShot(SoundManage.instance.shotWeak);
+
+        yield return new WaitForSeconds(0.3f);
+        shotsound = true;
+       
     }
-    */
+    
+    IEnumerator BallSound()
+    {
+        ballsound = false;
+        if(rb.velocity.magnitude > 1)
+            audios.PlayOneShot(SoundManage.instance.ballstrong);
+        else
+            audios.PlayOneShot(SoundManage.instance.balleweak);
+
+        yield return new WaitForSeconds(0.05f);
+        ballsound = true;
+    }
+
+    IEnumerator WallSound()
+    {
+        wallsound = false;
+        audios.PlayOneShot(SoundManage.instance.wallCollide);
+
+        yield return new WaitForSeconds(0.05f);
+        wallsound = true;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        velocity = rb.velocity;
+        if (collision.gameObject.tag.Equals("ball"))
+        {
+            if (ballsound)
+                StartCoroutine(BallSound());
+        }
+
+        else if (collision.gameObject.tag.Equals("wall"))
+        {
+            if (wallsound)
+                StartCoroutine(WallSound());
+
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Equals("cue"))
+        {
+            if(shotsound)
+                StartCoroutine(ShotSound());
+        }
+
     }
 }
 

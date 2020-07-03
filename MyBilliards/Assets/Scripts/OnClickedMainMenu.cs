@@ -8,6 +8,8 @@ public class OnClickedMainMenu : MonoBehaviour
     public GameObject main;
     public GameObject option;
     public GameObject tpcheck;
+    public GameObject replay;
+    public GameObject assist;
 
     private void Start()
     {
@@ -19,6 +21,21 @@ public class OnClickedMainMenu : MonoBehaviour
         {
             tpcheck.SetActive(true);
         }
+        if (PlayerPrefs.GetInt("assist", 0) == 0)
+        {
+            assist.SetActive(false);
+        }
+        else
+        {
+            assist.SetActive(false);
+        }
+    }
+
+    public void Replay_btn_clicked()
+    {
+        Debug.Log("option");
+        main.SetActive(false);
+        replay.SetActive(true);
     }
 
     public void Option_btn_clicked()
@@ -33,6 +50,7 @@ public class OnClickedMainMenu : MonoBehaviour
         Debug.Log("back");
         main.SetActive(true);
         option.SetActive(false);
+        replay.SetActive(false);
     }
 
     public void Teleport_btn_clicked()
@@ -48,7 +66,21 @@ public class OnClickedMainMenu : MonoBehaviour
             tpcheck.SetActive(true);
             PlayerPrefs.SetInt("tpmode", 1);
         }
+    }
 
+    public void Assist_btn_clicked()
+    {
+        Debug.Log("Assist button");
+        if (assist.activeSelf)
+        {
+            assist.SetActive(false);
+            PlayerPrefs.SetInt("assist", 0);
+        }
+        else
+        {
+            assist.SetActive(true);
+            PlayerPrefs.SetInt("assist", 1);
+        }
     }
 
     public void start_btn_clicked()
@@ -60,6 +92,7 @@ public class OnClickedMainMenu : MonoBehaviour
     public void Exit_btn_clicked()
     {
         Debug.Log("exit click");
+        PlayerPrefs.Save();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

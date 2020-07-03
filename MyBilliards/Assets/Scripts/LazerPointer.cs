@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class LazerPointer : MonoBehaviour
 {
     public SteamVR_Action_Boolean trigger;
     public SteamVR_Input_Sources handType;
 
-    public GameObject particle;         //선택 파티클
+    public GameObject particle;         //레이저 파티클
 
     private LineRenderer layser;        // 레이저
     private RaycastHit hit;             // 충돌된 객체
     private RaycastHit lastHit;
     private GameObject currentObject;   // 가장 최근에 충돌한 객체를 저장하기 위한 객체
+    private Vector3 prepose;
     
-    public float raycastDistance = 10f; // 레이저 포인터 감지 거리
+    private float raycastDistance = 3f; // 레이저 포인터 감지 거리
 
     // Start is called before the first frame update
     void Start()
@@ -46,12 +48,12 @@ public class LazerPointer : MonoBehaviour
         // 충돌 감지 시
         if (Physics.Raycast(transform.position, transform.forward, out hit, raycastDistance))
         {
-            Debug.Log("collide");
+            //Debug.Log("collide");
             layser.SetPosition(1, hit.point);
             particle.transform.position = hit.point;
             particle.SetActive(true);
             // 충돌 객체의 태그가 Button인 경우
-            if (hit.collider.gameObject.CompareTag("Button"))
+            if (hit.collider.gameObject.tag.Equals("Button"))
             {
                 // 트리거 버튼 누르면
                 if (trigger.GetStateDown(handType))
@@ -73,13 +75,25 @@ public class LazerPointer : MonoBehaviour
                     currentObject = hit.collider.gameObject;
                 }
             }
+            
+            else if (hit.collider.gameObject.tag.Equals("Slider"))
+            {
+                /*
+                if (trigger.GetStateDown(handType))
+                {
+                    Debug.Log("drag point : " + hit.point);
+                }
+                */
+            }
+            
+            // 캔버스일때
             // 최근 감지된 오브젝트가 Button인 경우
-            // 버튼은 현재 눌려있는 상태이므로 이것을 풀어준다.
-            else if (hit.collider.gameObject.CompareTag("Canvas"))
+            // 버튼은 현재 눌려있는 상태이므로 풀어준다.
+            else if (hit.collider.gameObject.tag.Equals("Canvas"))
             {
                 if (currentObject)
                 {
-                    if (currentObject.CompareTag("Button"))
+                    if (currentObject.tag.Equals("Button"))
                     {
                         currentObject.GetComponent<Button>().OnPointerExit(null);
                     }
@@ -97,10 +111,9 @@ public class LazerPointer : MonoBehaviour
             // 레이저에 감지된 것이 없기 때문에 레이저 초기 설정 길이만큼 길게 만든다.
             layser.SetPosition(1, transform.position + (transform.forward * raycastDistance));
             particle.SetActive(false);
-
         }
-
     }
+
     private void LateUpdate()
     {
         // 버튼을 누를 경우        

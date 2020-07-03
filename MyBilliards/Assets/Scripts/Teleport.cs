@@ -8,6 +8,7 @@ public class Teleport : MonoBehaviour
 
     public List<Transform> mRenderList = new List<Transform>();     //렌더 정보 담는 배열
     public GameObject TeleportArea;     //텔레포트 영역표시
+    public GameObject denyArea;
 
     public Vector3 mGroundPos;      //땅에 닿은 지점 좌표
     private Vector3 mVelocity;      //궤적 그리는 변수
@@ -53,6 +54,7 @@ public class Teleport : MonoBehaviour
             {
                 HidePath();
                 TeleportArea.SetActive(false);
+                denyArea.SetActive(false);
                 IsActive = false;
             }
         }
@@ -101,7 +103,7 @@ public class Teleport : MonoBehaviour
             if (mRenderList[i].gameObject.activeSelf) {
                 if (Physics.Raycast(mRenderList[i].position, Vector3.down, out hit, Mathf.Infinity))
                 {
-                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                    if (hit.transform.gameObject.layer == 10)
                     {
                         float curDist = Vector3.Distance(mRenderList[i].position, hit.point);
                         if (dist > curDist)
@@ -110,7 +112,25 @@ public class Teleport : MonoBehaviour
                             mGroundPos = hit.point;
                             TeleportArea.transform.position = mGroundPos;
                             TeleportArea.transform.LookAt(new Vector3(transform.position.x, TeleportArea.transform.position.y, transform.position.z));
-                            TeleportArea.SetActive(true);
+                            if (!TeleportArea.activeSelf)
+                                TeleportArea.SetActive(true);
+                            if (denyArea.activeSelf)
+                                denyArea.SetActive(false);
+
+                        }
+                    }
+                    else
+                    {
+                        float curDist = Vector3.Distance(mRenderList[i].position, hit.point);
+                        if (dist > curDist)
+                        {
+                            closeIdx = i;
+                            denyArea.transform.position = hit.point;
+                            denyArea.transform.LookAt(new Vector3(transform.position.x, TeleportArea.transform.position.y, transform.position.z));
+                            if (TeleportArea.activeSelf)
+                                TeleportArea.SetActive(false);
+                            if (!denyArea.activeSelf)
+                                denyArea.SetActive(true);
                         }
                     }
                 }
