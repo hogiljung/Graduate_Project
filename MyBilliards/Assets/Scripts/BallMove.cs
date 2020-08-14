@@ -98,7 +98,6 @@ public class BallMove : MonoBehaviour
     //사운드 쿨타임 & 사운드 판정
     IEnumerator ShotSound()
     {
-        shotsound = false;
         Debug.Log("ballspd: " + rb.velocity.magnitude);
         
         if (rb.velocity.magnitude > 1f)
@@ -106,7 +105,7 @@ public class BallMove : MonoBehaviour
         else
             audios.PlayOneShot(SoundManage.instance.shotWeak);
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         shotsound = true;
        
     }
@@ -144,18 +143,20 @@ public class BallMove : MonoBehaviour
         {
             if (wallsound)
                 StartCoroutine(WallSound());
-
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("cue"))
         {
-            if(shotsound)
+            if (shotsound)
+            {
+                shotsound = false;
                 StartCoroutine(ShotSound());
+            }
         }
-
     }
+
 }
 

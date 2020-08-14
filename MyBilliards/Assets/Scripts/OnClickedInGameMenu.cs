@@ -189,6 +189,10 @@ public class OnClickedInGameMenu : MonoBehaviour
 #endif
     }
 
+    public void Reset_btn_clicked()
+    {
+        SceneManager.LoadScene(1);
+    }
     IEnumerator GetText()
     {
         UnityWebRequest www = UnityWebRequest.Get("https://gtw049nu5f.execute-api.ap-northeast-2.amazonaws.com/default/Helloworld");

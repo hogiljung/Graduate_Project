@@ -21,6 +21,7 @@ public class Swing : MonoBehaviour
     private Vector3 prePos;
     private Vector3 prePos2;
     private Vector3 velocity;
+    private int limit;              // 가중힘 리미트
     //private bool trigger;
     public SteamVR_Action_Vibration haptic;
 
@@ -140,7 +141,6 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            //SetData();
             Force(other);   //타격힘 계산, 적용
         }
     }
@@ -148,16 +148,17 @@ public class Swing : MonoBehaviour
     private void Force(Collider other)
     {
         velocity = (ptrf.localPosition - prePos2) * Time.deltaTime;     //힘이 프레임이 아닌 시간 의존적이도록 델타타임 적용 
+        float mg = velocity.magnitude;
         //Debug.Log("trp" + ptrf.localPosition + "prep" + prePos + "V" + velocity);
         colrb = other.gameObject.GetComponent<Rigidbody>();
         colrb.velocity.Set(0, 0, 0);
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 1f);
-        colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 27500f, hit.point);
-        colrb.AddTorque(transform.forward * velocity.magnitude);
+        colrb.AddForceAtPosition(transform.forward * mg * 42500f, hit.point);
+        colrb.AddTorque(transform.forward * mg);
         //타격 진동
-        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 120f, SteamVR_Input_Sources.RightHand);
-        haptic.Execute(0, 0.05f, 200, velocity.magnitude * 50f, SteamVR_Input_Sources.LeftHand);
+        haptic.Execute(0, 0.05f, 200, mg * 120f, SteamVR_Input_Sources.RightHand);
+        haptic.Execute(0, 0.05f, 200, mg * 50f, SteamVR_Input_Sources.LeftHand);
     }
 
     //접촉중 (밀어치기에 따른 힘의 차이)
@@ -166,8 +167,7 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 100f, hit.point);
-            //colrb.AddTorque(transform.forward * velocity.magnitude);
+            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 425f, hit.point);
         }
     }
 }

@@ -60,11 +60,6 @@ public class SendData : MonoBehaviour
     public string[] STROKE = new string[7] { "뒤돌리기", "앞돌리기", "옆돌리기", "빗겨치기", "대회전", "더블레일", "빈쿠션" };
 
 
-
-    // int count = 0;
-    private float fDestroyTime = 2f;
-    private float fTickTime;
-
     [SerializeField] GameObject button;
     public RectTransform Canvas;
 
@@ -86,14 +81,7 @@ public class SendData : MonoBehaviour
         socket.On("PlayReplay", PlayReplaying);
 
         socket.On("RecieveStrokeCommend", rcvRecommendedStroke);
-
-        socket.On("SetTablename", SetTablename);
         socket.On("ReturnTableRow", ReturnTableRow);
-        
-
-
-
-
 
         ballPoints = new string[3];
 
@@ -103,51 +91,25 @@ public class SendData : MonoBehaviour
         startREC = false;
         startReplay = false;
 
-        //vec = new Vector3[100, 8];
-
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        // 서버 통신하는데 시간 딜레이가 있음
-        fTickTime += Time.deltaTime;
-        if (fTickTime >= fDestroyTime)
-        {
-            //리플레이 화면 요청
-            if (setting != true) {
-                //RequestReplayByUnity();
-                //  ReplayButtonOnClick("replay1");
-                getRecommendedStroke();
-                setting = true;
-            }
-            //if (test != true)
-            //{
-            //    CreateReplay();
-            //    test = true;
-            //}
 
-            //if (Input.GetMouseButton(0))
-            //    test = false;
-
-        }
-        // 프레임 DB 전송
-        // SendFrameByUnity();
-
-    */
 
         if (startREC)
             SendFrameByUnity();
         if (startReplay)
             ExcuteReplay();
 
-
-
     }
 
-
+    /// <summary>
+    /// 큐, 당구공 3개의 위치값, 회전값을 서버로 전달
+    /// 서버에 SendDatabyUnity 이벤트 발생
+    /// </summary>
     public void SendFrameByUnity()
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -195,7 +157,9 @@ public class SendData : MonoBehaviour
         Debug.Log("데이터 입력" + ball1trans.position);
 
     }
-
+    /// <summary>
+    /// 테이블 생성 서버로 CreateTable 이벤트 발생
+    /// </summary>
     public void CreateReplay()
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -221,42 +185,62 @@ public class SendData : MonoBehaviour
 
     }
 
-    // 리플레이 화면 요청
+    /// <summary>
+    /// 리플레이 화면 요청
+    /// 서버로 RequestReplayByUnity 이벤트 발생
+    /// </summary>
     public void RequestReplayByUnity()
     {
         Debug.Log("리플레이 화면 요청");
         socket.Emit("RequestReplayByUnity");
 
     }
-
+    /// <summary>
+    /// RequestReplayByUnity(Unity) -> SetReplayBoard 이벤트 발생(node) -> ReplayBoard (this) 실행
+    /// 실행후 InitForReplayBoard 함수 실행
+    /// </summary>
+    /// <param name="e"> 모든 리플레이 목록 리스트 반환 데이터 </param>
     public void ReplayBoard(SocketIOEvent e)
     {
 
         InitForReplayBoard(e.data.list.Count, e.data.keys, e.data);
 
     }
-
+    /// <summary>
+    /// 서버로 부터 받은 리플레이 목록으로 Unity 상에 동적 스크롤 뷰의 버튼 생성
+    /// </summary>
+    /// <param name="len">리플레이 갯수 </param>
+    /// <param name="keys">리플레이명 </param>
+    /// <param name="values">저장날짜 </param>
     public void InitForReplayBoard(int len, List<string> keys, JSONObject values)
     {
         int yValue = 0;
         List<GameObject> buttonlist = new List<GameObject>();
 
+        int children = GameObject.Find("Content").transform.childCount;
+        //버튼 있으면 삭제
+        if (children > 0)
+        {
+            for (int i = 0; i < children; i++)
+            {
+                Destroy(GameObject.Find("Content").transform.GetChild(i).gameObject);
+            }
+        }
 
-
-
+        //버튼 생성
         for (int i = 0; i < len; i++)
         {
 
             GameObject newItem = (GameObject)Instantiate(button);
             newItem.transform.SetParent(GameObject.Find("Content").transform);
-            newItem.GetComponent<BoxCollider>().size.Set(580, 40, 0.005f);
-            newItem.GetComponent<BoxCollider>().isTrigger = true;
-            newItem.name = keys[i];
-            //newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(Canvas.rect.width,30);
             newItem.GetComponent<RectTransform>().localPosition = new Vector3(0, yValue, 0);
             newItem.GetComponent<RectTransform>().localRotation = Quaternion.Euler(Vector3.zero);
             newItem.GetComponent<RectTransform>().localScale.Set(1, 1, 1);
+            newItem.GetComponent<BoxCollider>().isTrigger = true;
+            newItem.GetComponent<BoxCollider>().size = new Vector3(580.0f, 40.0f, 0.000025f);      //1,1,1
+            Debug.Log("col size : " + newItem.GetComponent<BoxCollider>().size);
             newItem.GetComponent<Button>().onClick.AddListener(() => ReplayButtonOnClick(newItem.name));
+            newItem.name = keys[i];
 
             Text title = newItem.GetComponentInChildren<Text>();
             title.text = keys[i] + "\t\t\t" + "저장날짜" + values[i].ToString();
@@ -273,7 +257,10 @@ public class SendData : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// 리플레이 목록 버튼 클릭 이벤트
+    /// </summary>
+    /// <param name="name"></param>
     public void ReplayButtonOnClick(string name)
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -284,12 +271,16 @@ public class SendData : MonoBehaviour
         jdata = new JSONObject(data);
 
         //Debug.Log("ReplayButtonOnClick:"+name);
-        socket.Emit("RequestTableRow",jdata);
+        socket.Emit("RequestTableRow", jdata);
         vec = new Vector3[tablerow, 8];
         socket.Emit("RequestFrameByUnity", jdata);
 
     }
 
+    /// <summary>
+    /// ReplayButtonOnClick(선택한 리플레이명) -> RequestFrameByUnity(Unity) -> PlayReplay (node) -> this 실행
+    /// </summary>
+    /// <param name="e">리플레이 프레임 정보</param>
     public void PlayReplaying(SocketIOEvent e)
     {
         // DB 행 갯수 가져오기
@@ -338,7 +329,7 @@ public class SendData : MonoBehaviour
         string pos = e.data["result"].ToString();
         Debug.Log("x: " + pos[2] + ", y:" + pos[4]);
         // 예측 결과
-        recommendedStroke = STROKE[int.Parse(e.data[0].ToString())] + ", "  + e.data[1] +"%";
+        recommendedStroke = STROKE[int.Parse(e.data[0].ToString())] + ", " + e.data[1] + "%";
 
         guidtxt1.text = recommendedStroke;
         guidtxt2.text = recommendedStroke;
@@ -371,6 +362,11 @@ public class SendData : MonoBehaviour
         }
 
     }
+
+    /// <summary>
+    /// 서버로 리플레이 목록의 갯수 요청
+    /// 반환 함수  ReturnTableRow(SocketIOEvent e)
+    /// </summary>
     public void RequestTableRow()
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -381,9 +377,13 @@ public class SendData : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// 서버로 부터 리플레이 목록 갯수 반환
+    /// </summary>
+    /// <param name="e">리플레이 목록 갯수</param>
     public void ReturnTableRow(SocketIOEvent e)
     {
-       // Debug.Log("Returnrow:"+e.data);
+        // Debug.Log("Returnrow:"+e.data);
         string[] array = e.data.ToString().Split(':');
         //Debug.Log("test" + array[2]);
         //array[2].Remove(array[2].Length - 2, 2);
@@ -393,11 +393,6 @@ public class SendData : MonoBehaviour
 
     }
 
-    public void SetTablename(SocketIOEvent e)
-    {
-        tablename = e.data[0].ToString();
-        //Debug.Log("SetTablename: " + tablename);
-    }
 
 
 
