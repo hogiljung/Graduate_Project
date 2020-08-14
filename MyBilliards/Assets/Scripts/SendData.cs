@@ -256,7 +256,6 @@ public class SendData : MonoBehaviour
 
 
     }
-
     /// <summary>
     /// 리플레이 목록 버튼 클릭 이벤트
     /// </summary>
