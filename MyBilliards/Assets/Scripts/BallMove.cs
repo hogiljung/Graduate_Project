@@ -71,6 +71,10 @@ public class BallMove : MonoBehaviour
         {
             rb.angularVelocity.Set(0, rb.angularVelocity.y, rb.angularVelocity.z);
         }
+        else if (Mathf.Abs(rb.angularVelocity.x) < 1)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x * 0.6f, rb.angularVelocity.y, rb.angularVelocity.z);
+        }
         else if (Mathf.Abs(rb.angularVelocity.x) < 3)
         {
             rb.angularVelocity.Set(rb.angularVelocity.x * 0.8f, rb.angularVelocity.y, rb.angularVelocity.z);
@@ -79,6 +83,10 @@ public class BallMove : MonoBehaviour
         if (Mathf.Abs(rb.angularVelocity.y) < 0.1)
         {
             rb.angularVelocity.Set(rb.angularVelocity.x, 0, rb.angularVelocity.z);
+        }
+        else if (Mathf.Abs(rb.angularVelocity.y) < 1)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y * 0.6f, rb.angularVelocity.z);
         }
         else if (Mathf.Abs(rb.angularVelocity.y) < 3)
         {
@@ -89,13 +97,18 @@ public class BallMove : MonoBehaviour
         {
             rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, 0);
         }
+        else if (Mathf.Abs(rb.angularVelocity.z) < 1)
+        {
+            rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, rb.angularVelocity.z * 0.6f);
+        }
         else if (Mathf.Abs(rb.angularVelocity.z) < 3)
         {
             rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, rb.angularVelocity.z * 0.8f);
         }
     }
 
-    //사운드 쿨타임 & 사운드 판정
+    //사운드 쿨타임 & 사운드 재생
+    //타격음
     IEnumerator ShotSound()
     {
         Debug.Log("ballspd: " + rb.velocity.magnitude);
@@ -110,6 +123,7 @@ public class BallMove : MonoBehaviour
        
     }
     
+    //공 충돌음
     IEnumerator BallSound()
     {
         ballsound = false;
@@ -122,6 +136,7 @@ public class BallMove : MonoBehaviour
         ballsound = true;
     }
 
+    //벽 충돌음
     IEnumerator WallSound()
     {
         wallsound = false;

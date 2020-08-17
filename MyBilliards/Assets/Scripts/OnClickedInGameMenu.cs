@@ -19,7 +19,7 @@ public class OnClickedInGameMenu : MonoBehaviour
     public GameObject yellowCheck;
     public Text GuideText1;
     public Text GuideText2;
-    public Text txt;
+    //public Text txt;
 
     public Transform whiteBall;
     public Transform yellowBall;
@@ -52,6 +52,11 @@ public class OnClickedInGameMenu : MonoBehaviour
         }
 
         sd = FindObjectOfType<SendData>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void Replay_btn_clicked()
@@ -117,10 +122,10 @@ public class OnClickedInGameMenu : MonoBehaviour
         }
     }
 
-    //가이드버튼 클릭시
+    //가이드버튼 클릭시 가이드표시 변경
     public void Guide_btn_clicked()
     {
-        if (guideUI1.activeSelf)    //흰공 on이면 노란공 on으로 변경
+        if (guideUI1.activeSelf)    //흰공 on에서 노란공 on으로 변경
         {
             guideUI1.transform.position.Set(0,-10f,0);
             whiteCheck.SetActive(false);
@@ -138,13 +143,13 @@ public class OnClickedInGameMenu : MonoBehaviour
 
             guideUI2.transform.position = yellowBall.transform.position + new Vector3(0,0.15f,0);
         }
-        else if (guideUI2.activeSelf)   //노란공 on이면 off로 변경
+        else if (guideUI2.activeSelf)   //노란공 on에서 off로 변경
         {
             guideUI2.transform.position.Set(0, -10f, 0);
             yellowCheck.SetActive(false);
             guideUI2.SetActive(false);
         }
-        else                            //off면 흰공 on
+        else                            //off에서 흰공 on으로 변경
         {
             whiteCheck.SetActive(true);
             guideUI1.SetActive(true);
@@ -164,6 +169,7 @@ public class OnClickedInGameMenu : MonoBehaviour
         }
     }
 
+    //가이드 텍스트 수정함수
     private void SetGuideText(Text txt)
     {
         Debug.Log("가이드 업데이트");
@@ -172,12 +178,14 @@ public class OnClickedInGameMenu : MonoBehaviour
         // txt.text = 가이드 결과 입력
     }
 
+    //시작 화면으로
     public void MainMenu_btn_clicked()
     {
         //Debug.Log("MainMenu click");
         SceneManager.LoadScene(0);
     }
 
+    //종료
     public void Exit_btn_clicked()
     {
         //Debug.Log("exit click");
@@ -189,10 +197,13 @@ public class OnClickedInGameMenu : MonoBehaviour
 #endif
     }
 
+    //리셋
     public void Reset_btn_clicked()
     {
         SceneManager.LoadScene(1);
     }
+
+    //가이드 결과 가져오기
     IEnumerator GetText()
     {
         UnityWebRequest www = UnityWebRequest.Get("https://gtw049nu5f.execute-api.ap-northeast-2.amazonaws.com/default/Helloworld");

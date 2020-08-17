@@ -26,7 +26,6 @@ public class Controller_Left : MonoBehaviour
     public GameObject main;
     public GameObject option;
     public GameObject replay;
-    
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -42,8 +41,9 @@ public class Controller_Left : MonoBehaviour
     private Vector3 lookAt;                     //큐가 바라볼 곳
 
     private bool isMove;                        //이동버튼 눌렸는지
-
-    public float speed;                         //
+    private Vector3 menu_pos;
+    public float speed;                         //이동속도
+    
     
 
     // Start is called before the first frame update
@@ -54,6 +54,7 @@ public class Controller_Left : MonoBehaviour
         mTrackedObj = GetComponent<SteamVR_TrackedObject>();
         mmode = FindObjectOfType<Mode>();
         isGrab = FindObjectOfType<CueGrap>();
+        menu_pos = new Vector3(0.0f, 0.15f, 0.2f);
         speed = 0.2f;
     }
 
@@ -77,7 +78,7 @@ public class Controller_Left : MonoBehaviour
                 GrapCue();          //큐 고정
                 break;
             case 2:     //메뉴 상태
-
+                MenuOn();
                 break;
             case 3:     //물건 든 상태
                 GrapAction();       //물건 놓기/던지기
@@ -151,6 +152,7 @@ public class Controller_Left : MonoBehaviour
         
     }
 
+    //메뉴
     private void MenuAction()
     {
         if (menu.GetStateDown(handType))
@@ -178,6 +180,10 @@ public class Controller_Left : MonoBehaviour
                 mmode.mode = 2;
             }
         }
+    }
+    public void MenuOn()
+    {
+        menu_obj.transform.position = this.transform.position + menu_pos;
     }
 
     //물건 들기
