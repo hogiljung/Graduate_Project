@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\QueCollision.cs" />
     <Compile Include="Assets\Scripts\ReplayLoader.cs" />
+    <Compile Include="Assets\Scripts\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\SendData.cs" />
     <Compile Include="Assets\Scripts\SoundManage.cs" />
     <Compile Include="Assets\Scripts\SoundSlider.cs" />

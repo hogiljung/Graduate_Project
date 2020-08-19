@@ -7,7 +7,8 @@ using Valve.VR;
 public class Swing : MonoBehaviour
 {
     // 공 움직임 관련 스크립트
-    private CueGrap cueGrap;
+    //private CueGrap cueGrap;
+    private ScoreManager score;
     public Transform ptrf;
     public GameObject shadowBall;
     private Rigidbody colrb;
@@ -38,8 +39,9 @@ public class Swing : MonoBehaviour
 
     void Start()
     {
-        cueGrap = FindObjectOfType<CueGrap>();
+        //cueGrap = FindObjectOfType<CueGrap>();
         //layser = this.gameObject.AddComponent<LineRenderer>();
+        score = FindObjectOfType<ScoreManager>();
         layser = gameObject.GetComponent<LineRenderer>();
         layser.enabled = false;
         //trigger = false;
@@ -141,7 +143,17 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            Force(other);   //타격힘 계산, 적용
+            Force(other);   //타격힘 계산
+
+            //수구 지정
+            if (other.gameObject.name.Equals("WhiteBall"))
+            {
+                score.ball = 0;
+            }
+            else if (other.gameObject.name.Equals("YellowBall"))
+            {
+                score.ball = 1;
+            }
         }
     }
 
