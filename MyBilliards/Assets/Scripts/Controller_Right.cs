@@ -25,7 +25,11 @@ public class Controller_Right : MonoBehaviour
     public GameObject replay;
     public GameObject hand_normal;
     public GameObject hand_fist;
+    public GameObject hand_normal_l;
+    public GameObject hand_fist_l;
+    public GameObject hand_grip_l;
     public Transform camdir;
+    public Transform cam;
 
     public Transform holdPosition;              //큐 고정 위치
 
@@ -100,6 +104,7 @@ public class Controller_Right : MonoBehaviour
     //컨트롤러 이벤트
     private void PadAction()
     {
+        /*
         if (forword.GetStateDown(handType))
         {
             if (!isJump)
@@ -108,13 +113,16 @@ public class Controller_Right : MonoBehaviour
                 StartCoroutine("Jump");
             }
         }
+        */
         if (left.GetStateDown(handType))
         {
-            camdir.Rotate(0, 15, 0);
+            //camdir.Rotate(0, 15, 0);
+            camdir.RotateAround(cam.position, camdir.up, 15f);
         }
         if (right.GetStateDown(handType))
         {
-            camdir.Rotate(0, -15, 0);
+            //camdir.Rotate(0, -15, 0);
+            camdir.RotateAround(cam.position, camdir.up, -15f);
         }
     }
 
@@ -311,8 +319,12 @@ public class Controller_Right : MonoBehaviour
             else    // 메뉴 추가하면 찾아서 초기화 해주어야함!
             {
                 //Debug.Log("Menu on");
+                cue.SetActive(false);
                 hand_fist.SetActive(false);
                 hand_normal.SetActive(true);
+                hand_fist_l.SetActive(false);
+                hand_grip_l.SetActive(false);
+                hand_normal_l.SetActive(true);
                 menu_obj.SetActive(true);
                 main.SetActive(true);
                 option.SetActive(false);
@@ -320,7 +332,6 @@ public class Controller_Right : MonoBehaviour
                 lazer.SetActive(true);
                 mmode.mode = 2;
                 isGrap.IsGrap = false;
-                cue.SetActive(false);
             }
         }
     }

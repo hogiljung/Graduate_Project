@@ -172,7 +172,7 @@ public class Swing : MonoBehaviour
         colrb.angularVelocity.Set(0, 0, 0);
         Physics.Raycast(ptrf.position, ptrf.forward, out hit, 1f);
         colrb.AddForceAtPosition(transform.forward * mg * 42500f, hit.point);
-        colrb.AddTorque(transform.forward * mg);
+        //colrb.AddTorque(transform.forward * mg);
         //타격 진동
         haptic.Execute(0, 0.05f, 200, mg * 120f, SteamVR_Input_Sources.RightHand);
         haptic.Execute(0, 0.05f, 200, mg * 50f, SteamVR_Input_Sources.LeftHand);
@@ -184,7 +184,7 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForceAtPosition(transform.forward * velocity.magnitude * 425f, hit.point);
+            colrb.AddForce(transform.forward * velocity.magnitude * 425f);
         }
     }
 }

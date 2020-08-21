@@ -16,18 +16,18 @@ public class SendData : MonoBehaviour
     List<ArrayList> frame;
 
 
-    public GameObject ball1;
-    public GameObject ball2;
-    public GameObject ball3;
-    public GameObject que;
+    //public GameObject ball1;
+    //public GameObject ball2;
+    //public GameObject ball3;
+    //public GameObject que;
 
     public Text guidtxt1;
     public Text guidtxt2;
 
-    private Transform ball1trans;
-    private Transform ball2trans;
-    private Transform ball3trans;
-    private Transform quetrans;
+    public Transform ball1trans;
+    public Transform ball2trans;
+    public Transform ball3trans;
+    public Transform quetrans;
 
 
     Vector3[,] vec;
@@ -35,14 +35,14 @@ public class SendData : MonoBehaviour
 
     private string tablename;
 
-    private float pos_x;
-    private float pos_y;
-    private float pos_z;
+    //private float pos_x;
+    //private float pos_y;
+    //private float pos_z;
 
 
-    private float rot_x;
-    private float rot_y;
-    private float rot_z;
+    //private float rot_x;
+    //private float rot_y;
+    //private float rot_z;
 
     int curruntFrame = 0;
 
@@ -71,10 +71,10 @@ public class SendData : MonoBehaviour
         frame = new List<ArrayList>();
         GameObject go = GameObject.Find("SocketIO");
         socket = go.GetComponent<SocketIOComponent>();
-        ball1trans = ball1.transform;
-        ball2trans = ball2.transform;
-        ball3trans = ball3.transform;
-        quetrans = que.transform;
+        //ball1trans = ball1.transform;
+        //ball2trans = ball2.transform;
+        //ball3trans = ball3.transform;
+        //quetrans = que.transform;
 
 
         socket.On("SetReplayBoard", ReplayBoard);
@@ -87,7 +87,7 @@ public class SendData : MonoBehaviour
 
 
         // 사용 변수 초기화
-        Init();
+        //Init();
         startREC = false;
         startReplay = false;
 
@@ -177,14 +177,14 @@ public class SendData : MonoBehaviour
         startREC = false;
     }
 
-
+    /*
     public void Init()
     {
         pos_x = 0f; pos_y = 0f; pos_z = 0f;
         rot_x = 0f; rot_y = 0f; rot_z = 0f;
 
     }
-
+    */
     /// <summary>
     /// 리플레이 화면 요청
     /// 서버로 RequestReplayByUnity 이벤트 발생

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 using Valve.VR;
 
@@ -21,11 +22,16 @@ public class Controller_Left : MonoBehaviour
     public GameObject hand_normal;              //기본 모델
     public GameObject hand_grip;                //큐 잡은 모델
     public GameObject hand_fist;                //물건 잡은 모델
+    public GameObject hand_normal_r;            //반대손
+    public GameObject hand_fist_r;
     public GameObject menu_obj;                 //메뉴 캔버스
     public GameObject lazer;                    //메뉴 조작 레이저
     public GameObject main;
     public GameObject option;
     public GameObject replay;
+
+    public Transform menupos;
+    public Transform camdir;
 
     private GameObject collidingObject;
     private GameObject objectInHand;
@@ -38,11 +44,11 @@ public class Controller_Left : MonoBehaviour
 
     private Vector3 front;                      //카메라 기준 정면 이동량
     private Vector3 side;                       //카메라 기준 측면 이동량
-    private Vector3 lookAt;                     //큐가 바라볼 곳
+    //private Vector3 lookAt;                     //큐가 바라볼 곳
 
     private bool isMove;                        //이동버튼 눌렸는지
-    private Vector3 menu_pos;
-    public float speed;                         //이동속도
+    //private Vector3 menu_pos;
+    private float speed;                         //이동속도
     
     
 
@@ -54,8 +60,8 @@ public class Controller_Left : MonoBehaviour
         mTrackedObj = GetComponent<SteamVR_TrackedObject>();
         mmode = FindObjectOfType<Mode>();
         isGrab = FindObjectOfType<CueGrap>();
-        menu_pos = new Vector3(0.0f, 0.15f, 0.2f);
-        speed = 0.2f;
+        //menu_pos = new Vector3(0f, 0.15f, 0.2f);
+        speed = 3f;
     }
 
     // Update is called once per frame
@@ -96,7 +102,7 @@ public class Controller_Left : MonoBehaviour
             hand_grip.SetActive(true);
             hand_normal.SetActive(false);
         }
-        if (graps.GetStateUp(handType))
+        else if (graps.GetStateUp(handType))
         {
             //Debug.Log("Left graps up");
             isGrab.IsGrap = false;
@@ -115,17 +121,18 @@ public class Controller_Left : MonoBehaviour
             //Debug.Log("move button down");
             isMove = true;
         }
-        if (TouchPad.GetStateUp(handType))
+        else if (TouchPad.GetStateUp(handType))
         {
             //Debug.Log("move button up");
             isMove = false;
         }
+
         if (isMove)
         {
             front = playerCamera.transform.forward * TouchPos.GetAxis(handType).y;
             side = playerCamera.transform.right * TouchPos.GetAxis(handType).x;
             //Debug.Log(TouchPos.GetAxis(handType) + "  " + playerCamera.transform.forward + "  " + playerCamera.transform.right);
-            mPlayer.transform.Translate((front.x + side.x) * speed, 0, (front.z + side.z) * speed);
+            mPlayer.transform.Translate((front.x + side.x) * speed * Time.deltaTime, 0, (front.z + side.z) * speed * Time.deltaTime);
         }
     }
 
@@ -133,23 +140,19 @@ public class Controller_Left : MonoBehaviour
     {
         if (PadClick.GetStateDown(handType))
         {
-            if (mTeleport)
-            {
-                mTeleport.mIsActive = true;
-            }
+            mTeleport.mIsActive = true;
+
 
         }
-        if (PadClick.GetStateUp(handType))
+        else if (PadClick.GetStateUp(handType))
         {
-            if (mTeleport)
-            {
-                mTeleport.mIsActive = false;
-                Vector3 pos = mTeleport.mGroundPos;
-                if (pos != Vector3.zero)
-                    mPlayer.transform.position = pos + (transform.parent.position - new Vector3(playerCamera.transform.position.x,0,playerCamera.transform.position.z));
-            }
+            mTeleport.mIsActive = false;
+            Vector3 pos = mTeleport.mGroundPos;
+            if (pos != Vector3.zero)
+                mPlayer.transform.position = pos + (transform.parent.position - new Vector3(playerCamera.transform.position.x, 0, playerCamera.transform.position.z));
+
         }
-        
+
     }
 
     //메뉴
@@ -171,6 +174,8 @@ public class Controller_Left : MonoBehaviour
                 hand_grip.SetActive(false);
                 hand_fist.SetActive(false);
                 hand_normal.SetActive(true);
+                hand_fist_r.SetActive(false);
+                hand_normal_r.SetActive(true);
                 isGrab.IsGrap = false;
                 menu_obj.SetActive(true);
                 main.SetActive(true);
@@ -183,7 +188,8 @@ public class Controller_Left : MonoBehaviour
     }
     public void MenuOn()
     {
-        menu_obj.transform.position = this.transform.position + menu_pos;
+        menu_obj.transform.position = menupos.transform.position;
+        menu_obj.transform.rotation = menupos.transform.rotation;
     }
 
     //물건 들기

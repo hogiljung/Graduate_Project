@@ -79,15 +79,15 @@ public class BallMove : MonoBehaviour
         {
 
         }
-        else if (rb.velocity.magnitude < 0.001f)
+        else if (rb.velocity.magnitude < 0.0005f)
         {
-            rb.velocity.Set(0, 0, 0);   //정지
+            rb.velocity = new Vector3(0, 0, 0);   //정지
 
             score.isEnd++;
             if (score.isEnd == 3)    //공이 모두 멈추면 스코어세팅 초기화
             {
                 score.TurnEnd();
-                Debug.Log("----Turn End----");
+                //Debug.Log("----Turn End----");
             }
         }
 
@@ -103,84 +103,49 @@ public class BallMove : MonoBehaviour
         float x2 = 1, y2 = 1, z2 = 1;
         bool changed = false;
 
-        if (x < 0.001f)
+        if (x < 0.0001f)
         {
             
         }
-        else if (x < 0.1f)
+        else if (x < 0.01f)
         {
             x2 = 0;
             changed = true;
             //rb.angularVelocity.Set(0, rb.angularVelocity.y, rb.angularVelocity.z);
         }
-        else if (x < 1)
-        {
-            x2 = 0.6f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x * 0.6f, rb.angularVelocity.y, rb.angularVelocity.z);
-        }
-        else if (x < 3)
-        {
-            x2 = 0.8f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x * 0.8f, rb.angularVelocity.y, rb.angularVelocity.z);
-        }
 
-        if (y < 0.001f)
+        if (y < 0.0001f)
         {
 
         }
-        else if (y < 0.1f)
+        else if (y < 0.01f)
         {
             y2 = 0;
             changed = true;
             //rb.angularVelocity.Set(rb.angularVelocity.x, 0, rb.angularVelocity.z);
         }
-        else if (y < 1)
-        {
-            y2 = 0.6f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y * 0.6f, rb.angularVelocity.z);
-        }
-        else if (y < 3)
-        {
-            y2 = 0.8f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y * 0.8f, rb.angularVelocity.z);
-        }
 
-        if (z < 0.001f)
+        if (z < 0.0001f)
         {
 
         }
-        else if (z < 0.1f)
+        else if (z < 0.01f)
         {
             z2 = 0;
             changed = true;
             //rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, 0);
         }
-        else if (z < 1)
-        {
-            z2 = 0.6f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, rb.angularVelocity.z * 0.6f);
-        }
-        else if (z < 3)
-        {
-            z2 = 0.8f;
-            changed = true;
-            //rb.angularVelocity.Set(rb.angularVelocity.x, rb.angularVelocity.y, rb.angularVelocity.z * 0.8f);
-        }
+
         //변경사항 있을때 적용
         if (changed)
-            rb.angularVelocity.Set(rb.angularVelocity.x * x2, rb.angularVelocity.y * y2, rb.angularVelocity.z * z2);
+            rb.angularVelocity = new Vector3(rb.angularVelocity.x * x2, rb.angularVelocity.y * y2, rb.angularVelocity.z * z2);
     }
 
     //사운드 쿨타임 & 사운드 재생
     //타격음
     IEnumerator ShotSound()
     {
-        Debug.Log("ballspd: " + rb.velocity.magnitude);
+        //Debug.Log("ballspd: " + rb.velocity.magnitude);
         
         if (rb.velocity.magnitude > 1f)
             audios.PlayOneShot(SoundManage.instance.shotStrong);
@@ -208,9 +173,12 @@ public class BallMove : MonoBehaviour
     //벽 충돌음
     IEnumerator WallSound()
     {
+        
         wallsound = false;
-        audios.PlayOneShot(SoundManage.instance.wallCollide);
-
+        if (rb.velocity.magnitude > 1f)
+        {
+            audios.PlayOneShot(SoundManage.instance.wallCollide);
+        }
         yield return new WaitForSeconds(0.05f);
         wallsound = true;
     }
@@ -231,12 +199,12 @@ public class BallMove : MonoBehaviour
                     if (collision.gameObject.name.Equals("RedBall"))   //타격한 공 체크
                     {
                         target2 = true;
-                        Debug.Log("target2");
+                        Debug.Log("--target2");
                     }
                     else
                     {
                         target1 = true;
-                        Debug.Log("target1");
+                        Debug.Log("--target1");
                     }
 
                     if (score.cusion > 2 && target1 && target2)        //3쿠션 성공
@@ -256,7 +224,7 @@ public class BallMove : MonoBehaviour
             if (ball_set)       //수구가 이 공이면
             {
                 score.cusion++;     //쿠션 카운트 증가
-                Debug.Log("cusion : " + score.cusion);
+                Debug.Log("--cusion : " + score.cusion);
             }
         }
     }
@@ -266,8 +234,9 @@ public class BallMove : MonoBehaviour
     {
         score.success = true;
         score.score++;
+        score.SetText();
         ball_set = false;
-        Debug.Log("Score : " + score.score);
+        Debug.Log("--Score : " + score.score);
         score.ball = -1;
     }
 
@@ -280,8 +249,11 @@ public class BallMove : MonoBehaviour
             {
                 shotsound = false;
                 StartCoroutine(ShotSound());
+                score.TurnEnd();
+                target1 = false;
+                target2 = false;
                 ball_set = true;        //이 공을 수구로 지정
-                Debug.Log("ball_set :" + name);
+                Debug.Log("--ball_set :" + name);
             }
         }
     }

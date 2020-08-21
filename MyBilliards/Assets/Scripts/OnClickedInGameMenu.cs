@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
+using System;
 
 public class OnClickedInGameMenu : MonoBehaviour
 {
@@ -19,19 +21,26 @@ public class OnClickedInGameMenu : MonoBehaviour
     public GameObject yellowCheck;
     public Text GuideText1;
     public Text GuideText2;
+    public Text heightText;
     //public Text txt;
 
     public Transform whiteBall;
     public Transform yellowBall;
     public Transform redBall;
-    private SendData sd;
+    public Transform camdir;
 
+    private SendData sd;
+    private float height;
+    
     private void Start()
     {
         guideUI1.SetActive(false);
         guideUI2.SetActive(false);
         whiteCheck.SetActive(false);
         yellowCheck.SetActive(false);
+
+        sd = FindObjectOfType<SendData>();
+
         if (PlayerPrefs.GetInt("tpmode", 0) == 0)
         {
             mTpMode.SetActive(false);
@@ -51,7 +60,10 @@ public class OnClickedInGameMenu : MonoBehaviour
             assist.SetActive(true);
         }
 
-        sd = FindObjectOfType<SendData>();
+        height = PlayerPrefs.GetFloat("height", 0);
+        camdir.localPosition = new Vector3(0, height, 0);
+        heightText.text = "높이 보정 : " + height + " cm";
+
     }
 
     private void Update()
@@ -120,6 +132,24 @@ public class OnClickedInGameMenu : MonoBehaviour
             assist.SetActive(true);
             PlayerPrefs.SetInt("assist", 1);
         }
+    }
+
+    public void Up_btn_clicked()
+    {
+        height += 0.05f;
+        height = (float)Math.Round(height * 100) / 100;
+        camdir.localPosition = new Vector3(0, height, 0);
+        heightText.text = "높이 보정 : " + height + " cm";
+        PlayerPrefs.SetFloat("height", height);
+    }
+
+    public void Down_btn_clicked()
+    {
+        height -= 0.05f;
+        height = (float)Math.Round(height * 100) / 100;
+        camdir.localPosition = new Vector3(0, height, 0);
+        heightText.text = "높이 보정 : " + height + " cm";
+        PlayerPrefs.SetFloat("height", height);
     }
 
     //가이드버튼 클릭시 가이드표시 변경

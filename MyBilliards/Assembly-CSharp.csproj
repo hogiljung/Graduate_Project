@@ -74,13 +74,10 @@
     <Compile Include="Assets\Scripts\GuideUIPos.cs" />
     <Compile Include="Assets\Scripts\LazerPointer.cs" />
     <Compile Include="Assets\Scripts\Mode.cs" />
-    <Compile Include="Assets\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\NextScene.cs" />
     <Compile Include="Assets\Scripts\OnClickedInGameMenu.cs" />
     <Compile Include="Assets\Scripts\OnClickedMainMenu.cs" />
-    <Compile Include="Assets\Scripts\PlayerCollider.cs" />
-    <Compile Include="Assets\Scripts\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\QueCollision.cs" />
+    <Compile Include="Assets\Scripts\PlayerCollider1.cs" />
     <Compile Include="Assets\Scripts\ReplayLoader.cs" />
     <Compile Include="Assets\Scripts\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\SendData.cs" />
