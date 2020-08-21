@@ -11,6 +11,8 @@ public class Swing : MonoBehaviour
     private ScoreManager score;
     public Transform ptrf;
     public GameObject shadowBall;
+    public GameObject guidUI1;
+    public GameObject guidUI2;
     private Rigidbody colrb;
     private RaycastHit hit;
     private RaycastHit hit2;
@@ -144,7 +146,10 @@ public class Swing : MonoBehaviour
         if (other.tag.Equals("ball"))
         {
             Force(other);   //타격힘 계산
-
+            if(guidUI1.activeSelf)
+                guidUI1.SetActive(false);
+            if (guidUI2.activeSelf)
+                guidUI2.SetActive(false);
             //수구 지정
             if (other.gameObject.name.Equals("WhiteBall"))
             {

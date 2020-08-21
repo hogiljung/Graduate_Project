@@ -133,9 +133,9 @@ public class OnClickedInGameMenu : MonoBehaviour
             yellowCheck.SetActive(true);
             guideUI2.SetActive(true);
             string[] ballPoints = new string[3];
-            ballPoints[0] = (yellowBall.position.x + 1.387) * 64 / 2.774 + "," + (yellowBall.position.z + 0.676) * 32 / 1.352;
-            ballPoints[1] = (whiteBall.position.x + 1.387) * 64 / 2.774 + "," + (whiteBall.position.z + 0.676) * 32 / 1.352;
-            ballPoints[2] = (redBall.position.x + 1.387) * 64 / 2.774 + "," + (redBall.position.z + 0.676) * 32 / 1.352;
+            ballPoints[0] = (int)((yellowBall.position.x + 1.387f) * 64 / 2.774f) + "," + (int)((yellowBall.position.z + 0.676f) * 32 / 1.352f);
+            ballPoints[1] = (int)((whiteBall.position.x + 1.387f) * 64 / 2.774f) + "," + (int)((whiteBall.position.z + 0.676f) * 32 / 1.352f);
+            ballPoints[2] = (int)((redBall.position.x + 1.387f) * 64 / 2.774f) + "," + (int)((redBall.position.z + 0.676f) * 32 / 1.352f);
             SetGuideText(GuideText2);
             Debug.Log(ballPoints);
             sd.ballPoints = ballPoints;
@@ -154,9 +154,9 @@ public class OnClickedInGameMenu : MonoBehaviour
             whiteCheck.SetActive(true);
             guideUI1.SetActive(true);
             string[] ballPoints = new string[3];
-            ballPoints[0] = (whiteBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (whiteBall.localPosition.x + 1.387) * 64 / 2.774;
-            ballPoints[1] = (yellowBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (yellowBall.localPosition.x + 1.387) * 64 / 2.774;
-            ballPoints[2] = (redBall.localPosition.z + 0.676) * 32 / 1.352 + "," + (redBall.localPosition.x + 1.387) * 64 / 2.774;
+            ballPoints[0] = (int)((whiteBall.localPosition.z + 0.676f) * 32 / 1.352f) + "," + (int)((whiteBall.localPosition.x + 1.387f) * 64 / 2.774f);
+            ballPoints[1] = (int)((yellowBall.localPosition.z + 0.676f) * 32 / 1.352f) + "," + (int)((yellowBall.localPosition.x + 1.387f) * 64 / 2.774f);
+            ballPoints[2] = (int)((redBall.localPosition.z + 0.676f) * 32 / 1.352f) + "," + (int)((redBall.localPosition.x + 1.387f) * 64 / 2.774f);
             SetGuideText(GuideText1);
 
             Debug.Log("guide" + ballPoints[0]);
@@ -218,8 +218,8 @@ public class OnClickedInGameMenu : MonoBehaviour
         else
         {
             // Show results as text
-            //Debug.Log(www.downloadHandler.text);
-            txt.text = www.downloadHandler.text;
+            Debug.Log(www.downloadHandler.text);
+            //txt.text = www.downloadHandler.text;
 
             // Or retrieve results as binary data
             byte[] results = www.downloadHandler.data;

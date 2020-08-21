@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ScrollUI;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Linq;
 
 public class SendData : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class SendData : MonoBehaviour
     JSONObject jdata;
 
     List<ArrayList> frame;
-
 
 
     public GameObject ball1;
@@ -326,12 +326,15 @@ public class SendData : MonoBehaviour
     public void rcvRecommendedStroke(SocketIOEvent e)
     {
         string pos = e.data["result"].ToString();
-        Debug.Log("x: " + pos[2] + ", y:" + pos[4]);
+        Debug.Log("e.data[0], " + e.data[0].ToString());
+        Debug.Log("x: " + pos[2] + ", y:" + pos.Substring(4, 4));
+
         // 예측 결과
-        recommendedStroke = STROKE[int.Parse(e.data[0].ToString())] + ", " + e.data[1] + "%";
+        recommendedStroke = STROKE[int.Parse(pos[2].ToString())] + ", " + float.Parse(pos.Substring(4, 4)) * 100 + "%";    //STROKE[int.Parse(e.data[0].ToString())] + ", " + e.data[1] + "%";
 
         guidtxt1.text = recommendedStroke;
         guidtxt2.text = recommendedStroke;
+        Debug.Log("guid1 " + recommendedStroke);
     }
 
     public void ExcuteReplay()

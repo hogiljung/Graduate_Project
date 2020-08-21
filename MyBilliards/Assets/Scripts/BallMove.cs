@@ -75,15 +75,19 @@ public class BallMove : MonoBehaviour
     //정지 체크
     private void CheckStop()
     {
-        if (rb.velocity.magnitude < 0.001f && rb.velocity.magnitude > 0.0f)
+        if (rb.velocity.magnitude < 0.0001f)
+        {
+
+        }
+        else if (rb.velocity.magnitude < 0.001f)
         {
             rb.velocity.Set(0, 0, 0);   //정지
 
             score.isEnd++;
-            Debug.Log("isEnd = "+ score.isEnd);
             if (score.isEnd == 3)    //공이 모두 멈추면 스코어세팅 초기화
             {
                 score.TurnEnd();
+                Debug.Log("----Turn End----");
             }
         }
 
@@ -221,6 +225,7 @@ public class BallMove : MonoBehaviour
                 StartCoroutine(BallSound());
             if (ball_set)     //수구가 이 공이고
             {
+                Debug.Log("--collide ball");
                 if (!score.success)     //3쿠션 성공이 아직 아닐때
                 {
                     if (collision.gameObject.name.Equals("RedBall"))   //타격한 공 체크
@@ -236,6 +241,7 @@ public class BallMove : MonoBehaviour
 
                     if (score.cusion > 2 && target1 && target2)        //3쿠션 성공
                     {
+                        Debug.Log("--success! ");
                         Success3Cusion();
                     }
                 }
@@ -275,6 +281,7 @@ public class BallMove : MonoBehaviour
                 shotsound = false;
                 StartCoroutine(ShotSound());
                 ball_set = true;        //이 공을 수구로 지정
+                Debug.Log("ball_set :" + name);
             }
         }
     }

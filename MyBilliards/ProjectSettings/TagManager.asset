@@ -15,6 +15,7 @@ TagManager:
   - ball
   - plain
   - Slider
+  - wall
   layers:
   - Default
   - TransparentFX
