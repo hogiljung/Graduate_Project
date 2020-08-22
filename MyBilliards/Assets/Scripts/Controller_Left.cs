@@ -269,8 +269,9 @@ public class Controller_Left : MonoBehaviour
         GetComponent<FixedJoint>().connectedBody = null;
         Destroy(GetComponent<FixedJoint>());
 
-        objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
-        objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
+        Quaternion rot = Quaternion.AngleAxis(camdir.rotation.eulerAngles.y, camdir.up);
+        objectInHand.GetComponent<Rigidbody>().velocity = rot * controllerPose.GetVelocity();
+        objectInHand.GetComponent<Rigidbody>().angularVelocity = rot * controllerPose.GetAngularVelocity();
         objectInHand = null;
         mmode.mode = 0;
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Valve.VR;
 
@@ -33,12 +34,13 @@ public class Controller_Right : MonoBehaviour
 
     public Transform holdPosition;              //큐 고정 위치
 
-    private Collider cueCol;
-    private Rigidbody mPlayer;                  //플레이어
-    private RaycastHit hit;
-
     private GameObject collidingObject;
     private GameObject objectInHand;
+    private Collider cueCol;
+    private Rigidbody mPlayer;                  //플레이어
+
+    private RaycastHit hit;                     //레이캐스트 충돌체
+
     private Vector3 vHoldPos;
     private Vector3 controllerMovePos;
     private float cuepos;
@@ -234,6 +236,7 @@ public class Controller_Right : MonoBehaviour
                 ReleaseObject();
             }
         }
+        
     }
 
     public void OnTriggerEnter(Collider other)
@@ -296,9 +299,9 @@ public class Controller_Right : MonoBehaviour
             //Debug.Log("Release");
             GetComponent<FixedJoint>().connectedBody = null;
             Destroy(GetComponent<FixedJoint>());
-
-            objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
+            Quaternion rot = Quaternion.AngleAxis(camdir.rotation.eulerAngles.y, camdir.up);
+            objectInHand.GetComponent<Rigidbody>().velocity = rot * controllerPose.GetVelocity();
+            objectInHand.GetComponent<Rigidbody>().angularVelocity = rot * controllerPose.GetAngularVelocity();
         }
         objectInHand = null;
         mmode.mode = 0;

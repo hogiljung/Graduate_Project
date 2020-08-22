@@ -36,7 +36,7 @@ public class wallY_r : MonoBehaviour
         //Debug.Log("e" + e + " mu " + mu);
         //Debug.Log("speed: " + speed);
 
-        rb.velocity = reflectVector * speed * e + new Vector3(0, 0, -Mathf.Clamp(rb.angularVelocity.y * 0.027f, -10f, 10f)) * Mathf.Clamp(speed / 2f, 0.2f, 1.74f);
+        rb.velocity = reflectVector * speed * e + new Vector3(0, 0, -Mathf.Clamp(rb.angularVelocity.y * 0.023f, -10f, 10f)) * Mathf.Clamp(speed / 2f, 0.2f, 1.74f);
         rb.angularVelocity = rb.angularVelocity * (1f - mu);
     }
     
