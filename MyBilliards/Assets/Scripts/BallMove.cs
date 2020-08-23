@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class BallMove : MonoBehaviour
@@ -212,6 +213,12 @@ public class BallMove : MonoBehaviour
                         Debug.Log("--success! ");
                         Success3Cusion();
                     }
+                    else if(score.cusion <= 2 && target1 && target2)        //3쿠션 전에 두 공 모두 맞으면 실패
+                    {
+                        Debug.Log("--fail..");
+                        Fail3Cusion();
+                    }
+                    
                 }
             }
         }
@@ -237,7 +244,12 @@ public class BallMove : MonoBehaviour
         score.SetText();
         ball_set = false;
         Debug.Log("--Score : " + score.score);
-        score.ball = -1;
+        //score.ball = -1;
+    }
+    private void Fail3Cusion()
+    {
+        ball_set = false;
+        score.success = true;
     }
 
     //큐가 타격되면
