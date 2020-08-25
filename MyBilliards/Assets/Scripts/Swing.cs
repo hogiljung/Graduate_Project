@@ -13,6 +13,9 @@ public class Swing : MonoBehaviour
     public GameObject shadowBall;
     public GameObject guidUI1;
     public GameObject guidUI2;
+    public GameObject guidcheck1;
+    public GameObject guidcheck2;
+
     private Rigidbody colrb;
     private RaycastHit hit;
     private RaycastHit hit2;
@@ -146,18 +149,17 @@ public class Swing : MonoBehaviour
         if (other.tag.Equals("ball"))
         {
             Force(other);   //타격힘 계산
-            if(guidUI1.activeSelf)
+
+            //가이드 종료
+            if (guidUI1.activeSelf)
+            {
                 guidUI1.SetActive(false);
-            if (guidUI2.activeSelf)
-                guidUI2.SetActive(false);
-            //수구 지정
-            if (other.gameObject.name.Equals("WhiteBall"))
-            {
-                score.ball = 0;
+                guidcheck1.SetActive(false);
             }
-            else if (other.gameObject.name.Equals("YellowBall"))
+            if (guidUI2.activeSelf)
             {
-                score.ball = 1;
+                guidUI2.SetActive(false);
+                guidcheck2.SetActive(false);
             }
         }
     }
@@ -185,6 +187,26 @@ public class Swing : MonoBehaviour
         if (other.tag.Equals("ball"))
         {
             colrb.AddForce(transform.forward * velocity.magnitude * 425f);
+        }
+    }
+
+    //조준이 아닌 상태에서 충돌시
+    private void OnCollisionEnter(Collision collision)
+    {
+        //공일때
+        if (collision.collider.tag.Equals("ball"))
+        {
+            //가이드 종료
+            if (guidUI1.activeSelf)
+            {
+                guidUI1.SetActive(false);
+                guidcheck1.SetActive(false);
+            }
+            if (guidUI2.activeSelf)
+            {
+                guidUI2.SetActive(false);
+                guidcheck2.SetActive(false);
+            }
         }
     }
 }
