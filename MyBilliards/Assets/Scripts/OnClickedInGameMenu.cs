@@ -68,7 +68,11 @@ public class OnClickedInGameMenu : MonoBehaviour
 
     private void Update()
     {
-        
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Guide_btn_clicked();
+        }
     }
 
     public void Replay_btn_clicked()
@@ -167,7 +171,7 @@ public class OnClickedInGameMenu : MonoBehaviour
             ballPoints[1] = (int)((whiteBall.localPosition.x + 1.387f) * 64 / 2.774f) + "," + (int)((whiteBall.localPosition.z + 0.676f) * 32 / 1.352f);
             ballPoints[2] = (int)((redBall.localPosition.x + 1.387f) * 64 / 2.774f) + "," + (int)((redBall.localPosition.z + 0.676f) * 32 / 1.352f);
             SetGuideText(GuideText2);
-            Debug.Log(ballPoints);
+            //Debug.Log(ballPoints);
             sd.ballPoints = ballPoints;
             sd.getRecommendedStroke();
 
@@ -202,7 +206,7 @@ public class OnClickedInGameMenu : MonoBehaviour
     //가이드 텍스트 수정함수
     private void SetGuideText(Text txt)
     {
-        Debug.Log("가이드 업데이트");
+        //Debug.Log("가이드 업데이트");
         txt.text = "타법 계산중...";
         
         // txt.text = 가이드 결과 입력

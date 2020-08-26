@@ -41,6 +41,7 @@ public class SendData : MonoBehaviour
 
     private string tablename;
 
+    /*
     private float pos_x;
     private float pos_y;
     private float pos_z;
@@ -53,9 +54,10 @@ public class SendData : MonoBehaviour
     int curruntFrame = 0;
 
     int index = 0;
+    */
     private int tablerow = 0;
 
-    private bool test = false;
+    private bool test = false;      //리플레이 요청 테스트 변수
 
     public bool startREC { get; set; }
     private bool startReplay;
@@ -100,7 +102,7 @@ public class SendData : MonoBehaviour
 
 
         // 사용 변수 초기화
-        Init();
+        //Init();
         startREC = false;
         startReplay = false;
         replaying = false;
@@ -113,6 +115,7 @@ public class SendData : MonoBehaviour
     void Update()
     {
         //딜레이 주기
+        /*
         fTickTime += Time.deltaTime;
         if (fTickTime >= fDestroyTime)
         {
@@ -124,7 +127,7 @@ public class SendData : MonoBehaviour
             }
 
         }
-
+        */
 
 
         if (startREC)
@@ -133,26 +136,26 @@ public class SendData : MonoBehaviour
             ExcuteReplay();
 
 
-
-        if (Input.GetKeyDown(KeyCode.A))
+        // 리플레이 테스트용 버튼
+        if (Input.GetKeyDown(KeyCode.S))
         {
             RequestReplayByUnity();
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             CreateReplay();
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             StopREC();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             ReplayButtonOnClick(replaytest);
         }
-
-
+        
+        
 
 
     }
@@ -230,13 +233,14 @@ public class SendData : MonoBehaviour
         startREC = false;
     }
 
-
+    /*
     public void Init()
     {
         pos_x = 0f; pos_y = 0f; pos_z = 0f;
         rot_x = 0f; rot_y = 0f; rot_z = 0f;
 
     }
+    */
 
     /// <summary>
     /// 리플레이 화면 요청
@@ -418,9 +422,9 @@ public class SendData : MonoBehaviour
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
         //ballPoints = { "1,2", "2,3", "3,4"};\
-        Debug.Log("guide2" + ballPoints[0]);
-        Debug.Log(ballPoints[1]);
-        Debug.Log(ballPoints[2]);
+        //Debug.Log("guide2" + ballPoints[0]);
+        //Debug.Log(ballPoints[1]);
+        //Debug.Log(ballPoints[2]);
 
         data.Add("point1", ballPoints[0]);
         data.Add("point2", ballPoints[1]);
@@ -436,17 +440,14 @@ public class SendData : MonoBehaviour
     public void rcvRecommendedStroke(SocketIOEvent e)
     {
         string pos = e.data["result"].ToString();
-        Debug.Log("e.data[0], " + e.data[0].ToString());
+        //Debug.Log("e.data[0], " + e.data[0].ToString());
         Debug.Log("x: " + pos[2] + ", y:" + pos.Substring(4, pos.Length - 6));
         int c = pos.Length;
         // 예측 결과
         recommendedStroke = STROKE[int.Parse(pos[2].ToString())] + ", " + float.Parse(pos.Substring(4, pos.Length - 6)) * 100 + "%";
-        Debug.Log("stroke! " + STROKE[0] + STROKE[1] + STROKE[2] + STROKE[3] + STROKE[4]);
-        Debug.Log("레코멘드 ");
         guidtxt1.text = recommendedStroke;
         guidtxt2.text = recommendedStroke;
         Debug.Log("guid1 " + recommendedStroke);
-        Debug.Log("레코멘드 엔드");
 
     }
 
