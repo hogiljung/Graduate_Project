@@ -175,7 +175,7 @@ public class OnClickedInGameMenu : MonoBehaviour
             sd.ballPoints = ballPoints;
             sd.getRecommendedStroke();
 
-            guideUI2.transform.position = yellowBall.transform.position + new Vector3(0,0.15f,0);
+            guideUI2.transform.position = yellowBall.position + new Vector3(0,0.15f,0);
         }
         else if (guideUI2.activeSelf)   //노란공 on에서 off로 변경
         {
@@ -199,7 +199,7 @@ public class OnClickedInGameMenu : MonoBehaviour
 
             sd.ballPoints = ballPoints;
             sd.getRecommendedStroke();
-            guideUI1.transform.position = whiteBall.transform.position + new Vector3(0, 0.15f, 0);
+            guideUI1.transform.position = whiteBall.position + new Vector3(0, 0.15f, 0);
         }
     }
 

@@ -26,6 +26,9 @@ public class SendData : MonoBehaviour
     public Text guidtxt1;
     public Text guidtxt2;
 
+    public Button rec;
+    public Button stop;
+
     public string replaytest;
 
     private Transform ball1trans;
@@ -41,20 +44,6 @@ public class SendData : MonoBehaviour
 
     private string tablename;
 
-    /*
-    private float pos_x;
-    private float pos_y;
-    private float pos_z;
-
-
-    private float rot_x;
-    private float rot_y;
-    private float rot_z;
-
-    int curruntFrame = 0;
-
-    int index = 0;
-    */
     private int tablerow = 0;
 
     private bool test = false;      //리플레이 요청 테스트 변수
@@ -63,13 +52,13 @@ public class SendData : MonoBehaviour
     private bool startReplay;
     private bool replaying;
 
-    public string recommendedStroke { get; set; }
+    private string recommendedStroke { get; set; }
     public string[] ballPoints { get; set; }
 
     private string[] STROKE = new string[6] { "앞돌리기", "옆돌리기", "뒤돌리기", "원뱅크", "횡단", "빈쿠션" };
 
 
-    [SerializeField] GameObject button;
+    public GameObject button;
     public RectTransform Canvas;
 
     private float fDestroyTime = 2f;
@@ -218,6 +207,9 @@ public class SendData : MonoBehaviour
     /// </summary>
     public void CreateReplay()
     {
+        stop.interactable = true;
+        rec.interactable = false;
+
         Dictionary<string, string> data = new Dictionary<string, string>();
         data.Add("user_id", "junoung");
 
@@ -225,12 +217,13 @@ public class SendData : MonoBehaviour
         socket.Emit("CreateTable", jdata);
         startREC = true;
         Debug.Log("테이블 생성");
-
     }
 
     public void StopREC()
     {
         startREC = false;
+        stop.interactable = false;
+        rec.interactable = true;
     }
 
     /*
@@ -295,7 +288,7 @@ public class SendData : MonoBehaviour
             newItem.transform.SetParent(GameObject.Find("Content").transform);
             newItem.GetComponent<RectTransform>().localPosition = new Vector3(0, yValue, 0);
             newItem.GetComponent<RectTransform>().localRotation = Quaternion.Euler(Vector3.zero);
-            newItem.GetComponent<RectTransform>().localScale.Set(1, 1, 1);
+            newItem.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             newItem.GetComponent<BoxCollider>().isTrigger = true;
             newItem.GetComponent<BoxCollider>().size = new Vector3(580.0f, 40.0f, 0.000025f);      //1,1,1
             Debug.Log("col size : " + newItem.GetComponent<BoxCollider>().size);
@@ -442,7 +435,6 @@ public class SendData : MonoBehaviour
         string pos = e.data["result"].ToString();
         //Debug.Log("e.data[0], " + e.data[0].ToString());
         Debug.Log("x: " + pos[2] + ", y:" + pos.Substring(4, pos.Length - 6));
-        int c = pos.Length;
         // 예측 결과
         recommendedStroke = STROKE[int.Parse(pos[2].ToString())] + ", " + float.Parse(pos.Substring(4, pos.Length - 6)) * 100 + "%";
         guidtxt1.text = recommendedStroke;

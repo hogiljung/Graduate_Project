@@ -51,8 +51,8 @@ public class Swing : MonoBehaviour
         layser.enabled = false;
         //trigger = false;
         // 레이저 굵기 표현
-        layser.startWidth = 0.005f;
-        layser.endWidth = 0.005f;
+        //layser.startWidth = 0.01f;
+        //layser.endWidth = 0.01f;
     }
     
     //업데이트
@@ -60,15 +60,13 @@ public class Swing : MonoBehaviour
     {
         //SetForce();
 
-        if (layser.enabled)
-            layser.SetPosition(0, transform.position);
         if (Physics.Raycast(transform.position, transform.forward, out hit2, 2f))
         {
             if (hit2.collider.tag.Equals("ball"))
             {
                 if (!layser.enabled)
                     layser.enabled = true;
-                layser.SetPosition(1, hit2.point);
+                layser.SetPosition(1, new Vector3(0,0,(hit2.point - transform.position).magnitude + 0.05f));
                 rayDir.Set(transform.forward.x, 0f, transform.forward.z);
                 rayDir.Normalize();
                 if (Physics.SphereCast(hit2.collider.transform.position, 0.0308f, rayDir, out hit3, 3f))
@@ -186,7 +184,7 @@ public class Swing : MonoBehaviour
         //공일때
         if (other.tag.Equals("ball"))
         {
-            colrb.AddForce(transform.forward * velocity.magnitude * 425f);
+            colrb.AddForce(transform.forward * velocity.magnitude * 850f);
         }
     }
 
