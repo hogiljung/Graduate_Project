@@ -22,5 +22,3 @@
 
 
 https://user-images.githubusercontent.com/112647829/230781286-104da6dc-be47-48a6-b98a-90370e7cd1ab.MOV
-![KakaoTalk_Photo_2023-04-10-00-21-01](https://user-images.githubusercontent.com/112647829/230781407-b1f5ff97-a5b5-46e5-a2a0-a94392f89457.jpeg)
-![KakaoTalk_Photo_2023-04-10-00-21-05](https://user-images.githubusercontent.com/112647829/230781414-d23b650d-ff09-4e9d-a0be-4d06aa2e6e5e.jpeg)
