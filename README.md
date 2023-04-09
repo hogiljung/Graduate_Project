@@ -19,6 +19,11 @@
 
 * DB - Dynamo DB, AWS Cognito
 
+![IMG_6CAAA86CD148-1](https://user-images.githubusercontent.com/112647829/230782505-ef170439-cfa2-4df0-b573-48d20fcaa338.jpeg)
+![IMG_48D78C49F2F1-1](https://user-images.githubusercontent.com/112647829/230782539-b8c53f15-99e2-4682-83f9-a6b37256f299.jpeg)
 
 
-https://user-images.githubusercontent.com/112647829/230781286-104da6dc-be47-48a6-b98a-90370e7cd1ab.MOV
+https://user-images.githubusercontent.com/112647829/230782557-38c2f70d-c3c1-4152-ac94-0fe545e9f4e8.mp4
+
+https://user-images.githubusercontent.com/112647829/230782679-ff7d0a39-ebcb-4260-8957-e50cf9fb9de2.mp4
+
