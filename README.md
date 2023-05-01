@@ -16,13 +16,12 @@
 # 동작 시나리오
 ## 가이드 기능
 
-<img width="600" alt="시나리오" src="https://user-images.githubusercontent.com/112647829/235411343-1f37ad21-e8f1-464d-8541-e0680f3583bc.png">
+<img width="600" alt="시나리오" src="https://user-images.githubusercontent.com/112647829/235411343-1f37ad21-e8f1-464d-8541-e0680f3583bc.png"/>
 
 # 시연영상 [(유튜브)](https://youtu.be/DX1_uGJinks)
-
-<img width="600" src="https://user-images.githubusercontent.com/112647829/235411285-dcb5512a-7416-4192-bbeb-624773de9f33.mov">
-<img width="600" src="https://user-images.githubusercontent.com/112647829/230782557-38c2f70d-c3c1-4152-ac94-0fe545e9f4e8.mp4">
-<img width="600" src="https://user-images.githubusercontent.com/112647829/230782679-ff7d0a39-ebcb-4260-8957-e50cf9fb9de2.mp4">
+<img width="600" alt="컨트롤러 조작" src="https://user-images.githubusercontent.com/112647829/235411285-dcb5512a-7416-4192-bbeb-624773de9f33.mov"/>
+<img width="600" alt="리플레이 기능" src="https://user-images.githubusercontent.com/112647829/230782557-38c2f70d-c3c1-4152-ac94-0fe545e9f4e8.mp4"/>
+<img width="600" alt="가이드 기능" src="https://user-images.githubusercontent.com/112647829/230782679-ff7d0a39-ebcb-4260-8957-e50cf9fb9de2.mp4"/>
 
 # Version(Installed in Windows10)
 * Unity -  2019.2.17f1
